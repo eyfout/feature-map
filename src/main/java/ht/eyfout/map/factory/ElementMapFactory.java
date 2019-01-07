@@ -5,8 +5,8 @@ import ht.eyfout.map.data.storage.map.MapGroupDataStore;
 import ht.eyfout.map.feature.Feature;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.internal.GroupElement;
-import ht.eyfout.map.element.internal.RuntimeContext;
-import ht.eyfout.map.registrar.FeatureRegistrar;
+import ht.eyfout.map.feature.runtime.RuntimeContext;
+import ht.eyfout.map.registrar.internal.FeatureRegistrar;
 import javax.inject.Inject;
 
 public final class ElementMapFactory {

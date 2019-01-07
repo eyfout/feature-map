@@ -17,4 +17,9 @@ public final class ScalarStore<T> implements DataStore {
   public T get() {
     return scalarValue;
   }
+
+  @Override
+  public int size() {
+    return 1;
+  }
 }

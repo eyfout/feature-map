@@ -6,6 +6,7 @@ import ht.eyfout.map.factory.ElementMapFactory;
 import ht.eyfout.map.feature.Feature;
 import ht.eyfout.map.feature.FeatureDescriptor;
 import ht.eyfout.map.element.Group;
+import ht.eyfout.map.feature.deltastore.DeltaStoreRuntime;
 import ht.guice.ElementGuiceModule;
 
 public class Main {
@@ -13,12 +14,16 @@ public class Main {
     final Injector injector = Guice.createInjector(new ElementGuiceModule());
 
     ElementMapFactory elementMapFactory = injector.getInstance(ElementMapFactory.class);
-    Group group = elementMapFactory.group();
-    group.addFeature(Feature.DELTA_STORE);
+    Group groupElement = elementMapFactory.group();
+    groupElement.addFeature(Feature.DELTA_STORE);
 
     String key = "John";
-    group.putScalarValue(key, 43);
-    System.out.println( key + ":" + group.<Integer>getScalarValue(key) );
+    groupElement.putScalarValue(key, 43);
+    DeltaStoreRuntime dlta = groupElement.<DeltaStoreRuntime>runtimeData(Feature.DELTA_STORE);
+    groupElement.putScalarValue(key + "001", 57);
+    groupElement.putScalarValue(key + "002", 73);
+
+    System.out.println( "Size: " + dlta.size());
   }
 
   static void printRank(FeatureDescriptor feature) {

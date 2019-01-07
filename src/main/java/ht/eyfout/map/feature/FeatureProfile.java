@@ -1,7 +1,5 @@
-package ht.eyfout.map.features;
+package ht.eyfout.map.feature;
 
-import ht.eyfout.map.feature.Feature;
-import ht.eyfout.map.feature.FeatureDescriptor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;

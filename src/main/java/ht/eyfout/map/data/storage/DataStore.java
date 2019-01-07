@@ -4,4 +4,6 @@ public interface DataStore {
   default boolean isImmutable() {
     return false;
   }
+
+  int size();
 }

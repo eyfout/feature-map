@@ -1,9 +1,9 @@
-package ht.eyfout.map.registrar;
+package ht.eyfout.map.registrar.internal;
 
 import ht.eyfout.map.factory.FeatureFactory;
 import ht.eyfout.map.feature.FeatureDescriptor;
-import ht.eyfout.map.features.FeatureProfile;
-import ht.eyfout.map.features.GroupFeature;
+import ht.eyfout.map.feature.FeatureProfile;
+import ht.eyfout.map.feature.GroupFeature;
 import java.util.Collection;
 import java.util.function.BinaryOperator;
 import java.util.stream.Stream;
@@ -14,7 +14,7 @@ public class FeatureChain extends FeatureFactory {
   private BinaryOperator<FeatureFactory> mappingFunc = new BinaryOperator<FeatureFactory>() {
     @Override
     public FeatureFactory apply(FeatureFactory f1, FeatureFactory f2) {
-        groupFeature = f2.pageFeature(f1.pageFeature());
+        groupFeature = f2.groupFeature(f1.groupFeature());
         return f1;
     }
   };
@@ -26,7 +26,7 @@ public class FeatureChain extends FeatureFactory {
   }
 
   @Override
-  public GroupFeature pageFeature() {
+  public GroupFeature groupFeature() {
     return groupFeature;
   }
 

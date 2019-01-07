@@ -2,7 +2,8 @@ package ht.eyfout.map.element.internal;
 
 import ht.eyfout.map.feature.Feature;
 import ht.eyfout.map.feature.FeatureDescriptor;
-import ht.eyfout.map.features.GroupFeature;
+import ht.eyfout.map.feature.GroupFeature;
+import ht.eyfout.map.feature.runtime.data.RuntimeData;
 import java.util.Optional;
 
 public interface FeatureSupporter extends ht.eyfout.map.element.FeatureSupporter {
@@ -21,7 +22,16 @@ public interface FeatureSupporter extends ht.eyfout.map.element.FeatureSupporter
 
   void removeFeature(FeatureDescriptor descriptor);
 
-  Optional<GroupFeature> pageFeature();
+  Optional<GroupFeature> groupFeature();
 
-  GroupFeature pageFeature(FeatureDescriptor descriptor);
+  GroupFeature groupFeature(FeatureDescriptor descriptor);
+
+  @Override
+  default <T extends RuntimeData> T runtimeData(Feature feature) {
+    return runtimeData((FeatureDescriptor) feature);
+  }
+
+  default <T extends RuntimeData> T runtimeData(FeatureDescriptor feature) {
+    return null;
+  }
 }

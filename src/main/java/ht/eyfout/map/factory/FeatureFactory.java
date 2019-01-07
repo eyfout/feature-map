@@ -1,33 +1,43 @@
 package ht.eyfout.map.factory;
 
-import ht.eyfout.map.features.FeatureProfile;
-import ht.eyfout.map.features.GroupFeature;
+import ht.eyfout.map.element.Group;
+import ht.eyfout.map.feature.FeatureDefinition;
+import ht.eyfout.map.feature.FeatureProfile;
+import ht.eyfout.map.feature.GroupFeature;
 import java.util.function.Function;
 
 public class FeatureFactory <P extends GroupFeature> {
 
-  FeatureProfile profile;
-  private Function<GroupFeature, P> pageFunc;
+  public static <F extends FeatureDefinition> Function<FeatureFactory, F> functions( Class clazz){
+    if( clazz.isAssignableFrom(Group.class) ){
+      return (ff)-> (F)ff.groupFeature();
+    }
+    throw new UnsupportedOperationException();
+  }
 
-  protected FeatureFactory(Function<GroupFeature, P> pageFunc) {
-    this.pageFunc = pageFunc;
-    profile = pageFeature().profile();
+
+  private FeatureProfile profile;
+  private Function<GroupFeature, P> groupFunc;
+
+  protected FeatureFactory(Function<GroupFeature, P> groupFunc) {
+    this.groupFunc = groupFunc;
+    profile = groupFeature().profile();
   }
 
   protected FeatureFactory() {
   }
 
   public static <P extends GroupFeature> FeatureFactory<P> create(
-      Function<GroupFeature, P> pageFeatureFunc) {
-    return new FeatureFactory<P>(pageFeatureFunc);
+      Function<GroupFeature, P> groupFeatureFunc) {
+    return new FeatureFactory<P>(groupFeatureFunc);
   }
 
-  public P pageFeature(P pageFeature) {
-    return pageFunc.apply(pageFeature);
+  public P groupFeature(P groupFeature) {
+    return groupFunc.apply(groupFeature);
   }
 
-  public GroupFeature pageFeature() {
-    return pageFeature(null);
+  public P groupFeature() {
+    return groupFeature(null);
   }
 
   public FeatureProfile profile() {

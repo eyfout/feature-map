@@ -4,8 +4,11 @@ import ht.eyfout.map.data.storage.GroupDataStore;
 import ht.eyfout.map.data.storage.ScalarStore;
 import ht.eyfout.map.data.storage.deltastore.DeltaStoreGroupDataStore;
 import ht.eyfout.map.element.Group;
+import ht.eyfout.map.feature.FeatureDescriptor;
 import ht.eyfout.map.feature.StoppedFeatureChainException;
-import ht.eyfout.map.registrar.FeatureRegistrar.FeatureBundle;
+import ht.eyfout.map.feature.runtime.data.RuntimeData;
+import ht.eyfout.map.feature.runtime.RuntimeContext;
+import ht.eyfout.map.registrar.internal.FeatureRegistrar.FeatureBundle;
 
 public class GroupElement extends AbstractFeatureBundleFeatureSupporter implements Group {
   private GroupDataStore dataProvider;
@@ -24,11 +27,10 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
       dataProvider.put(
           name,
           dataProvider.createScalarProvider(
-              pageFeature()
-                  .map((pgFeature) -> pgFeature.putScalarValue(name, value, context.get(name)))
+              groupFeature()
+                  .map((pgFeature) -> pgFeature.putScalarValue(name, value, this, context))
                   .orElse(value)));
     } catch (StoppedFeatureChainException e) {
-      System.out.println(e);
     }
   }
 
@@ -36,8 +38,13 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
   public <T> T getScalarValue(String name) {
     ScalarStore<T> scalarProvider = dataProvider.<ScalarStore<T>>get(name);
     final T value = (null == scalarProvider) ? null : scalarProvider.get();
-    return pageFeature()
-        .map((pgFeature) -> pgFeature.getScalarValue(name, value, context.get(name)))
+    return groupFeature()
+        .map((pgFeature) -> pgFeature.getScalarValue(name, value, this, context))
         .orElse(value);
+  }
+
+  @Override
+  public <T extends RuntimeData> T runtimeData(FeatureDescriptor feature) {
+    return groupFeature(feature).runtimeData(context);
   }
 }

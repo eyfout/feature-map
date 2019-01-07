@@ -1,15 +1,15 @@
 package ht.eyfout.map.feature;
 
-import ht.eyfout.map.features.FeatureForward;
-
 public class StoppedFeatureChainException extends RuntimeException {
+  private static final String ERR_MESSAGE = "%s set to %s by feature: %s.";
 
-  public StoppedFeatureChainException(FeatureForward feature) {
-    super(feature.profile().toString());
+  public StoppedFeatureChainException(FeatureDefinition feature, String elementName, Object value) {
+    super(String.format(ERR_MESSAGE, elementName, value, feature.profile().toString()));
   }
 
-  public StoppedFeatureChainException(FeatureForward feature, Throwable cause) {
-    super(feature.toString(), cause);
+  public StoppedFeatureChainException(
+      FeatureDefinition feature, String elementName, Object value, Throwable cause) {
+    super(String.format(ERR_MESSAGE, elementName, value, feature.profile().toString()), cause);
   }
 
   @Override

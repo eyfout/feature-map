@@ -2,8 +2,8 @@ package ht.eyfout.map.element.internal;
 
 import ht.eyfout.map.factory.FeatureFactory;
 import ht.eyfout.map.feature.FeatureDescriptor;
-import ht.eyfout.map.features.GroupFeature;
-import ht.eyfout.map.registrar.FeatureRegistrar.FeatureBundle;
+import ht.eyfout.map.feature.GroupFeature;
+import ht.eyfout.map.registrar.internal.FeatureRegistrar.FeatureBundle;
 import java.util.Optional;
 
 public abstract class AbstractFeatureBundleFeatureSupporter implements FeatureSupporter {
@@ -24,12 +24,12 @@ public abstract class AbstractFeatureBundleFeatureSupporter implements FeatureSu
   }
 
   @Override
-  public Optional<GroupFeature> pageFeature() {
-    return Optional.ofNullable(bundle.chain(FeatureFactory::pageFeature));
+  public Optional<GroupFeature> groupFeature() {
+    return Optional.ofNullable(bundle.chain(FeatureFactory::groupFeature));
   }
 
   @Override
-  public GroupFeature pageFeature(FeatureDescriptor descriptor) {
-    return bundle.get(descriptor, FeatureFactory::pageFeature);
+  public GroupFeature groupFeature(FeatureDescriptor descriptor) {
+    return bundle.get(descriptor, FeatureFactory::groupFeature);
   }
 }

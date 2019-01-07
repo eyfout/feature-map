@@ -1,10 +1,10 @@
-package ht.eyfout.map.registrar;
+package ht.eyfout.map.registrar.internal;
 
 import com.google.common.collect.Lists;
 import ht.eyfout.map.factory.FeatureFactory;
 import ht.eyfout.map.feature.FeatureDescriptor;
-import ht.eyfout.map.features.FeatureProfile;
-import ht.eyfout.map.features.GroupFeature;
+import ht.eyfout.map.feature.FeatureProfile;
+import ht.eyfout.map.feature.GroupFeature;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -17,9 +17,8 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 
 public final class FeatureRegistrar {
-  final Map<Integer, FeatureBundle> bundles = new ConcurrentHashMap<>();
-  private final FeatureBundle FEATURELESS_BUNDLE = new FeatureBundle();
-  List<FeatureFactory> featureFactories;
+  private final Map<Integer, FeatureBundle> bundles = new ConcurrentHashMap<>();
+  private List<FeatureFactory> featureFactories;
   private int FEATURELESS_BUNDLEID = 1 << 30;
 
   @Inject
@@ -39,8 +38,8 @@ public final class FeatureRegistrar {
     return bundle;
   }
 
-  public GroupFeature pageFeature(FeatureDescriptor descriptor) {
-    return get(descriptor, FeatureFactory::pageFeature);
+  public GroupFeature groupFeature(FeatureDescriptor descriptor) {
+    return get(descriptor, FeatureFactory::groupFeature);
   }
 
   protected <R> R get(FeatureDescriptor descriptor, Function<FeatureFactory, R> func) {
@@ -132,7 +131,7 @@ public final class FeatureRegistrar {
     public String toString() {
       return "id:"
           + id
-          + ", features ["
+          + ", features [ "
           + bundledFactories
               .stream()
               .map(FeatureFactory::profile)

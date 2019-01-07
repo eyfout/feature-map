@@ -10,7 +10,7 @@ import ht.eyfout.map.feature.deltastore.DeltaStoreGroupFeature;
 import ht.eyfout.map.feature.internal.dictionary.DictionaryFeatureFactory;
 import ht.eyfout.map.feature.internal.dictionary.service.DictionaryService;
 import ht.eyfout.map.feature.messaging.MessagingGroupFeature;
-import ht.eyfout.map.registrar.FeatureRegistrar;
+import ht.eyfout.map.registrar.internal.FeatureRegistrar;
 import java.util.function.Supplier;
 
 public class ElementGuiceModule extends AbstractModule {

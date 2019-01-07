@@ -18,4 +18,9 @@ public class MapGroupDataStore implements GroupDataStore {
   public <T extends DataStore> T get(String name) {
     return (T)store.get(name);
   }
+
+  @Override
+  public int size() {
+    return store.size();
+  }
 }

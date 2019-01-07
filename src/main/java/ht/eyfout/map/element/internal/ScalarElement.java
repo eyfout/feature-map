@@ -1,7 +1,7 @@
 package ht.eyfout.map.element.internal;
 
 import ht.eyfout.map.element.Scalar;
-import ht.eyfout.map.registrar.FeatureRegistrar.FeatureBundle;
+import ht.eyfout.map.registrar.internal.FeatureRegistrar.FeatureBundle;
 
 public class ScalarElement extends AbstractFeatureBundleFeatureSupporter implements Scalar {
   public ScalarElement(
