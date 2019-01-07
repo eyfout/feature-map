@@ -23,6 +23,7 @@ public class Main {
     groupElement.putScalarValue(key + "001", 57);
     groupElement.putScalarValue(key + "002", 73);
 
+    System.out.println( groupElement.<Integer>getScalarValue(key));
     System.out.println( "Size: " + dlta.size());
   }
 

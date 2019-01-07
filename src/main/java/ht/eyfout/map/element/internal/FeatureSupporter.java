@@ -4,10 +4,12 @@ import ht.eyfout.map.feature.Feature;
 import ht.eyfout.map.feature.FeatureDescriptor;
 import ht.eyfout.map.feature.GroupFeature;
 import ht.eyfout.map.feature.runtime.data.RuntimeData;
+import ht.eyfout.map.registrar.internal.FeatureRegistrar.FeatureBundle;
 import java.util.Optional;
 
 public interface FeatureSupporter extends ht.eyfout.map.element.FeatureSupporter {
 
+  FeatureBundle bundle();
   @Override
   default void addFeature(Feature descriptor) {
     addFeature((FeatureDescriptor) descriptor);

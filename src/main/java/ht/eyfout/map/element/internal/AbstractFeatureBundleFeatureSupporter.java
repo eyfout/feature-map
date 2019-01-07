@@ -9,6 +9,11 @@ import java.util.Optional;
 public abstract class AbstractFeatureBundleFeatureSupporter implements FeatureSupporter {
   private FeatureBundle bundle;
 
+  @Override
+  public FeatureBundle bundle() {
+    return bundle;
+  }
+
   public AbstractFeatureBundleFeatureSupporter(FeatureBundle bundle) {
     this.bundle = bundle;
   }
