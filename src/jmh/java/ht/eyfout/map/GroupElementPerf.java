@@ -43,12 +43,12 @@ public class GroupElementPerf {
     return map.get("key");
   }
 
-  @Benchmark
+//  @Benchmark
   public Object map_putValue(){
     return map.put("key-1", "value-1");
   }
 
-  @Benchmark
+//  @Benchmark
   public Group putScalarValue(){
     element.putScalarValue("key-1", "value-1");
     return element;

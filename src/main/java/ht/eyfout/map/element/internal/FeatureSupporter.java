@@ -1,6 +1,7 @@
 package ht.eyfout.map.element.internal;
 
 import ht.eyfout.map.feature.Feature;
+import ht.eyfout.map.feature.FeatureDefinition;
 import ht.eyfout.map.feature.FeatureDescriptor;
 import ht.eyfout.map.feature.GroupFeature;
 import ht.eyfout.map.feature.runtime.data.RuntimeData;
@@ -24,9 +25,9 @@ public interface FeatureSupporter extends ht.eyfout.map.element.FeatureSupporter
 
   void removeFeature(FeatureDescriptor descriptor);
 
-  Optional<GroupFeature> groupFeature();
+  Optional<FeatureDefinition> chain();
 
-  GroupFeature groupFeature(FeatureDescriptor descriptor);
+  FeatureDefinition definition(FeatureDescriptor descriptor);
 
   @Override
   default <T extends RuntimeData> T runtimeData(Feature feature) {

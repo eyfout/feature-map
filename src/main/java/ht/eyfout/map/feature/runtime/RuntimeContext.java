@@ -42,16 +42,7 @@ public final class RuntimeContext {
   @SuppressWarnings("unchecked")
   public RuntimeContext get(final String id) {
     return new RuntimeContext(
-        this,
-        () -> {
-          Map<Object, Object> runtimeData = runtimeDataSupplier.get();
-          Map<Object, Object> result = (Map<Object, Object>) runtimeData.get(id);
-          if (null == result) {
-            result = new ConcurrentHashMap<>();
-            runtimeData.put(id, result);
-          }
-          return result;
-        });
+        this, new NestedRuntimeContextSupplier<String>(runtimeDataSupplier, id));
   }
 
   public Optional<RuntimeContext> parent() {
@@ -59,4 +50,28 @@ public final class RuntimeContext {
   }
 
   public void visit(RuntimeContextVisitor visitor, FeatureDefinition feature) {}
+
+  private final class NestedRuntimeContextSupplier<T> implements Supplier<Map<Object, Object>> {
+    private final Supplier<Map<Object, Object>> parent;
+    private final T name;
+    private Map<Object, Object> contextMap;
+
+    private NestedRuntimeContextSupplier(Supplier<Map<Object, Object>> parent, T name) {
+      this.parent = parent;
+      this.name = name;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Map<Object, Object> get() {
+      if (null == contextMap) {
+        contextMap = (Map<Object, Object>) parent.get().get(name);
+        if (null == contextMap) {
+          contextMap = new ConcurrentHashMap<>();
+          parent.get().put(name, contextMap);
+        }
+      }
+      return contextMap;
+    }
+  }
 }

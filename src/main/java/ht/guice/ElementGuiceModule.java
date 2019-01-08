@@ -2,12 +2,15 @@ package ht.guice;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
-import ht.eyfout.map.factory.FeatureFactory;
 import ht.eyfout.map.factory.ElementMapFactory;
+import ht.eyfout.map.factory.FeatureElementMapFactory;
+import ht.eyfout.map.factory.FeatureFactory;
 import ht.eyfout.map.feature.deltastore.DeltaStoreGroupFeature;
-import ht.eyfout.map.feature.internal.dictionary.DictionaryFeatureFactory;
+import ht.eyfout.map.feature.forward.ForwardScalarFeature;
+import ht.eyfout.map.feature.internal.dictionary.DictionaryGroupFeature;
 import ht.eyfout.map.feature.internal.dictionary.service.DictionaryService;
 import ht.eyfout.map.feature.messaging.MessagingGroupFeature;
 import ht.eyfout.map.registrar.internal.FeatureRegistrar;
@@ -17,31 +20,40 @@ public class ElementGuiceModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(ElementMapFactory.class);
-    bind(FeatureRegistrar.class);
+    bind(ElementMapFactory.class).asEagerSingleton();
+    bind(FeatureElementMapFactory.class).asEagerSingleton();
+    bind(FeatureRegistrar.class).asEagerSingleton();
 
     Multibinder<FeatureFactory> featureFactoryBinder =
         Multibinder.newSetBinder(binder(), FeatureFactory.class);
     featureFactoryBinder
         .addBinding()
-        .to(new TypeLiteral<FeatureFactory<DeltaStoreGroupFeature>>() {});
+        .to(new TypeLiteral<FeatureFactory<DeltaStoreGroupFeature, ForwardScalarFeature>>() {});
     featureFactoryBinder
         .addBinding()
-        .to(new TypeLiteral<FeatureFactory<MessagingGroupFeature>>() {});
-    featureFactoryBinder.addBinding().to(DictionaryFeatureFactory.class);
+        .to(new TypeLiteral<FeatureFactory<MessagingGroupFeature, ForwardScalarFeature>>() {});
+    featureFactoryBinder.addBinding()
+        .to(new TypeLiteral<FeatureFactory<DictionaryGroupFeature, ForwardScalarFeature>>() {});
+  }
+
+
+  @Provides
+  FeatureFactory<DeltaStoreGroupFeature, ForwardScalarFeature> deltaStoreFeature(FeatureElementMapFactory factory){
+    return FeatureFactory.create( (pgFeature)->new DeltaStoreGroupFeature(factory, pgFeature));
   }
 
   @Provides
-  FeatureFactory<DeltaStoreGroupFeature> deltaStoreFeature() {
-    return FeatureFactory.create(DeltaStoreGroupFeature::new);
-  }
-
-  @Provides
-  FeatureFactory<MessagingGroupFeature> messagingFeature() {
+  FeatureFactory<MessagingGroupFeature, ForwardScalarFeature> messagingFeature() {
     return FeatureFactory.create(MessagingGroupFeature::new);
   }
 
   @Provides
+  FeatureFactory<DictionaryGroupFeature, ForwardScalarFeature> dictionaryFeature(Supplier<DictionaryService> service){
+    return FeatureFactory.create((pgFeature)->new DictionaryGroupFeature(pgFeature, service));
+  }
+
+  @Provides
+  @Singleton
   Supplier<DictionaryService> dictionaryService() {
     return DictionaryService::new;
   }

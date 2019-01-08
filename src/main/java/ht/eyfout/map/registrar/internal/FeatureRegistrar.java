@@ -2,6 +2,7 @@ package ht.eyfout.map.registrar.internal;
 
 import com.google.common.collect.Lists;
 import ht.eyfout.map.factory.FeatureFactory;
+import ht.eyfout.map.feature.FeatureDefinition;
 import ht.eyfout.map.feature.FeatureDescriptor;
 import ht.eyfout.map.feature.FeatureProfile;
 import ht.eyfout.map.feature.GroupFeature;
@@ -119,11 +120,11 @@ public final class FeatureRegistrar {
       }
     }
 
-    public <R> R get(FeatureDescriptor descriptor, Function<FeatureFactory, R> func) {
+    public FeatureDefinition get(FeatureDescriptor descriptor, Function<FeatureFactory, FeatureDefinition> func) {
       return FeatureRegistrar.this.get(descriptor, func);
     }
 
-    public <R> R chain(Function<FeatureFactory, R> func) {
+    public FeatureDefinition chain(Function<FeatureFactory, FeatureDefinition> func) {
       return func.apply(chainedFeatures);
     }
 
