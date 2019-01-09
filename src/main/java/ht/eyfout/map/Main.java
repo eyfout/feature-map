@@ -2,11 +2,10 @@ package ht.eyfout.map;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import ht.eyfout.map.data.storage.DataStore;
-import ht.eyfout.map.data.storage.DataStore.DataStoreBuilder;
 import ht.eyfout.map.data.storage.DataStoreFactory;
-import ht.eyfout.map.data.storage.map.MapDataStoreBuilder;
-import ht.eyfout.map.data.storage.map.MapGroupDataStore;
+import ht.eyfout.map.data.storage.ScalarStore;
+import ht.eyfout.map.data.storage.database.query.QueryDataStoreBuilder;
+import ht.eyfout.map.data.storage.database.query.QueryGroupDataStore;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.factory.ElementMapFactory;
@@ -14,14 +13,20 @@ import ht.eyfout.map.feature.Feature;
 import ht.eyfout.map.feature.FeatureDescriptor;
 import ht.eyfout.map.feature.deltastore.DeltaStoreRuntime;
 import ht.guice.ElementGuiceModule;
-import java.util.Map;
 
 public class Main {
   public static void main(String[] args) throws NoSuchMethodException {
     final Injector injector = Guice.createInjector(new ElementGuiceModule());
     DataStoreFactory factory = injector.getInstance(DataStoreFactory.class);
-    MapDataStoreBuilder builder = (MapDataStoreBuilder)factory.create(MapGroupDataStore.class);
-    builder.build();
+
+    QueryDataStoreBuilder queryBuilder = (QueryDataStoreBuilder) factory.create(QueryGroupDataStore.class);
+    QueryGroupDataStore queryStore = queryBuilder.select()
+        .fields("column1", "column2", "column3")
+        .from("schema.tableName")
+        .build();
+
+    System.out.println(queryStore.<ScalarStore<String>>get("SQL").get());
+
 
     ElementMapFactory elementMapFactory = injector.getInstance(ElementMapFactory.class);
     Group groupElement = elementMapFactory.group();

@@ -5,9 +5,9 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
-import com.google.inject.multibindings.MultibinderBinding;
 import ht.eyfout.map.data.storage.DataStore.DataStoreBuilder;
 import ht.eyfout.map.data.storage.DataStoreFactory;
+import ht.eyfout.map.data.storage.database.query.internal.QueryDataStoreBuilder;
 import ht.eyfout.map.data.storage.map.MapDataStoreBuilder;
 import ht.eyfout.map.factory.ElementMapFactory;
 import ht.eyfout.map.factory.FeatureElementMapFactory;
@@ -18,12 +18,16 @@ import ht.eyfout.map.feature.internal.dictionary.DictionaryGroupFeature;
 import ht.eyfout.map.feature.internal.dictionary.service.DictionaryService;
 import ht.eyfout.map.feature.messaging.MessagingGroupFeature;
 import ht.eyfout.map.registrar.internal.FeatureRegistrar;
+import ht.sample.data.source.Database;
 import java.util.function.Supplier;
 
 public class ElementGuiceModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    bind(Database.class);
+
+
     bind(ElementMapFactory.class).asEagerSingleton();
     bind(FeatureElementMapFactory.class).asEagerSingleton();
     bind(FeatureRegistrar.class).asEagerSingleton();
@@ -44,6 +48,7 @@ public class ElementGuiceModule extends AbstractModule {
         Multibinder.newSetBinder(binder(), DataStoreBuilder.class);
 
     builders.addBinding().to(MapDataStoreBuilder.class);
+    builders.addBinding().to(QueryDataStoreBuilder.class);
   }
 
 

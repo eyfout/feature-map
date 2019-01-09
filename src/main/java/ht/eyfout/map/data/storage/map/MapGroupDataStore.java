@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class MapGroupDataStore implements GroupDataStore {
 
-  protected MapGroupDataStore() {
+  public MapGroupDataStore() {
     //
   }
 
