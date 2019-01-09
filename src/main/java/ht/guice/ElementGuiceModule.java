@@ -5,6 +5,10 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
+import com.google.inject.multibindings.MultibinderBinding;
+import ht.eyfout.map.data.storage.DataStore.DataStoreBuilder;
+import ht.eyfout.map.data.storage.DataStoreFactory;
+import ht.eyfout.map.data.storage.map.MapDataStoreBuilder;
 import ht.eyfout.map.factory.ElementMapFactory;
 import ht.eyfout.map.factory.FeatureElementMapFactory;
 import ht.eyfout.map.factory.FeatureFactory;
@@ -23,6 +27,7 @@ public class ElementGuiceModule extends AbstractModule {
     bind(ElementMapFactory.class).asEagerSingleton();
     bind(FeatureElementMapFactory.class).asEagerSingleton();
     bind(FeatureRegistrar.class).asEagerSingleton();
+    bind(DataStoreFactory.class).to(ht.eyfout.map.data.storage.internal.DataStoreFactory.class).asEagerSingleton();
 
     Multibinder<FeatureFactory> featureFactoryBinder =
         Multibinder.newSetBinder(binder(), FeatureFactory.class);
@@ -34,6 +39,11 @@ public class ElementGuiceModule extends AbstractModule {
         .to(new TypeLiteral<FeatureFactory<MessagingGroupFeature, ForwardScalarFeature>>() {});
     featureFactoryBinder.addBinding()
         .to(new TypeLiteral<FeatureFactory<DictionaryGroupFeature, ForwardScalarFeature>>() {});
+
+    Multibinder<DataStoreBuilder> builders =
+        Multibinder.newSetBinder(binder(), DataStoreBuilder.class);
+
+    builders.addBinding().to(MapDataStoreBuilder.class);
   }
 
 

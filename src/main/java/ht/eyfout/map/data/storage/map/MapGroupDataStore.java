@@ -6,6 +6,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MapGroupDataStore implements GroupDataStore {
+
+  protected MapGroupDataStore() {
+    //
+  }
+
   private Map<String, DataStore> store = new ConcurrentHashMap<>();
 
   @Override

@@ -6,4 +6,9 @@ public interface DataStore {
   }
 
   int size();
+
+  @FunctionalInterface
+  interface DataStoreBuilder<R extends DataStore> {
+    R build();
+  }
 }
