@@ -7,8 +7,8 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 import ht.eyfout.map.data.storage.DataStore.DataStoreBuilder;
 import ht.eyfout.map.data.storage.DataStoreFactory;
-import ht.eyfout.map.data.storage.database.query.internal.QueryDataStoreBuilder;
-import ht.eyfout.map.data.storage.map.MapDataStoreBuilder;
+import ht.eyfout.map.data.storage.database.query.internal.QueryGroupDataStoreBuilder;
+import ht.eyfout.map.data.storage.map.MapGroupDataStoreBuilder;
 import ht.eyfout.map.factory.ElementMapFactory;
 import ht.eyfout.map.factory.FeatureElementMapFactory;
 import ht.eyfout.map.factory.FeatureFactory;
@@ -47,8 +47,8 @@ class ElementGuiceModule extends AbstractModule {
     Multibinder<DataStoreBuilder> builders =
         Multibinder.newSetBinder(binder(), DataStoreBuilder.class);
 
-    builders.addBinding().to(MapDataStoreBuilder.class);
-    builders.addBinding().to(QueryDataStoreBuilder.class);
+    builders.addBinding().to(MapGroupDataStoreBuilder.class);
+    builders.addBinding().to(QueryGroupDataStoreBuilder.class);
   }
 
 

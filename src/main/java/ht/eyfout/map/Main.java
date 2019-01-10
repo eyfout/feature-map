@@ -2,7 +2,7 @@ package ht.eyfout.map;
 
 import ht.eyfout.map.data.storage.DataStoreFactory;
 import ht.eyfout.map.data.storage.ScalarStore;
-import ht.eyfout.map.data.storage.database.query.QueryDataStoreBuilder;
+import ht.eyfout.map.data.storage.database.query.QueryGroupDataStoreBuilder;
 import ht.eyfout.map.data.storage.database.query.QueryGroupDataStore;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
@@ -16,7 +16,7 @@ public class Main {
   public static void main(String[] args) throws NoSuchMethodException {
     DataStoreFactory factory = GuiceInstance.get(DataStoreFactory.class);
 
-    QueryDataStoreBuilder queryBuilder = factory.create(QueryGroupDataStore.class);
+    QueryGroupDataStoreBuilder queryBuilder = factory.create(QueryGroupDataStore.class);
     QueryGroupDataStore queryStore = queryBuilder.select()
         .fields("column1", "column2", "column3")
         .from("schema.tableName")

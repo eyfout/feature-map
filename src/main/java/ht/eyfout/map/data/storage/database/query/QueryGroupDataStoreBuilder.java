@@ -2,7 +2,7 @@ package ht.eyfout.map.data.storage.database.query;
 
 import ht.eyfout.map.data.storage.DataStore.DataStoreBuilder;
 
-public interface QueryDataStoreBuilder extends DataStoreBuilder<QueryGroupDataStore> {
+public interface QueryGroupDataStoreBuilder extends DataStoreBuilder<QueryGroupDataStore> {
 
   Field select();
 
@@ -15,6 +15,6 @@ public interface QueryDataStoreBuilder extends DataStoreBuilder<QueryGroupDataSt
   }
 
   interface DataSource {
-    QueryDataStoreBuilder from(String table);
+    QueryGroupDataStoreBuilder from(String table);
   }
 }

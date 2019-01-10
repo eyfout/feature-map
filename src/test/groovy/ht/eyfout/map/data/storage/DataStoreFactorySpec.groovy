@@ -1,8 +1,8 @@
 package ht.eyfout.map.data.storage
 
-import ht.eyfout.map.data.storage.database.query.QueryDataStoreBuilder
+import ht.eyfout.map.data.storage.database.query.QueryGroupDataStoreBuilder
 import ht.eyfout.map.data.storage.database.query.QueryGroupDataStore
-import ht.eyfout.map.data.storage.map.MapDataStoreBuilder
+import ht.eyfout.map.data.storage.map.MapGroupDataStoreBuilder
 import ht.eyfout.map.data.storage.map.MapGroupDataStore
 import ht.guice.GuiceInstance
 import spock.lang.Specification
@@ -17,7 +17,7 @@ class DataStoreFactorySpec extends Specification{
         builderClass.isAssignableFrom( factory.create( storeClass ).getClass() )
         where:
         storeClass                  || builderClass
-        MapGroupDataStore.class     || MapDataStoreBuilder.class
-        QueryGroupDataStore.class   || QueryDataStoreBuilder.class
+        MapGroupDataStore.class     || MapGroupDataStoreBuilder.class
+        QueryGroupDataStore.class   || QueryGroupDataStoreBuilder.class
     }
 }
