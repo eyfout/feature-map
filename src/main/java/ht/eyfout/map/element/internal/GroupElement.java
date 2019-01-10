@@ -9,7 +9,7 @@ import ht.eyfout.map.feature.FeatureDescriptor;
 import ht.eyfout.map.feature.GroupFeature;
 import ht.eyfout.map.feature.StoppedFeatureChainException;
 import ht.eyfout.map.feature.runtime.RuntimeContext;
-import ht.eyfout.map.feature.runtime.data.RuntimeData;
+import ht.eyfout.map.feature.runtime.data.FeatureOperation;
 import ht.eyfout.map.registrar.internal.FeatureRegistrar.FeatureBundle;
 
 public class GroupElement extends AbstractFeatureBundleFeatureSupporter implements Group {
@@ -58,7 +58,7 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
   }
 
   @Override
-  public <T extends RuntimeData> T runtimeData(FeatureDescriptor feature) {
+  public <T extends FeatureOperation> T operations(FeatureDescriptor feature) {
     return definition(feature).runtimeData(context);
   }
 }

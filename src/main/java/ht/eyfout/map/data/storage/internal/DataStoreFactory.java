@@ -26,7 +26,7 @@ public class DataStoreFactory implements ht.eyfout.map.data.storage.DataStoreFac
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T extends DataStore> DataStoreBuilder<T> create(Class<T> clazz) {
-    return builders.get(clazz);
+  public <T extends DataStore, B extends DataStoreBuilder<T>> B create(Class<T> clazz) {
+    return (B)builders.get(clazz);
   }
 }

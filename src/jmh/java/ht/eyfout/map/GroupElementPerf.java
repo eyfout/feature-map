@@ -2,7 +2,7 @@ package ht.eyfout.map;
 
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.factory.ElementMapFactory;
-import ht.guice.PerfModule;
+import ht.guice.GuiceInstance;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -33,7 +33,7 @@ public class GroupElementPerf {
     map = new HashMap<>();
     map.put("key", 911);
 
-    ElementMapFactory factory = PerfModule.get(ElementMapFactory.class);
+    ElementMapFactory factory = GuiceInstance.get(ElementMapFactory.class);
     element = factory.group();
     element.putScalarValue("key", 911);
   }

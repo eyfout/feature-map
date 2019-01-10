@@ -6,6 +6,7 @@ import ht.eyfout.map.feature.FeatureDefinition;
 import ht.eyfout.map.feature.FeatureDescriptor;
 import ht.eyfout.map.feature.FeatureProfile;
 import ht.eyfout.map.feature.GroupFeature;
+import ht.eyfout.map.feature.UnsupportedFeatureException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -47,12 +48,12 @@ public final class FeatureRegistrar {
     return func.apply(get(descriptor));
   }
 
-  protected FeatureFactory get(FeatureDescriptor descriptor) {
+  protected FeatureFactory get(final FeatureDescriptor descriptor) {
     return featureFactories
         .parallelStream()
         .filter((factory) -> descriptor == factory.profile().descriptor())
         .findFirst()
-        .orElseThrow(IllegalStateException::new);
+        .orElseThrow(()->new UnsupportedFeatureException(descriptor));
   }
 
   protected int bundleId(FeatureDescriptor... descriptors) {
@@ -68,7 +69,6 @@ public final class FeatureRegistrar {
   public class FeatureBundle {
     int id;
     Set<FeatureFactory> bundledFactories;
-    //    private boolean delegateTo;
     private FeatureBundle delegate;
     private FeatureChain chainedFeatures;
 
@@ -121,7 +121,11 @@ public final class FeatureRegistrar {
     }
 
     public FeatureDefinition get(FeatureDescriptor descriptor, Function<FeatureFactory, FeatureDefinition> func) {
-      return FeatureRegistrar.this.get(descriptor, func);
+      FeatureFactory factory = FeatureRegistrar.this.get(descriptor);
+      if(bundledFactories.contains(factory)){
+        return func.apply(factory);
+      }
+      throw new UnsupportedFeatureException(descriptor);
     }
 
     public FeatureDefinition chain(Function<FeatureFactory, FeatureDefinition> func) {

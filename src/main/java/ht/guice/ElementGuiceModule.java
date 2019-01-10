@@ -21,7 +21,7 @@ import ht.eyfout.map.registrar.internal.FeatureRegistrar;
 import ht.sample.data.source.Database;
 import java.util.function.Supplier;
 
-public class ElementGuiceModule extends AbstractModule {
+class ElementGuiceModule extends AbstractModule {
 
   @Override
   protected void configure() {
@@ -53,17 +53,17 @@ public class ElementGuiceModule extends AbstractModule {
 
 
   @Provides
-  FeatureFactory<DeltaStoreGroupFeature, ForwardScalarFeature> deltaStoreFeature(FeatureElementMapFactory factory){
+  FeatureFactory<DeltaStoreGroupFeature, ForwardScalarFeature> deltaStore(FeatureElementMapFactory factory){
     return FeatureFactory.create( (pgFeature)->new DeltaStoreGroupFeature(factory, pgFeature));
   }
 
   @Provides
-  FeatureFactory<MessagingGroupFeature, ForwardScalarFeature> messagingFeature() {
+  FeatureFactory<MessagingGroupFeature, ForwardScalarFeature> messaging() {
     return FeatureFactory.create(MessagingGroupFeature::new);
   }
 
   @Provides
-  FeatureFactory<DictionaryGroupFeature, ForwardScalarFeature> dictionaryFeature(Supplier<DictionaryService> service){
+  FeatureFactory<DictionaryGroupFeature, ForwardScalarFeature> dictionary(Supplier<DictionaryService> service){
     return FeatureFactory.create((pgFeature)->new DictionaryGroupFeature(pgFeature, service));
   }
 
