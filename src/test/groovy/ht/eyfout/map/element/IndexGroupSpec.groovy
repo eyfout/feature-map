@@ -4,7 +4,7 @@ import ht.eyfout.map.data.storage.DataStoreFactory
 import ht.eyfout.map.data.storage.ScalarStore
 import ht.eyfout.map.data.storage.array.ArrayGroupDataStore
 import ht.eyfout.map.data.storage.array.IndexGroupDataStore
-import ht.eyfout.map.data.storage.array.IndexGroupDataStoreBuilder
+
 import ht.eyfout.map.factory.ElementMapFactory
 import ht.guice.GuiceInstance
 import spock.lang.Specification
@@ -30,7 +30,7 @@ class IndexGroupSpec extends Specification {
         groupElement.putScalarValue('key', expectedValue)
         and: 'decorate array store with index data store'
         IndexGroupDataStore indxStore = dsFactory.
-        <IndexGroupDataStore, IndexGroupDataStoreBuilder> create(IndexGroupDataStore.class)
+        <IndexGroupDataStore, IndexGroupDataStore.IndexGroupDataStoreBuilder> create(IndexGroupDataStore.class)
                 .array(arrStore)
         then:
         "value at position 0 = $expectedValue"
@@ -47,7 +47,7 @@ class IndexGroupSpec extends Specification {
         groupElement.putScalarValue('key', expectedValue)
         and: 'decorate array store with index data store'
         IndexGroupDataStore indxStore = dsFactory.
-        <IndexGroupDataStore, IndexGroupDataStoreBuilder> create(IndexGroupDataStore.class)
+        <IndexGroupDataStore, IndexGroupDataStore.IndexGroupDataStoreBuilder> create(IndexGroupDataStore.class)
                 .array(arrStore)
         then:
         "value at position $expectedValue"

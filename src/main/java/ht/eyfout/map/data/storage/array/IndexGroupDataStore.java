@@ -30,11 +30,25 @@ public class IndexGroupDataStore implements GroupDataStore {
     return (T) arrayStore.getDataStore()[index];
   }
 
-  public <T extends DataStore> void put(int index, T store){
+  public <T extends DataStore> void put(int index, T store) {
     arrayStore.getDataStore()[index] = store;
   }
 
   public Keys keys() {
     return new Keys(arrayStore.indices());
+  }
+
+  public static class IndexGroupDataStoreBuilder implements DataStoreBuilder<IndexGroupDataStore> {
+
+    public IndexGroupDataStoreBuilder() {}
+
+    public IndexGroupDataStore array(ArrayGroupDataStore store) {
+      return new IndexGroupDataStore(store);
+    }
+
+    @Override
+    public IndexGroupDataStore build() {
+      throw new IllegalStateException();
+    }
   }
 }

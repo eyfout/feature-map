@@ -7,10 +7,11 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 import ht.eyfout.map.data.storage.DataStore.DataStoreBuilder;
 import ht.eyfout.map.data.storage.DataStoreFactory;
-import ht.eyfout.map.data.storage.array.ArrayGroupDataStoreBuilder;
-import ht.eyfout.map.data.storage.array.IndexGroupDataStoreBuilder;
+import ht.eyfout.map.data.storage.array.ArrayGroupDataStore.ArrayGroupDataStoreBuilder;
+import ht.eyfout.map.data.storage.array.IndexGroupDataStore.IndexGroupDataStoreBuilder;
 import ht.eyfout.map.data.storage.database.query.internal.QueryGroupDataStoreBuilder;
-import ht.eyfout.map.data.storage.map.MapGroupDataStoreBuilder;
+import ht.eyfout.map.data.storage.deltastore.DeltaStoreGroupDataStore.DeltaStoreGroupDataStoreBuilder;
+import ht.eyfout.map.data.storage.map.MapGroupDataStore.MapGroupDataStoreBuilder;
 import ht.eyfout.map.factory.ElementMapFactory;
 import ht.eyfout.map.factory.FeatureElementMapFactory;
 import ht.eyfout.map.factory.FeatureFactory;
@@ -55,6 +56,7 @@ class ElementGuiceModule extends AbstractModule {
     dsBuilders.addBinding().to(QueryGroupDataStoreBuilder.class);
     dsBuilders.addBinding().to(ArrayGroupDataStoreBuilder.class);
     dsBuilders.addBinding().to(IndexGroupDataStoreBuilder.class);
+    dsBuilders.addBinding().to(DeltaStoreGroupDataStoreBuilder.class);
   }
 
   @Provides

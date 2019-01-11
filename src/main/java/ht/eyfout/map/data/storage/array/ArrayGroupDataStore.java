@@ -5,6 +5,7 @@ import ht.eyfout.map.data.storage.GroupDataStore;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import javax.inject.Inject;
 
 public class ArrayGroupDataStore implements GroupDataStore {
   private static final DataStore[] EMPTY_STORE = new DataStore[0];
@@ -52,5 +53,16 @@ public class ArrayGroupDataStore implements GroupDataStore {
 
   private DataStore[] expandStorage(DataStore[] arr) {
     return Arrays.copyOf(arr, arr.length + INITIAL_SIZE);
+  }
+
+  public static class ArrayGroupDataStoreBuilder implements DataStoreBuilder<ArrayGroupDataStore> {
+
+    @Inject
+    public ArrayGroupDataStoreBuilder() {}
+
+    @Override
+    public ArrayGroupDataStore build() {
+      return new ArrayGroupDataStore();
+    }
   }
 }

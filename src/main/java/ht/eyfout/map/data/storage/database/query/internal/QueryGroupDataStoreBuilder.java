@@ -8,7 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class QueryGroupDataStoreBuilder
-    implements ht.eyfout.map.data.storage.database.query.QueryGroupDataStoreBuilder {
+    implements QueryGroupDataStore.QueryGroupDataStoreBuilder {
 
   StringBuffer buffer;
   Database db;
@@ -39,7 +39,7 @@ public class QueryGroupDataStoreBuilder
     }
 
     @Override
-    public ht.eyfout.map.data.storage.database.query.QueryGroupDataStoreBuilder from(String table) {
+    public QueryGroupDataStore.QueryGroupDataStoreBuilder from(String table) {
       buffer.append("FROM ");
       buffer.append(table);
       return ht.eyfout.map.data.storage.database.query.internal.QueryGroupDataStoreBuilder.this;

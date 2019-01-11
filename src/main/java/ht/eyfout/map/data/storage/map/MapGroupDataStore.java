@@ -4,6 +4,7 @@ import ht.eyfout.map.data.storage.DataStore;
 import ht.eyfout.map.data.storage.GroupDataStore;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.inject.Inject;
 
 public class MapGroupDataStore implements GroupDataStore {
 
@@ -27,5 +28,18 @@ public class MapGroupDataStore implements GroupDataStore {
   @Override
   public int size() {
     return store.size();
+  }
+
+  public static class MapGroupDataStoreBuilder implements DataStoreBuilder<MapGroupDataStore> {
+
+    @Inject
+    protected MapGroupDataStoreBuilder() {
+      //
+    }
+
+    @Override
+    public MapGroupDataStore build() {
+      return new MapGroupDataStore();
+    }
   }
 }

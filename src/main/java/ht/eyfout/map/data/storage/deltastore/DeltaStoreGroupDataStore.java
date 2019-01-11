@@ -24,4 +24,17 @@ public class DeltaStoreGroupDataStore extends MapGroupDataStore {
     }
     return result;
   }
+
+  public class DeltaStoreGroupDataStoreBuilder
+      implements DataStoreBuilder<DeltaStoreGroupDataStore> {
+
+    public DeltaStoreGroupDataStore group(GroupDataStore group) {
+      return new DeltaStoreGroupDataStore(group);
+    }
+
+    @Override
+    public DeltaStoreGroupDataStore build() {
+      return null;
+    }
+  }
 }

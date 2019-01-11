@@ -3,7 +3,7 @@ package ht.eyfout.map;
 import ht.eyfout.map.data.storage.DataStoreFactory;
 import ht.eyfout.map.data.storage.ScalarStore;
 import ht.eyfout.map.data.storage.database.query.QueryGroupDataStore;
-import ht.eyfout.map.data.storage.database.query.QueryGroupDataStoreBuilder;
+import ht.eyfout.map.data.storage.database.query.QueryGroupDataStore.QueryGroupDataStoreBuilder;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.factory.ElementMapFactory;
