@@ -3,21 +3,26 @@ package ht.eyfout.map.data.storage.array;
 import ht.eyfout.map.data.storage.DataStore;
 import ht.eyfout.map.data.storage.GroupDataStore;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ArrayGroupDataStore implements GroupDataStore {
   private static final DataStore[] EMPTY_STORE = new DataStore[0];
-  DataStore[] store = EMPTY_STORE;
-  DataStore[] store2 = EMPTY_STORE;
+  private static int INITIAL_SIZE = 16;
+  private int number = 0;
+  private DataStore[] store = EMPTY_STORE;
+  private Map<String, Integer> indices = new HashMap<>();
 
   @Override
   public <T extends DataStore> void put(String name, T provider) {
-    getDataStore(name)[Math.abs(name.hashCode())] = provider;
+    int indx = getIndex(name);
+    getDataStore()[indx] = provider;
   }
 
   @Override
   @SuppressWarnings("unchecked")
   public <T extends DataStore> T get(String name) {
-    return (T) getDataStore(name)[Math.abs(name.hashCode())];
+    return (T) getDataStore()[getIndex(name)];
   }
 
   @Override
@@ -25,18 +30,27 @@ public class ArrayGroupDataStore implements GroupDataStore {
     return 0;
   }
 
-  DataStore[] getDataStore(String name){
-    int hashCode = name.hashCode();
-    if(1 > hashCode ){
-      store = expandStorage(store, hashCode);
-      return store;
-    } else {
-      store2 = expandStorage(store2, Math.abs(hashCode));
-      return store2;
-    }
+  Map<String, Integer> indices() {
+    return indices;
   }
 
-  private DataStore[] expandStorage(DataStore[] arr, int size) {
-      return Arrays.copyOf(arr, size + 1);
+  DataStore[] getDataStore() {
+    return store;
+  }
+
+  private int getIndex(String name) {
+    Integer i = indices.get(name);
+    if (null == i) {
+      i = number;
+      indices.put(name, number++);
+      if (store.length < number) {
+        store = expandStorage(store);
+      }
+    }
+    return i;
+  }
+
+  private DataStore[] expandStorage(DataStore[] arr) {
+    return Arrays.copyOf(arr, arr.length + INITIAL_SIZE);
   }
 }

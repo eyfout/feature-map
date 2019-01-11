@@ -1,4 +1,5 @@
 import com.pega.orion.gradle.tasks.WebAppServer
+
 group 'eyfout.ht'
 version '1.0-SNAPSHOT'
 buildscript {
@@ -31,7 +32,7 @@ dependencies {
     compile localGroovy()
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'com.bmuschko', name: 'gradle-docker-plugin', version: '3.0.7'
-    compile group: 'com.google.inject', name: 'guice', version : '4.2.2'
+    compile group: 'com.google.inject', name: 'guice', version: '4.2.2'
     // Spock Framework basic dependencies:
     testCompile "org.codehaus.groovy:groovy-all:2.4.12"
     // The version have to be compatible with Groovy:
@@ -39,8 +40,8 @@ dependencies {
 }
 
 
-task appServer( type: WebAppServer ){
-    webApp  'TOMCAT'
+task appServer(type: WebAppServer) {
+    webApp 'TOMCAT'
     webAppVersion '8.0'
 }
 

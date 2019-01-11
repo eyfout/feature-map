@@ -27,7 +27,7 @@ public class QueryGroupDataStoreBuilder
 
   @Override
   public QueryGroupDataStore build() {
-    QueryGroupDataStore store =  new QueryGroupDataStore();
+    QueryGroupDataStore store = new QueryGroupDataStore();
     store.put("SQL", store.createScalarProvider(buffer.toString()));
     return store;
   }
@@ -54,7 +54,7 @@ public class QueryGroupDataStoreBuilder
 
     @Override
     public DataSource fields(String... names) {
-      if(0 == names.length){
+      if (0 == names.length) {
         return all();
       }
 

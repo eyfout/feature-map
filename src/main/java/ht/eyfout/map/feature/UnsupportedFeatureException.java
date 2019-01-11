@@ -1,6 +1,6 @@
 package ht.eyfout.map.feature;
 
-public class UnsupportedFeatureException extends RuntimeException{
+public class UnsupportedFeatureException extends RuntimeException {
 
   public UnsupportedFeatureException(FeatureDescriptor descriptor) {
     super(descriptor.toString());
@@ -14,7 +14,10 @@ public class UnsupportedFeatureException extends RuntimeException{
     super(cause);
   }
 
-  public UnsupportedFeatureException(FeatureDescriptor descriptor, Throwable cause, boolean enableSuppression,
+  public UnsupportedFeatureException(
+      FeatureDescriptor descriptor,
+      Throwable cause,
+      boolean enableSuppression,
       boolean writableStackTrace) {
     super(descriptor.toString(), cause, enableSuppression, writableStackTrace);
   }

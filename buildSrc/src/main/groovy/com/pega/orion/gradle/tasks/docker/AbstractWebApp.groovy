@@ -1,7 +1,6 @@
 package com.pega.orion.gradle.tasks.docker
 
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
-import org.gradle.api.tasks.TaskAction
 
 import javax.inject.Inject
 

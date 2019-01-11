@@ -1,5 +1,6 @@
-Benchmark                                      Mode  Cnt   Score   Error  Units
-GroupElementPerf.getScalarValue_ExistingValue  avgt    4   9.439 ± 0.706  ns/op
-GroupElementPerf.map_GetExistingValue          avgt    4   7.592 ± 0.082  ns/op
-GroupElementPerf.map_putValue                  avgt    4  14.720 ± 0.172  ns/op
-GroupElementPerf.putScalarValue                avgt    4  17.072 ± 1.218  ns/op
+Benchmark                                      (DataProvider)  Mode  Cnt   Score    Error  Units
+GroupElementPerf.Map.map_GetExistingValue                 N/A  avgt    4   7.871 ±  0.140  ns/op
+GroupElementPerf.Map.map_putValue                         N/A  avgt    4  14.651 ±  0.398  ns/op
+GroupElementPerf.getScalarValue_ExistingValue             map  avgt    4  12.739 ±  8.216  ns/op
+GroupElementPerf.getScalarValue_NullValue                 map  avgt    4   9.895 ±  5.700  ns/op
+GroupElementPerf.putScalarValue                           map  avgt    4  43.239 ± 24.103  ns/op

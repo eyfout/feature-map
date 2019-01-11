@@ -8,8 +8,8 @@ import ht.eyfout.map.registrar.internal.FeatureRegistrar.FeatureBundle;
 public class ScalarElement<T> extends AbstractFeatureBundleFeatureSupporter implements Scalar<T> {
   private ScalarStore<T> dataStore;
   private RuntimeContext context;
-  public ScalarElement( ScalarStore<T> dataStore,
-      FeatureBundle bundle, RuntimeContext context) {
+
+  public ScalarElement(ScalarStore<T> dataStore, FeatureBundle bundle, RuntimeContext context) {
     super(bundle);
     this.context = context;
     this.dataStore = dataStore;
@@ -24,5 +24,4 @@ public class ScalarElement<T> extends AbstractFeatureBundleFeatureSupporter impl
   public T get() {
     return dataStore.get();
   }
-
 }

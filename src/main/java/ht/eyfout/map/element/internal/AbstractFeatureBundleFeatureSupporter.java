@@ -3,8 +3,8 @@ package ht.eyfout.map.element.internal;
 import ht.eyfout.map.factory.FeatureFactory;
 import ht.eyfout.map.feature.FeatureDefinition;
 import ht.eyfout.map.feature.FeatureDescriptor;
-import ht.eyfout.map.registrar.internal.FeatureRegistrar.FeatureBundle;
 import ht.eyfout.map.feature.UnsupportedFeatureException;
+import ht.eyfout.map.registrar.internal.FeatureRegistrar.FeatureBundle;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -33,7 +33,7 @@ public abstract class AbstractFeatureBundleFeatureSupporter implements FeatureSu
   }
 
   @Override
-  public  Optional<FeatureDefinition> chain() {
+  public Optional<FeatureDefinition> chain() {
     return Optional.ofNullable(bundle.<FeatureDefinition>chain(func));
   }
 
@@ -43,7 +43,7 @@ public abstract class AbstractFeatureBundleFeatureSupporter implements FeatureSu
     try {
       definition(feature);
       result = true;
-    } catch (UnsupportedFeatureException ex){
+    } catch (UnsupportedFeatureException ex) {
       ex.printStackTrace();
     }
     return result;

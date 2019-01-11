@@ -8,7 +8,7 @@ public interface DataStore {
   int size();
 
   @FunctionalInterface
-  interface DataStoreBuilder<R extends DataStore> {
+  interface DataStoreBuilder<R extends GroupDataStore> {
     R build();
   }
 }

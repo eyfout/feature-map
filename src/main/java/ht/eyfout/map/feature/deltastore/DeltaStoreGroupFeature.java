@@ -1,5 +1,6 @@
 package ht.eyfout.map.feature.deltastore;
 
+import ht.eyfout.map.data.storage.DataStoreFactory;
 import ht.eyfout.map.data.storage.ScalarStore;
 import ht.eyfout.map.data.storage.map.MapGroupDataStore;
 import ht.eyfout.map.element.Group;
@@ -13,11 +14,15 @@ import ht.eyfout.map.feature.runtime.RuntimeContext;
 
 public class DeltaStoreGroupFeature extends GroupFeature {
   private final FeatureElementMapFactory elementMapFactory;
+  private final DataStoreFactory dsFactory;
 
   public DeltaStoreGroupFeature(
-      FeatureElementMapFactory elementMapFactory, GroupFeature groupFeature) {
+      FeatureElementMapFactory elementMapFactory,
+      DataStoreFactory dsFactory,
+      GroupFeature groupFeature) {
     super(groupFeature);
     this.elementMapFactory = elementMapFactory;
+    this.dsFactory = dsFactory;
   }
 
   @Override
@@ -47,7 +52,7 @@ public class DeltaStoreGroupFeature extends GroupFeature {
 
   @Override
   public Object init(RuntimeContext context) {
-    return new MapGroupDataStore();
+    return dsFactory.create(MapGroupDataStore.class).build();
   }
 
   @Override
@@ -56,7 +61,7 @@ public class DeltaStoreGroupFeature extends GroupFeature {
   }
 
   @Override
-  public DeltaStoreRuntime runtimeData(RuntimeContext context) {
-    return new DeltaStoreRuntime(context.<MapGroupDataStore>data(this));
+  public DeltaStoreOperations operations(RuntimeContext context) {
+    return new DeltaStoreOperations(context.<MapGroupDataStore>data(this));
   }
 }

@@ -12,7 +12,7 @@ public final class FeatureProfile {
   protected FeatureProfile(FeatureDescriptor descriptor) {
     this.featureDescriptor = descriptor;
 
-    for(FeatureDescriptor featureDescriptor : descriptor.dependsOn()){
+    for (FeatureDescriptor featureDescriptor : descriptor.dependsOn()) {
       order = order | featureDescriptor.rank();
     }
     order = order | descriptor.rank();
@@ -24,7 +24,7 @@ public final class FeatureProfile {
 
   public static FeatureProfile create(FeatureDescriptor rank) {
     FeatureProfile result = pool.get(rank);
-    if (Objects.isNull(result)){
+    if (Objects.isNull(result)) {
       result = new FeatureProfile(rank);
       pool.put(rank, result);
     }
@@ -36,11 +36,11 @@ public final class FeatureProfile {
     return "name: " + descriptor().name() + ", order: " + order();
   }
 
-  public FeatureDescriptor descriptor(){
+  public FeatureDescriptor descriptor() {
     return featureDescriptor;
   }
 
-  public int order(){
+  public int order() {
     return order;
   }
 }

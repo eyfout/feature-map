@@ -7,6 +7,8 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 import ht.eyfout.map.data.storage.DataStore.DataStoreBuilder;
 import ht.eyfout.map.data.storage.DataStoreFactory;
+import ht.eyfout.map.data.storage.array.ArrayGroupDataStoreBuilder;
+import ht.eyfout.map.data.storage.array.IndexGroupDataStoreBuilder;
 import ht.eyfout.map.data.storage.database.query.internal.QueryGroupDataStoreBuilder;
 import ht.eyfout.map.data.storage.map.MapGroupDataStoreBuilder;
 import ht.eyfout.map.factory.ElementMapFactory;
@@ -27,34 +29,39 @@ class ElementGuiceModule extends AbstractModule {
   protected void configure() {
     bind(Database.class);
 
-
     bind(ElementMapFactory.class).asEagerSingleton();
     bind(FeatureElementMapFactory.class).asEagerSingleton();
     bind(FeatureRegistrar.class).asEagerSingleton();
-    bind(DataStoreFactory.class).to(ht.eyfout.map.data.storage.internal.DataStoreFactory.class).asEagerSingleton();
+    bind(DataStoreFactory.class)
+        .to(ht.eyfout.map.data.storage.internal.DataStoreFactory.class)
+        .asEagerSingleton();
 
-    Multibinder<FeatureFactory> featureFactoryBinder =
+    Multibinder<FeatureFactory> featureFactories =
         Multibinder.newSetBinder(binder(), FeatureFactory.class);
-    featureFactoryBinder
+    featureFactories
         .addBinding()
         .to(new TypeLiteral<FeatureFactory<DeltaStoreGroupFeature, ForwardScalarFeature>>() {});
-    featureFactoryBinder
+    featureFactories
         .addBinding()
         .to(new TypeLiteral<FeatureFactory<MessagingGroupFeature, ForwardScalarFeature>>() {});
-    featureFactoryBinder.addBinding()
+    featureFactories
+        .addBinding()
         .to(new TypeLiteral<FeatureFactory<DictionaryGroupFeature, ForwardScalarFeature>>() {});
 
-    Multibinder<DataStoreBuilder> builders =
+    Multibinder<DataStoreBuilder> dsBuilders =
         Multibinder.newSetBinder(binder(), DataStoreBuilder.class);
 
-    builders.addBinding().to(MapGroupDataStoreBuilder.class);
-    builders.addBinding().to(QueryGroupDataStoreBuilder.class);
+    dsBuilders.addBinding().to(MapGroupDataStoreBuilder.class);
+    dsBuilders.addBinding().to(QueryGroupDataStoreBuilder.class);
+    dsBuilders.addBinding().to(ArrayGroupDataStoreBuilder.class);
+    dsBuilders.addBinding().to(IndexGroupDataStoreBuilder.class);
   }
 
-
   @Provides
-  FeatureFactory<DeltaStoreGroupFeature, ForwardScalarFeature> deltaStore(FeatureElementMapFactory factory){
-    return FeatureFactory.create( (pgFeature)->new DeltaStoreGroupFeature(factory, pgFeature));
+  FeatureFactory<DeltaStoreGroupFeature, ForwardScalarFeature> deltaStore(
+      FeatureElementMapFactory factory, DataStoreFactory dsFactory) {
+    return FeatureFactory.create(
+        (pgFeature) -> new DeltaStoreGroupFeature(factory, dsFactory, pgFeature));
   }
 
   @Provides
@@ -63,8 +70,9 @@ class ElementGuiceModule extends AbstractModule {
   }
 
   @Provides
-  FeatureFactory<DictionaryGroupFeature, ForwardScalarFeature> dictionary(Supplier<DictionaryService> service){
-    return FeatureFactory.create((pgFeature)->new DictionaryGroupFeature(pgFeature, service));
+  FeatureFactory<DictionaryGroupFeature, ForwardScalarFeature> dictionary(
+      Supplier<DictionaryService> service) {
+    return FeatureFactory.create((pgFeature) -> new DictionaryGroupFeature(pgFeature, service));
   }
 
   @Provides

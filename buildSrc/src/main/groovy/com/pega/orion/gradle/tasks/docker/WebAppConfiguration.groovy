@@ -9,13 +9,14 @@ interface WebAppConfiguration {
             this.aClass = aClass
         }
 
-        Class impl(){
+        Class impl() {
             return aClass
         }
 
     }
 
     ApplicationServer getWebApp()
+
     String getWebAppVersion()
 
 }

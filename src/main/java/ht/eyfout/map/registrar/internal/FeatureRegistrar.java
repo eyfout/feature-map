@@ -53,7 +53,7 @@ public final class FeatureRegistrar {
         .parallelStream()
         .filter((factory) -> descriptor == factory.profile().descriptor())
         .findFirst()
-        .orElseThrow(()->new UnsupportedFeatureException(descriptor));
+        .orElseThrow(() -> new UnsupportedFeatureException(descriptor));
   }
 
   protected int bundleId(FeatureDescriptor... descriptors) {
@@ -120,9 +120,10 @@ public final class FeatureRegistrar {
       }
     }
 
-    public FeatureDefinition get(FeatureDescriptor descriptor, Function<FeatureFactory, FeatureDefinition> func) {
+    public FeatureDefinition get(
+        FeatureDescriptor descriptor, Function<FeatureFactory, FeatureDefinition> func) {
       FeatureFactory factory = FeatureRegistrar.this.get(descriptor);
-      if(bundledFactories.contains(factory)){
+      if (bundledFactories.contains(factory)) {
         return func.apply(factory);
       }
       throw new UnsupportedFeatureException(descriptor);

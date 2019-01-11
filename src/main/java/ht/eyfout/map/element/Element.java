@@ -1,5 +1,3 @@
 package ht.eyfout.map.element;
 
-public interface Element {
-
-}
+public interface Element {}

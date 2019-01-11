@@ -2,7 +2,7 @@ package ht.eyfout.map.feature;
 
 import java.util.Optional;
 
-public abstract class FeatureForward<F extends FeatureDefinition>  implements FeatureDefinition {
+public abstract class FeatureForward<F extends FeatureDefinition> implements FeatureDefinition {
   private Optional<F> feature;
 
   FeatureForward(F feature) {
@@ -12,5 +12,4 @@ public abstract class FeatureForward<F extends FeatureDefinition>  implements Fe
   protected Optional<F> next() {
     return feature;
   }
-
 }

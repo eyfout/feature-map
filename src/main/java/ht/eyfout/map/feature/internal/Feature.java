@@ -7,7 +7,8 @@ public enum Feature implements FeatureDescriptor {
 
   FeatureState state;
   FeatureDescriptor[] dependsOn;
-  Feature(FeatureState state, FeatureDescriptor...dependsOn) {
+
+  Feature(FeatureState state, FeatureDescriptor... dependsOn) {
     this.state = state;
     this.dependsOn = dependsOn;
   }

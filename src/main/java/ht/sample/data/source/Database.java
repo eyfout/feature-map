@@ -1,5 +1,3 @@
 package ht.sample.data.source;
 
-public final class Database {
-
-}
+public final class Database {}

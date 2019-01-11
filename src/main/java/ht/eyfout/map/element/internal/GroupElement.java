@@ -13,8 +13,8 @@ import ht.eyfout.map.feature.runtime.data.FeatureOperation;
 import ht.eyfout.map.registrar.internal.FeatureRegistrar.FeatureBundle;
 
 public class GroupElement extends AbstractFeatureBundleFeatureSupporter implements Group {
-  private GroupDataStore dataStore;
   protected RuntimeContext context;
+  private GroupDataStore dataStore;
 
   protected GroupElement(GroupDataStore dataStore, FeatureBundle bundle, RuntimeContext context) {
     super(bundle);
@@ -35,7 +35,7 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
                           ((GroupFeature) pgFeature).putScalarValue(name, value, this, context))
                   .orElse(value)));
     } catch (StoppedFeatureChainException e) {
-      //TODO
+      // TODO
     }
   }
 
@@ -59,6 +59,6 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
 
   @Override
   public <T extends FeatureOperation> T operations(FeatureDescriptor feature) {
-    return definition(feature).runtimeData(context);
+    return definition(feature).operations(context);
   }
 }
