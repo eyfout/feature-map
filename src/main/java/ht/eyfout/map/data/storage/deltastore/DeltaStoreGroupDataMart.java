@@ -25,7 +25,7 @@ public class DeltaStoreGroupDataMart extends MapGroupDataMart {
     return result;
   }
 
-  public class DeltaStoreGroupDataStoreBuilder
+  public static class DeltaStoreGroupDataStoreBuilder
       implements DataStoreBuilder<DeltaStoreGroupDataMart> {
 
     public DeltaStoreGroupDataMart group(GroupDataMart group) {
