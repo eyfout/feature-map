@@ -1,24 +1,23 @@
 package ht.eyfout.map.element
 
-import ht.eyfout.map.data.storage.DataStoreFactory
-import ht.eyfout.map.data.storage.ScalarStore
-import ht.eyfout.map.data.storage.array.ArrayGroupDataStore
-import ht.eyfout.map.data.storage.array.IndexGroupDataStore
-
+import ht.eyfout.map.data.storage.DataMartFactory
+import ht.eyfout.map.data.storage.ScalarMart
+import ht.eyfout.map.data.storage.array.ArrayGroupDataMart
+import ht.eyfout.map.data.storage.array.IndexGroupDataMart
 import ht.eyfout.map.factory.ElementMapFactory
 import ht.guice.GuiceInstance
 import spock.lang.Specification
 
 class IndexGroupSpec extends Specification {
 
-    ArrayGroupDataStore arrStore
-    DataStoreFactory dsFactory
+    ArrayGroupDataMart arrStore
+    DataMartFactory dsFactory
     ElementMapFactory elementFactory
 
     def setup() {
-        dsFactory = GuiceInstance.get(DataStoreFactory.class)
+        dsFactory = GuiceInstance.get(DataMartFactory.class)
         elementFactory = GuiceInstance.get(ElementMapFactory.class)
-        arrStore = dsFactory.create(ArrayGroupDataStore.class).build()
+        arrStore = dsFactory.create(ArrayGroupDataMart.class).build()
     }
 
     def 'Access data store by index'() {
@@ -29,12 +28,12 @@ class IndexGroupSpec extends Specification {
         "put a $expectedValue on the Group element"
         groupElement.putScalarValue('key', expectedValue)
         and: 'decorate array store with index data store'
-        IndexGroupDataStore indxStore = dsFactory.
-        <IndexGroupDataStore, IndexGroupDataStore.IndexGroupDataStoreBuilder> create(IndexGroupDataStore.class)
+        IndexGroupDataMart indxStore = dsFactory.
+        <IndexGroupDataMart, IndexGroupDataMart.IndexGroupDataStoreBuilder> create(IndexGroupDataMart.class)
                 .array(arrStore)
         then:
         "value at position 0 = $expectedValue"
-        expectedValue == indxStore.<ScalarStore> get(0).get()
+        expectedValue == indxStore.<ScalarMart> get(0).get()
     }
 
     def 'Access data store using index key map'() {
@@ -46,14 +45,14 @@ class IndexGroupSpec extends Specification {
         groupElement.putScalarValue('NaN', 'NaN')
         groupElement.putScalarValue('key', expectedValue)
         and: 'decorate array store with index data store'
-        IndexGroupDataStore indxStore = dsFactory.
-        <IndexGroupDataStore, IndexGroupDataStore.IndexGroupDataStoreBuilder> create(IndexGroupDataStore.class)
+        IndexGroupDataMart indxStore = dsFactory.
+        <IndexGroupDataMart, IndexGroupDataMart.IndexGroupDataStoreBuilder> create(IndexGroupDataMart.class)
                 .array(arrStore)
         then:
         "value at position $expectedValue"
-        expectedValue == indxStore.<ScalarStore> get(indxStore.keys().index('key')).get()
+        expectedValue == indxStore.<ScalarMart> get(indxStore.keys().index('key')).get()
         and: ''
-        expectedValue == indxStore.<ScalarStore> get('key').get()
+        expectedValue == indxStore.<ScalarMart> get('key').get()
     }
 
 }

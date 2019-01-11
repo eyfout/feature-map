@@ -31,10 +31,10 @@ public interface FeatureSupporter extends ht.eyfout.map.element.FeatureSupporter
 
   @Override
   default <T extends FeatureOperation> T operations(Feature feature) {
-    return operations((FeatureDescriptor) feature);
+    return operation((FeatureDescriptor) feature);
   }
 
-  default <T extends FeatureOperation> T operations(FeatureDescriptor feature) {
+  default <T extends FeatureOperation> T operation(FeatureDescriptor feature) {
     return null;
   }
 

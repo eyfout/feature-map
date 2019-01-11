@@ -1,28 +1,28 @@
 package ht.eyfout.map.data.storage.array;
 
-import ht.eyfout.map.data.storage.DataStore;
-import ht.eyfout.map.data.storage.GroupDataStore;
+import ht.eyfout.map.data.storage.DataMart;
+import ht.eyfout.map.data.storage.GroupDataMart;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 
-public class ArrayGroupDataStore implements GroupDataStore {
-  private static final DataStore[] EMPTY_STORE = new DataStore[0];
+public class ArrayGroupDataMart implements GroupDataMart {
+  private static final DataMart[] EMPTY_STORE = new DataMart[0];
   private static int INITIAL_SIZE = 16;
   private int number = 0;
-  private DataStore[] store = EMPTY_STORE;
+  private DataMart[] store = EMPTY_STORE;
   private Map<String, Integer> indices = new HashMap<>();
 
   @Override
-  public <T extends DataStore> void put(String name, T provider) {
+  public <T extends DataMart> void put(String name, T provider) {
     int indx = getIndex(name);
     getDataStore()[indx] = provider;
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T extends DataStore> T get(String name) {
+  public <T extends DataMart> T get(String name) {
     return (T) getDataStore()[getIndex(name)];
   }
 
@@ -35,7 +35,7 @@ public class ArrayGroupDataStore implements GroupDataStore {
     return indices;
   }
 
-  DataStore[] getDataStore() {
+  DataMart[] getDataStore() {
     return store;
   }
 
@@ -51,18 +51,18 @@ public class ArrayGroupDataStore implements GroupDataStore {
     return i;
   }
 
-  private DataStore[] expandStorage(DataStore[] arr) {
+  private DataMart[] expandStorage(DataMart[] arr) {
     return Arrays.copyOf(arr, arr.length + INITIAL_SIZE);
   }
 
-  public static class ArrayGroupDataStoreBuilder implements DataStoreBuilder<ArrayGroupDataStore> {
+  public static class ArrayGroupDataStoreBuilder implements DataStoreBuilder<ArrayGroupDataMart> {
 
     @Inject
     public ArrayGroupDataStoreBuilder() {}
 
     @Override
-    public ArrayGroupDataStore build() {
-      return new ArrayGroupDataStore();
+    public ArrayGroupDataMart build() {
+      return new ArrayGroupDataMart();
     }
   }
 }

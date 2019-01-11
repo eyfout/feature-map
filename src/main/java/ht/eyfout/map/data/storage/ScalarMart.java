@@ -1,11 +1,11 @@
 package ht.eyfout.map.data.storage;
 
-public final class ScalarStore<T> implements DataStore {
+public final class ScalarMart<T> implements DataMart {
   T scalarValue;
 
-  public ScalarStore() {}
+  public ScalarMart() {}
 
-  public ScalarStore(T initialValue) {
+  public ScalarMart(T initialValue) {
     scalarValue = initialValue;
   }
 

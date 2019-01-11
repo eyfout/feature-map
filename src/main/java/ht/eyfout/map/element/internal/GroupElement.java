@@ -1,8 +1,8 @@
 package ht.eyfout.map.element.internal;
 
-import ht.eyfout.map.data.storage.GroupDataStore;
-import ht.eyfout.map.data.storage.ScalarStore;
-import ht.eyfout.map.data.storage.deltastore.DeltaStoreGroupDataStore;
+import ht.eyfout.map.data.storage.GroupDataMart;
+import ht.eyfout.map.data.storage.ScalarMart;
+import ht.eyfout.map.data.storage.deltastore.DeltaStoreGroupDataMart;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.feature.FeatureDescriptor;
@@ -14,12 +14,12 @@ import ht.eyfout.map.registrar.internal.FeatureRegistrar.FeatureBundle;
 
 public class GroupElement extends AbstractFeatureBundleFeatureSupporter implements Group {
   protected RuntimeContext context;
-  private GroupDataStore dataStore;
+  private GroupDataMart dataStore;
 
-  protected GroupElement(GroupDataStore dataStore, FeatureBundle bundle, RuntimeContext context) {
+  protected GroupElement(GroupDataMart dataStore, FeatureBundle bundle, RuntimeContext context) {
     super(bundle);
     this.dataStore =
-        dataStore.isImmutable() ? DeltaStoreGroupDataStore.create(dataStore) : dataStore;
+        dataStore.isImmutable() ? DeltaStoreGroupDataMart.create(dataStore) : dataStore;
     this.context = context;
   }
 
@@ -41,7 +41,7 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
 
   @Override
   public <T> T getScalarValue(String name) {
-    ScalarStore<T> scalarProvider = dataStore.<ScalarStore<T>>get(name);
+    ScalarMart<T> scalarProvider = dataStore.<ScalarMart<T>>get(name);
     final T value = (null == scalarProvider) ? null : scalarProvider.get();
     return chain()
         .map((pgFeature) -> ((GroupFeature) pgFeature).getScalarValue(name, value, this, context))
@@ -51,14 +51,14 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
   @Override
   public <T> Scalar<T> getScalar(String name) {
     final ScalarElement<T> scalar =
-        ElementFactory.create(dataStore.<ScalarStore<T>>get(name), bundle(), context);
+        ElementFactory.create(dataStore.<ScalarMart<T>>get(name), bundle(), context);
     return chain()
         .map((pgFeature) -> ((GroupFeature) pgFeature).getScalar(name, scalar, this, context))
         .orElse(scalar);
   }
 
   @Override
-  public <T extends FeatureOperation> T operations(FeatureDescriptor feature) {
+  public <T extends FeatureOperation> T operation(FeatureDescriptor feature) {
     return definition(feature).operations(context);
   }
 }

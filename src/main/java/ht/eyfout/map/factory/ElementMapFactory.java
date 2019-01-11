@@ -1,9 +1,9 @@
 package ht.eyfout.map.factory;
 
-import ht.eyfout.map.data.storage.DataStoreFactory;
-import ht.eyfout.map.data.storage.GroupDataStore;
-import ht.eyfout.map.data.storage.ScalarStore;
-import ht.eyfout.map.data.storage.map.MapGroupDataStore;
+import ht.eyfout.map.data.storage.DataMartFactory;
+import ht.eyfout.map.data.storage.GroupDataMart;
+import ht.eyfout.map.data.storage.ScalarMart;
+import ht.eyfout.map.data.storage.map.MapGroupDataMart;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.element.internal.ElementFactory;
@@ -14,28 +14,28 @@ import javax.inject.Inject;
 
 public class ElementMapFactory {
   final FeatureRegistrar registrar;
-  final DataStoreFactory dsFactory;
+  final DataMartFactory dsFactory;
 
   @Inject
-  protected ElementMapFactory(FeatureRegistrar registrar, DataStoreFactory dsFactory) {
+  protected ElementMapFactory(FeatureRegistrar registrar, DataMartFactory dsFactory) {
     this.registrar = registrar;
     this.dsFactory = dsFactory;
   }
 
-  public Group group(GroupDataStore pgDataProvider, Feature... feature) {
+  public Group group(GroupDataMart pgDataProvider, Feature... feature) {
     return ElementFactory.create(
         pgDataProvider, registrar.bundle(feature), RuntimeContext.create());
   }
 
   public Group group(Feature... feature) {
-    return group(dsFactory.create(MapGroupDataStore.class).build(), feature);
+    return group(dsFactory.create(MapGroupDataMart.class).build(), feature);
   }
 
-  public <T> Scalar<T> scalar(Group element, ScalarStore<T> scalarStore) {
+  public <T> Scalar<T> scalar(Group element, ScalarMart<T> scalarStore) {
     return ElementFactory.create(element, scalarStore, null);
   }
 
   public <T> Scalar<T> scalar(Group element) {
-    return scalar(element, new ScalarStore<T>());
+    return scalar(element, new ScalarMart<T>());
   }
 }

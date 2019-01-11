@@ -1,10 +1,10 @@
 package ht.eyfout.map;
 
 import com.google.common.collect.ImmutableMap;
-import ht.eyfout.map.data.storage.DataStoreFactory;
-import ht.eyfout.map.data.storage.GroupDataStore;
-import ht.eyfout.map.data.storage.array.ArrayGroupDataStore;
-import ht.eyfout.map.data.storage.map.MapGroupDataStore;
+import ht.eyfout.map.data.storage.DataMartFactory;
+import ht.eyfout.map.data.storage.GroupDataMart;
+import ht.eyfout.map.data.storage.array.ArrayGroupDataMart;
+import ht.eyfout.map.data.storage.map.MapGroupDataMart;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.factory.ElementMapFactory;
 import ht.guice.GuiceInstance;
@@ -30,8 +30,8 @@ import org.openjdk.jmh.annotations.Warmup;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class GroupElementPerf {
 
-  static final java.util.Map<String, Class<? extends GroupDataStore>> providers =
-      ImmutableMap.of("map", MapGroupDataStore.class, "array", ArrayGroupDataStore.class);
+  static final java.util.Map<String, Class<? extends GroupDataMart>> providers =
+      ImmutableMap.of("map", MapGroupDataMart.class, "array", ArrayGroupDataMart.class);
 
   @Param({"array", "map"})
   String DataProvider;
@@ -43,7 +43,7 @@ public class GroupElementPerf {
     ElementMapFactory factory = GuiceInstance.get(ElementMapFactory.class);
     groupElement =
         factory.group(
-            GuiceInstance.get(DataStoreFactory.class)
+            GuiceInstance.get(DataMartFactory.class)
                 .create(providers.get(DataProvider.toLowerCase()))
                 .build());
     groupElement.putScalarValue("key", 911);

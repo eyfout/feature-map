@@ -1,9 +1,9 @@
 package ht.eyfout.map;
 
-import ht.eyfout.map.data.storage.DataStoreFactory;
-import ht.eyfout.map.data.storage.ScalarStore;
-import ht.eyfout.map.data.storage.database.query.QueryGroupDataStore;
-import ht.eyfout.map.data.storage.database.query.QueryGroupDataStore.QueryGroupDataStoreBuilder;
+import ht.eyfout.map.data.storage.DataMartFactory;
+import ht.eyfout.map.data.storage.ScalarMart;
+import ht.eyfout.map.data.storage.db.sql.QueryGroupDataMart;
+import ht.eyfout.map.data.storage.db.sql.QueryGroupDataMart.QueryGroupDataStoreBuilder;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.factory.ElementMapFactory;
@@ -14,17 +14,17 @@ import ht.guice.GuiceInstance;
 
 public class Main {
   public static void main(String[] args) throws NoSuchMethodException {
-    DataStoreFactory factory = GuiceInstance.get(DataStoreFactory.class);
+    DataMartFactory factory = GuiceInstance.get(DataMartFactory.class);
 
-    QueryGroupDataStoreBuilder queryBuilder = factory.create(QueryGroupDataStore.class);
-    QueryGroupDataStore queryStore =
+    QueryGroupDataStoreBuilder queryBuilder = factory.create(QueryGroupDataMart.class);
+    QueryGroupDataMart queryStore =
         queryBuilder
             .select()
             .fields("column1", "column2", "column3")
             .from("schema.tableName")
             .build();
 
-    System.out.println(queryStore.<ScalarStore<String>>get("SQL").get());
+    System.out.println(queryStore.<ScalarMart<String>>get("SQL").get());
 
     ElementMapFactory elementMapFactory = GuiceInstance.get(ElementMapFactory.class);
     Group groupElement = elementMapFactory.group();

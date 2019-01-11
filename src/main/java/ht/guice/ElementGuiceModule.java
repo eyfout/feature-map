@@ -5,13 +5,13 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
-import ht.eyfout.map.data.storage.DataStore.DataStoreBuilder;
-import ht.eyfout.map.data.storage.DataStoreFactory;
-import ht.eyfout.map.data.storage.array.ArrayGroupDataStore.ArrayGroupDataStoreBuilder;
-import ht.eyfout.map.data.storage.array.IndexGroupDataStore.IndexGroupDataStoreBuilder;
-import ht.eyfout.map.data.storage.database.query.internal.QueryGroupDataStoreBuilder;
-import ht.eyfout.map.data.storage.deltastore.DeltaStoreGroupDataStore.DeltaStoreGroupDataStoreBuilder;
-import ht.eyfout.map.data.storage.map.MapGroupDataStore.MapGroupDataStoreBuilder;
+import ht.eyfout.map.data.storage.DataMart.DataStoreBuilder;
+import ht.eyfout.map.data.storage.DataMartFactory;
+import ht.eyfout.map.data.storage.array.ArrayGroupDataMart.ArrayGroupDataStoreBuilder;
+import ht.eyfout.map.data.storage.array.IndexGroupDataMart.IndexGroupDataStoreBuilder;
+import ht.eyfout.map.data.storage.db.sql.internal.QueryGroupDataStoreBuilder;
+import ht.eyfout.map.data.storage.deltastore.DeltaStoreGroupDataMart.DeltaStoreGroupDataStoreBuilder;
+import ht.eyfout.map.data.storage.map.MapGroupDataMart.MapGroupDataStoreBuilder;
 import ht.eyfout.map.factory.ElementMapFactory;
 import ht.eyfout.map.factory.FeatureElementMapFactory;
 import ht.eyfout.map.factory.FeatureFactory;
@@ -33,8 +33,8 @@ class ElementGuiceModule extends AbstractModule {
     bind(ElementMapFactory.class).asEagerSingleton();
     bind(FeatureElementMapFactory.class).asEagerSingleton();
     bind(FeatureRegistrar.class).asEagerSingleton();
-    bind(DataStoreFactory.class)
-        .to(ht.eyfout.map.data.storage.internal.DataStoreFactory.class)
+    bind(DataMartFactory.class)
+        .to(ht.eyfout.map.data.storage.internal.DataMartFactory.class)
         .asEagerSingleton();
 
     Multibinder<FeatureFactory> featureFactories =
@@ -61,7 +61,7 @@ class ElementGuiceModule extends AbstractModule {
 
   @Provides
   FeatureFactory<DeltaStoreGroupFeature, ForwardScalarFeature> deltaStore(
-      FeatureElementMapFactory factory, DataStoreFactory dsFactory) {
+      FeatureElementMapFactory factory, DataMartFactory dsFactory) {
     return FeatureFactory.create(
         (pgFeature) -> new DeltaStoreGroupFeature(factory, dsFactory, pgFeature));
   }

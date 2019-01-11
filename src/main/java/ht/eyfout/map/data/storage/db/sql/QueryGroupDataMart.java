@@ -1,15 +1,15 @@
-package ht.eyfout.map.data.storage.database.query;
+package ht.eyfout.map.data.storage.db.sql;
 
-import ht.eyfout.map.data.storage.map.MapGroupDataStore;
+import ht.eyfout.map.data.storage.map.MapGroupDataMart;
 
-public class QueryGroupDataStore extends MapGroupDataStore {
+public class QueryGroupDataMart extends MapGroupDataMart {
 
   @Override
   public boolean isImmutable() {
     return true;
   }
 
-  public static interface QueryGroupDataStoreBuilder extends DataStoreBuilder<QueryGroupDataStore> {
+  public static interface QueryGroupDataStoreBuilder extends DataStoreBuilder<QueryGroupDataMart> {
 
     Field select();
 

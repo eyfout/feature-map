@@ -1,6 +1,6 @@
 package ht.eyfout.map.data.storage;
 
-public interface DataStore {
+public interface DataMart {
   default boolean isImmutable() {
     return false;
   }
@@ -8,7 +8,7 @@ public interface DataStore {
   int size();
 
   @FunctionalInterface
-  interface DataStoreBuilder<R extends GroupDataStore> {
+  interface DataStoreBuilder<R extends GroupDataMart> {
     R build();
   }
 }
