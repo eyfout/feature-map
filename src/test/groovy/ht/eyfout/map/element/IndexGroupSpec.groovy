@@ -31,7 +31,7 @@ class IndexGroupSpec extends Specification {
         and: 'decorate array store with index data store'
         IndexGroupDataStore indxStore = dsFactory.
         <IndexGroupDataStore, IndexGroupDataStoreBuilder> create(IndexGroupDataStore.class)
-                .array(arrStore).build()
+                .array(arrStore)
         then:
         "value at position 0 = $expectedValue"
         expectedValue == indxStore.<ScalarStore> get(0).get()
@@ -48,7 +48,7 @@ class IndexGroupSpec extends Specification {
         and: 'decorate array store with index data store'
         IndexGroupDataStore indxStore = dsFactory.
         <IndexGroupDataStore, IndexGroupDataStoreBuilder> create(IndexGroupDataStore.class)
-                .array(arrStore).build()
+                .array(arrStore)
         then:
         "value at position $expectedValue"
         expectedValue == indxStore.<ScalarStore> get(indxStore.keys().index('key')).get()
