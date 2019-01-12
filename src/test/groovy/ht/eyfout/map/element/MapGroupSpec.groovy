@@ -52,13 +52,4 @@ class MapGroupSpec extends Specification {
         where:
         feature << Feature.values()
     }
-
-    static class ArrayGroupSpec extends MapGroupSpec {
-
-        def setup() {
-            groupElement = getFactory().group(
-                    GuiceInstance.get(DataMartFactory.class)
-                            .create(ArrayGroupDataMart.class).build())
-        }
-    }
 }

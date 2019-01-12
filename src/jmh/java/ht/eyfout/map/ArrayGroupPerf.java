@@ -30,6 +30,7 @@ public class ArrayGroupPerf {
 
   private Group groupElement;
   private Group groupBackedByCopy;
+  private GroupDataMart mart;
 
   @Setup
   public void doSetup() {
@@ -46,20 +47,21 @@ public class ArrayGroupPerf {
     }
 
     groupBackedByCopy = factory.group(original.<GroupDataMart>copy());
+    mart = original;
   }
 
   @Benchmark
-  public Integer getValueFromMart() {
+  public Integer getValue() {
     return groupElement.<Integer>getScalarValue("key-3");
   }
 
   @Benchmark
-  public Integer getValueFromCopyMart() {
+  public Integer getValueInCopyMart() {
     return groupBackedByCopy.<Integer>getScalarValue("key-3");
   }
 
   @Benchmark
-  public void putValueFromMart(Blackhole bh) {
+  public void putValue(Blackhole bh) {
     groupElement.putScalarValue("key-3", 1);
     bh.consume( groupElement );
   }
@@ -68,5 +70,10 @@ public class ArrayGroupPerf {
   public void putValueInCopyMart(Blackhole bh) {
     groupBackedByCopy.putScalarValue("key-3", 1);
     bh.consume(groupBackedByCopy);
+  }
+
+  @Benchmark
+  public GroupDataMart copy(){
+    return mart.<GroupDataMart>copy();
   }
 }

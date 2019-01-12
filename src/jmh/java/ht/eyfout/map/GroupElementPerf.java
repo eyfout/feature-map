@@ -66,28 +66,4 @@ public class GroupElementPerf {
     return groupElement.getScalarValue("key-NotNull");
   }
 
-  @Measurement(timeUnit = TimeUnit.NANOSECONDS, iterations = 2)
-  @Warmup(iterations = 2, timeUnit = TimeUnit.NANOSECONDS)
-  @Fork(2)
-  @BenchmarkMode({Mode.AverageTime})
-  @State(Scope.Benchmark)
-  @OutputTimeUnit(TimeUnit.NANOSECONDS)
-  public static class JavaMap {
-    private java.util.Map<String, Object> map = new HashMap<>();
-
-    @Setup
-    public void doSetup() {
-      map.put("key", 911);
-    }
-
-    @Benchmark
-    public Object map_GetExistingValue() {
-      return map.get("key");
-    }
-
-    @Benchmark
-    public Object map_putValue() {
-      return map.put("key-1", "value-1");
-    }
-  }
 }

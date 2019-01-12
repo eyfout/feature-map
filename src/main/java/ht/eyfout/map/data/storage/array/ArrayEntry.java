@@ -18,4 +18,8 @@ public final class ArrayEntry {
   public <T extends DataMart> T getMart() {
     return (T)mart.getDataMart()[index];
   }
+
+  public ArrayGroupDataMart source(){
+    return mart;
+  }
 }

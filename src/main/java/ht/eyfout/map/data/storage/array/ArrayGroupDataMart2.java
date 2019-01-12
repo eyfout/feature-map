@@ -82,14 +82,14 @@ public class ArrayGroupDataMart2 extends ArrayGroupDataMart {
       getIndices().put(name, entry);
       getIndicesInt().put(entry.index(), entry);
       if (store.length < nextIndex) {
-        store = expandStorage(store);
+        store = expandStorage(store, (store.length == 0) ? INITIAL_SIZE : store.length + (INITIAL_SIZE << 1));
       }
     }
     return entry.index();
   }
 
-  private DataMart[] expandStorage(DataMart[] arr) {
-    return Arrays.copyOf(arr, (arr.length == 0) ? INITIAL_SIZE : arr.length + (INITIAL_SIZE << 1));
+  protected DataMart[] expandStorage(DataMart[] arr, int newSize) {
+    return Arrays.copyOf(arr, newSize);
   }
 
   @Override

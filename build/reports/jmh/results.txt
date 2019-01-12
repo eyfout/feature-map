@@ -1,11 +1,13 @@
-Benchmark                                      (DataProvider)  Mode  Cnt   Score   Error  Units
-ArrayGroupPerf.getValueFromMart                           N/A  avgt    4  18.496 ± 0.450  ns/op
-ArrayGroupPerf.putValueFromMart                           N/A  avgt    4  21.399 ± 4.798  ns/op
-GroupElementPerf.JavaMap.map_GetExistingValue             N/A  avgt    4   7.849 ± 0.163  ns/op
-GroupElementPerf.JavaMap.map_putValue                     N/A  avgt    4  14.448 ± 0.229  ns/op
-GroupElementPerf.getScalarValue_ExistingValue           array  avgt    4  13.042 ± 1.434  ns/op
-GroupElementPerf.getScalarValue_ExistingValue             map  avgt    4  12.257 ± 2.827  ns/op
-GroupElementPerf.getScalarValue_NullValue               array  avgt    4  13.924 ± 0.172  ns/op
-GroupElementPerf.getScalarValue_NullValue                 map  avgt    4   8.808 ± 0.988  ns/op
-GroupElementPerf.putScalarValue                         array  avgt    4  18.365 ± 0.579  ns/op
-GroupElementPerf.putScalarValue                           map  avgt    4  40.395 ± 4.555  ns/op
+Benchmark                                      (DataProvider)  Mode  Cnt   Score    Error  Units
+ArrayGroupPerf.copy                                       N/A  avgt    4  28.546 ±  0.871  ns/op
+ArrayGroupPerf.getValue                                   N/A  avgt    4  19.214 ±  7.894  ns/op
+ArrayGroupPerf.putValue                                   N/A  avgt    4  22.217 ±  9.987  ns/op
+ArrayGroupPerf.putValueInCopyMart                         N/A  avgt    4  25.946 ±  0.536  ns/op
+GroupElementPerf.getScalarValue_ExistingValue           array  avgt    4  13.207 ±  2.024  ns/op
+GroupElementPerf.getScalarValue_ExistingValue             map  avgt    4  12.477 ±  3.035  ns/op
+GroupElementPerf.getScalarValue_NullValue               array  avgt    4  16.935 ± 23.157  ns/op
+GroupElementPerf.getScalarValue_NullValue                 map  avgt    4   8.951 ±  0.557  ns/op
+GroupElementPerf.putScalarValue                         array  avgt    4  18.256 ±  0.295  ns/op
+GroupElementPerf.putScalarValue                           map  avgt    4  39.489 ±  1.121  ns/op
+JavaMap.map_GetExistingValue                              N/A  avgt    4   8.074 ±  2.109  ns/op
+JavaMap.map_putValue                                      N/A  avgt    4  14.511 ±  0.302  ns/op

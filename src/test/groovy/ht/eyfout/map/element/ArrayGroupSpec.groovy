@@ -7,36 +7,45 @@ import ht.eyfout.map.data.storage.array.ArrayGroupDataMart
 import ht.eyfout.map.data.storage.array.IndexGroupDataMart
 import ht.eyfout.map.factory.ElementMapFactory
 import ht.guice.GuiceInstance
-import spock.lang.Specification
 
-class ArrayGroupSpec extends Specification {
+class ArrayGroupSpec extends MapGroupSpec {
 
     ArrayGroupDataMart arrStore
     DataMartFactory dsFactory
     ElementMapFactory elementFactory
+    static int MAX_SEED = 100
 
     def setup() {
         dsFactory = GuiceInstance.get(DataMartFactory.class)
         elementFactory = GuiceInstance.get(ElementMapFactory.class)
         arrStore = dsFactory.create(ArrayGroupDataMart.class).build()
+        groupElement = elementFactory.group()
+
     }
 
-    def 'copy'(){
-        String expectedValue = 'value#2'
+    def 'copy'() {
+        Integer expectedValue = 88
+        String expectedString = 'Inspiron'
         GroupDataMart mart = dsFactory.<ArrayGroupDataMart,
-                ArrayGroupDataMart.ArrayGroupDataMartBuilder>create(ArrayGroupDataMart.class).build()
+                ArrayGroupDataMart.ArrayGroupDataMartBuilder> create(ArrayGroupDataMart.class).build()
         Group groupElement = elementFactory.group(mart)
-        groupElement.putScalarValue('key#0', 'value#0')
-        groupElement.putScalarValue('key#1', 'value#1')
-        groupElement.putScalarValue('key#2', expectedValue)
+        seed(groupElement)
 
         ArrayGroupDataMart martCopy = mart.copy()
-        Group groupElementCopy = elementFactory.group(  martCopy )
-        groupElementCopy.putScalarValue('key#4', 'value#4')
-        IndexGroupDataMart indexMart = dsFactory.<IndexGroupDataMart,
-                IndexGroupDataMart.IndexGroupDataMartBuilder> create(IndexGroupDataMart.class).array( martCopy)
-        expect:''
-        indexMart.<ScalarMart<String>>get(2).get() == expectedValue
+        Group groupElementCopy = elementFactory.group(martCopy)
+        groupElementCopy.putScalarValue('key#4', expectedString)
 
+        IndexGroupDataMart indexMart = dsFactory.<IndexGroupDataMart,
+                IndexGroupDataMart.IndexGroupDataMartBuilder> create(IndexGroupDataMart.class).array(martCopy)
+        expect: ''
+        indexMart.<ScalarMart<Integer>> get(expectedValue).get() == expectedValue
+        and: ''
+        indexMart.<ScalarMart<String>> get(MAX_SEED + 1).get() == expectedString
+    }
+
+    def seed(Group group) {
+        for (int n = 0; n <= MAX_SEED; n++) {
+            group.<Integer> putScalarValue("key#$n", n)
+        }
     }
 }

@@ -15,26 +15,33 @@ public class ArrayGroupDataMart2Copy extends ArrayGroupDataMart2 {
 
   @Override
   public <T extends DataMart> void put(String name, T provider) {
-    modifying();
+    modifying(name);
     super.put(name, provider);
   }
 
   @Override
   public <T extends DataMart> T get(String name) {
     T result = super.get(name);
-    if(sizeOfOrigin > getIndexFunc().apply(name)){
-      result = (T)result.copy();
+    if (sizeOfOrigin > getIndexFunc().apply(name)) {
+      result = (T) result.copy();
       put(name, result);
     }
     return result;
   }
 
-  private void modifying() {
+  private void modifying(String name) {
     if (0 > sizeOfOrigin) {
       sizeOfOrigin = indices.size();
       indices = new HashMap<>(indices);
       indicesInt = new HashMap<>(indicesInt);
-      nextIndex = indices.size() + 1;
+      nextIndex = indices.size();
+      store = expandStorage(store, nextIndex + INITIAL_SIZE);
+    }
+
+    ArrayEntry entry = indices.get(name);
+    if (!entry.source().equals(this)) {
+      indices.remove(name);
+//      indicesInt.remove(entry.index());
     }
   }
 }
