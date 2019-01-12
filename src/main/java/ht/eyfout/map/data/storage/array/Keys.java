@@ -8,7 +8,7 @@ public class Keys {
   private final Function<String, Integer> indexFunc;
   private final Function<Integer, String> nameFunc;
 
-  public Keys(Function<Integer, String> nameFunc, Function<String, Integer> indexFunc) {
+  Keys(Function<Integer, String> nameFunc, Function<String, Integer> indexFunc) {
     this.nameFunc = nameFunc;
     this.indexFunc = indexFunc;
   }

@@ -7,7 +7,7 @@ public class IndexGroupDataMart implements GroupDataMart {
 
   private ArrayGroupDataMart arrayStore;
 
-  public IndexGroupDataMart(ArrayGroupDataMart store) {
+  IndexGroupDataMart(ArrayGroupDataMart store) {
     this.arrayStore = store;
   }
 
@@ -36,19 +36,5 @@ public class IndexGroupDataMart implements GroupDataMart {
 
   public Keys keys() {
     return new Keys(arrayStore.getNameFunc(), arrayStore.getIndexFunc());
-  }
-
-  public static class IndexGroupDataMartBuilder implements DataMartBuilder<IndexGroupDataMart> {
-
-    public IndexGroupDataMartBuilder() {}
-
-    public IndexGroupDataMart array(ArrayGroupDataMart store) {
-      return new IndexGroupDataMart(store);
-    }
-
-    @Override
-    public IndexGroupDataMart build() {
-      throw new IllegalStateException();
-    }
   }
 }

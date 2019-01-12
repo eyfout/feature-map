@@ -28,9 +28,8 @@ class IndexGroupSpec extends Specification {
         "put a $expectedValue on the Group element"
         groupElement.putScalarValue('key', expectedValue)
         and: 'decorate array store with index data store'
-        IndexGroupDataMart indxStore = dsFactory.
-        <IndexGroupDataMart, IndexGroupDataMart.IndexGroupDataMartBuilder> create(IndexGroupDataMart.class)
-                .array(arrStore)
+        IndexGroupDataMart indxStore = dsFactory.<ArrayGroupDataMart,
+                ArrayGroupDataMart.ArrayGroupDataMartBuilder> create(ArrayGroupDataMart.class).index(arrStore)
         then:
         "value at position 0 = $expectedValue"
         expectedValue == indxStore.<ScalarMart> get(0).get()
@@ -46,8 +45,9 @@ class IndexGroupSpec extends Specification {
         groupElement.putScalarValue('key', expectedValue)
         and: 'decorate array store with index data store'
         IndexGroupDataMart indxStore = dsFactory.
-        <IndexGroupDataMart, IndexGroupDataMart.IndexGroupDataMartBuilder> create(IndexGroupDataMart.class)
-                .array(arrStore)
+        <ArrayGroupDataMart,
+                ArrayGroupDataMart.ArrayGroupDataMartBuilder> create(ArrayGroupDataMart.class).index(arrStore)
+
         then:
         "value at position $expectedValue"
         expectedValue == indxStore.<ScalarMart> get(indxStore.keys().index('key')).get()

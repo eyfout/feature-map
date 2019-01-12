@@ -35,12 +35,12 @@ class ArrayGroupSpec extends MapGroupSpec {
         Group groupElementCopy = elementFactory.group(martCopy)
         groupElementCopy.putScalarValue('key#4', expectedString)
 
-        IndexGroupDataMart indexMart = dsFactory.<IndexGroupDataMart,
-                IndexGroupDataMart.IndexGroupDataMartBuilder> create(IndexGroupDataMart.class).array(martCopy)
+        GroupDataMart indexMart = dsFactory.<ArrayGroupDataMart,
+                ArrayGroupDataMart.ArrayGroupDataMartBuilder> create(ArrayGroupDataMart.class).index(martCopy)
         expect: ''
         indexMart.<ScalarMart<Integer>> get(expectedValue).get() == expectedValue
         and: ''
-        indexMart.<ScalarMart<String>> get(MAX_SEED + 1).get() == expectedString
+        indexMart.<ScalarMart<String>> get(4).get() == expectedString
     }
 
     def seed(Group group) {

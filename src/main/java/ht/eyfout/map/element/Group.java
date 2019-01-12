@@ -6,4 +6,6 @@ public interface Group extends FeatureSupporter, Element {
   <T> T getScalarValue(String name);
 
   <T> Scalar<T> getScalar(String name);
+
+  void putGroup(String name, Group group);
 }

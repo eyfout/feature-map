@@ -25,7 +25,7 @@ public interface FeatureSupporter extends ht.eyfout.map.element.FeatureSupporter
 
   void removeFeature(FeatureDescriptor descriptor);
 
-  Optional<FeatureDefinition> chain();
+  <T extends FeatureDefinition> Optional<T> chain();
 
   FeatureDefinition definition(FeatureDescriptor descriptor);
 

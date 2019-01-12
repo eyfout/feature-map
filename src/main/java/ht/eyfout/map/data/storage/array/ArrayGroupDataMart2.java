@@ -56,7 +56,7 @@ public class ArrayGroupDataMart2 extends ArrayGroupDataMart {
     };
   }
 
-  DataMart[] getDataMart() {
+  protected DataMart[] getDataMart() {
     return store;
   }
 
@@ -81,9 +81,12 @@ public class ArrayGroupDataMart2 extends ArrayGroupDataMart {
       entry = new ArrayEntry(nextIndex++, this);
       getIndices().put(name, entry);
       getIndicesInt().put(entry.index(), entry);
-      if (store.length < nextIndex) {
-        store = expandStorage(store, (store.length == 0) ? INITIAL_SIZE : store.length + (INITIAL_SIZE << 1));
-      }
+    }
+
+    if (store.length <= entry.index()) {
+      store =
+          expandStorage(
+              store, (store.length == 0) ? INITIAL_SIZE : store.length + (INITIAL_SIZE << 1));
     }
     return entry.index();
   }

@@ -1,6 +1,6 @@
 package ht.eyfout.map.data.storage;
 
-public final class ScalarMart<T> implements DataMart {
+public class ScalarMart<T> implements DataMart {
   T scalarValue;
 
   public ScalarMart() {}

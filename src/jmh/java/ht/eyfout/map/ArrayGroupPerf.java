@@ -4,6 +4,7 @@ import ht.eyfout.map.data.storage.DataMartFactory;
 import ht.eyfout.map.data.storage.GroupDataMart;
 import ht.eyfout.map.data.storage.array.ArrayGroupDataMart;
 import ht.eyfout.map.data.storage.array.ArrayGroupDataMart.ArrayGroupDataMartBuilder;
+import ht.eyfout.map.data.storage.array.ArrayGroupDataMart.ArrayGroupDataMartBuilder.ArrayGroupVersion;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.factory.ElementMapFactory;
 import ht.guice.GuiceInstance;
@@ -28,9 +29,13 @@ import org.openjdk.jmh.infra.Blackhole;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class ArrayGroupPerf {
 
+  protected ArrayGroupVersion version;
   private Group groupElement;
   private Group groupBackedByCopy;
   private GroupDataMart mart;
+  public ArrayGroupPerf() {
+    version = ArrayGroupVersion.FUNCTION;
+  }
 
   @Setup
   public void doSetup() {
@@ -40,6 +45,7 @@ public class ArrayGroupPerf {
     GroupDataMart original =
         martFactory
             .<ArrayGroupDataMart, ArrayGroupDataMartBuilder>create(ArrayGroupDataMart.class)
+            .version(version)
             .build();
     groupElement = factory.group(original);
     for (int i = 0; i < 100; i++) {
@@ -63,7 +69,7 @@ public class ArrayGroupPerf {
   @Benchmark
   public void putValue(Blackhole bh) {
     groupElement.putScalarValue("key-3", 1);
-    bh.consume( groupElement );
+    bh.consume(groupElement);
   }
 
   @Benchmark
@@ -73,7 +79,13 @@ public class ArrayGroupPerf {
   }
 
   @Benchmark
-  public GroupDataMart copy(){
+  public GroupDataMart copy() {
     return mart.<GroupDataMart>copy();
+  }
+
+  public static class ArrayGroupInt extends ArrayGroupPerf {
+    public ArrayGroupInt() {
+      version = ArrayGroupVersion.INT;
+    }
   }
 }

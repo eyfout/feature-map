@@ -8,7 +8,6 @@ import com.google.inject.multibindings.Multibinder;
 import ht.eyfout.map.data.storage.DataMart.DataMartBuilder;
 import ht.eyfout.map.data.storage.DataMartFactory;
 import ht.eyfout.map.data.storage.array.ArrayGroupDataMart.ArrayGroupDataMartBuilder;
-import ht.eyfout.map.data.storage.array.IndexGroupDataMart.IndexGroupDataMartBuilder;
 import ht.eyfout.map.data.storage.db.sql.internal.QueryGroupDataMartBuilder;
 import ht.eyfout.map.data.storage.deltastore.DeltaStoreGroupDataMart.DeltaStoreGroupDataMartBuilder;
 import ht.eyfout.map.data.storage.map.MapGroupDataMart.MapGroupDataMartBuilder;
@@ -55,7 +54,6 @@ class ElementGuiceModule extends AbstractModule {
     dsBuilders.addBinding().to(MapGroupDataMartBuilder.class);
     dsBuilders.addBinding().to(QueryGroupDataMartBuilder.class);
     dsBuilders.addBinding().to(ArrayGroupDataMartBuilder.class);
-    dsBuilders.addBinding().to(IndexGroupDataMartBuilder.class);
     dsBuilders.addBinding().to(DeltaStoreGroupDataMartBuilder.class);
   }
 

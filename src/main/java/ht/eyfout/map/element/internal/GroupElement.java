@@ -29,10 +29,10 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
       dataStore.put(
           name,
           dataStore.createScalarProvider(
-              chain()
+              this.<GroupFeature>chain()
                   .map(
                       (pgFeature) ->
-                          ((GroupFeature) pgFeature).putScalarValue(name, value, this, context))
+                          pgFeature.putScalarValue(name, value, this, context))
                   .orElse(value)));
     } catch (StoppedFeatureChainException e) {
       // TODO
@@ -43,8 +43,8 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
   public <T> T getScalarValue(String name) {
     ScalarMart<T> scalarProvider = dataStore.<ScalarMart<T>>get(name);
     final T value = (null == scalarProvider) ? null : scalarProvider.get();
-    return chain()
-        .map((pgFeature) -> ((GroupFeature) pgFeature).getScalarValue(name, value, this, context))
+    return this.<GroupFeature>chain()
+        .map((pgFeature) -> pgFeature.getScalarValue(name, value, this, context))
         .orElse(value);
   }
 
@@ -52,13 +52,29 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
   public <T> Scalar<T> getScalar(String name) {
     final ScalarElement<T> scalar =
         ElementFactory.create(dataStore.<ScalarMart<T>>get(name), bundle(), context);
-    return chain()
-        .map((pgFeature) -> ((GroupFeature) pgFeature).getScalar(name, scalar, this, context))
+    return this.<GroupFeature>chain()
+        .map((pgFeature) ->  pgFeature.getScalar(name, scalar, this, context))
         .orElse(scalar);
   }
 
   @Override
   public <T extends FeatureOperation> T operation(FeatureDescriptor feature) {
     return definition(feature).operations(context);
+  }
+
+  @Override
+  public void putGroup(String name, Group group) {
+    GroupElement groupElement = getAs(group);
+    GroupDataMart  copy = groupElement.dataStore.copy();
+    dataStore.put(name, this.<GroupFeature>chain()
+        .map((pgFeature) -> pgFeature.putGroup(name, copy, this, context))
+        .orElse(copy));
+  }
+
+  private GroupElement getAs(Group group){
+    if( group instanceof GroupElement){
+      return (GroupElement)group;
+    }
+    throw new UnsupportedOperationException();
   }
 }
