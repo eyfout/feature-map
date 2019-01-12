@@ -9,7 +9,7 @@ public class QueryGroupDataMart extends MapGroupDataMart {
     return true;
   }
 
-  public static interface QueryGroupDataStoreBuilder extends DataStoreBuilder<QueryGroupDataMart> {
+  public static interface QueryGroupDataMartBuilder extends DataMartBuilder<QueryGroupDataMart> {
 
     Field select();
 
@@ -22,7 +22,7 @@ public class QueryGroupDataMart extends MapGroupDataMart {
     }
 
     interface DataSource {
-      QueryGroupDataStoreBuilder from(String table);
+      QueryGroupDataMartBuilder from(String table);
     }
   }
 }

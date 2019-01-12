@@ -21,4 +21,10 @@ public final class ScalarMart<T> implements DataMart {
   public int size() {
     return 1;
   }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public <D extends DataMart> D copy() {
+    return (D) new ScalarMart<>(scalarValue);
+  }
 }

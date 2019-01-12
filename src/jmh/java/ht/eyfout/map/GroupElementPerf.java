@@ -9,6 +9,7 @@ import ht.eyfout.map.element.Group;
 import ht.eyfout.map.factory.ElementMapFactory;
 import ht.guice.GuiceInstance;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -30,7 +31,7 @@ import org.openjdk.jmh.annotations.Warmup;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class GroupElementPerf {
 
-  static final java.util.Map<String, Class<? extends GroupDataMart>> providers =
+  static final Map<String, Class<? extends GroupDataMart>> providers =
       ImmutableMap.of("map", MapGroupDataMart.class, "array", ArrayGroupDataMart.class);
 
   @Param({"array", "map"})
@@ -71,7 +72,7 @@ public class GroupElementPerf {
   @BenchmarkMode({Mode.AverageTime})
   @State(Scope.Benchmark)
   @OutputTimeUnit(TimeUnit.NANOSECONDS)
-  public static class Map {
+  public static class JavaMap {
     private java.util.Map<String, Object> map = new HashMap<>();
 
     @Setup

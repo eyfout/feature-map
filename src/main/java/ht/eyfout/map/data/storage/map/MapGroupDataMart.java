@@ -30,10 +30,10 @@ public class MapGroupDataMart implements GroupDataMart {
     return store.size();
   }
 
-  public static class MapGroupDataStoreBuilder implements DataStoreBuilder<MapGroupDataMart> {
+  public static class MapGroupDataMartBuilder implements DataMartBuilder<MapGroupDataMart> {
 
     @Inject
-    protected MapGroupDataStoreBuilder() {
+    protected MapGroupDataMartBuilder() {
       //
     }
 

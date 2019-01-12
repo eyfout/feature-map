@@ -7,13 +7,13 @@ import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
 
-public class QueryGroupDataStoreBuilder implements QueryGroupDataMart.QueryGroupDataStoreBuilder {
+public class QueryGroupDataMartBuilder implements QueryGroupDataMart.QueryGroupDataMartBuilder {
 
   StringBuffer buffer;
   Database db;
 
   @Inject
-  public QueryGroupDataStoreBuilder(Database db) {
+  public QueryGroupDataMartBuilder(Database db) {
     buffer = new StringBuffer();
     this.db = db;
   }
@@ -38,10 +38,10 @@ public class QueryGroupDataStoreBuilder implements QueryGroupDataMart.QueryGroup
     }
 
     @Override
-    public QueryGroupDataMart.QueryGroupDataStoreBuilder from(String table) {
+    public QueryGroupDataMart.QueryGroupDataMartBuilder from(String table) {
       buffer.append("FROM ");
       buffer.append(table);
-      return QueryGroupDataStoreBuilder.this;
+      return ht.eyfout.map.data.storage.db.sql.internal.QueryGroupDataMartBuilder.this;
     }
   }
 

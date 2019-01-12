@@ -27,20 +27,20 @@ public class IndexGroupDataMart implements GroupDataMart {
   }
 
   public <T extends DataMart> T get(int index) {
-    return (T) arrayStore.getDataStore()[index];
+    return (T) arrayStore.getByIndex(index);
   }
 
   public <T extends DataMart> void put(int index, T store) {
-    arrayStore.getDataStore()[index] = store;
+    arrayStore.getDataMart()[index] = store;
   }
 
   public Keys keys() {
-    return new Keys(arrayStore.indices());
+    return new Keys(arrayStore.getNameFunc(), arrayStore.getIndexFunc());
   }
 
-  public static class IndexGroupDataStoreBuilder implements DataStoreBuilder<IndexGroupDataMart> {
+  public static class IndexGroupDataMartBuilder implements DataMartBuilder<IndexGroupDataMart> {
 
-    public IndexGroupDataStoreBuilder() {}
+    public IndexGroupDataMartBuilder() {}
 
     public IndexGroupDataMart array(ArrayGroupDataMart store) {
       return new IndexGroupDataMart(store);

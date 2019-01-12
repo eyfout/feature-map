@@ -1,25 +1,23 @@
 package ht.eyfout.map.data.storage.array;
 
-import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 public class Keys {
-  Map<String, Integer> indices;
 
-  public Keys(Map<String, Integer> indices) {
-    this.indices = indices;
+  private final Function<String, Integer> indexFunc;
+  private final Function<Integer, String> nameFunc;
+
+  public Keys(Function<Integer, String> nameFunc, Function<String, Integer> indexFunc) {
+    this.nameFunc = nameFunc;
+    this.indexFunc = indexFunc;
   }
 
   public int index(String name) {
-    return indices.get(name);
+    return indexFunc.apply(name);
   }
 
   public Optional<String> name(int index) {
-    for (Map.Entry<String, Integer> entry : indices.entrySet()) {
-      if (entry.getValue() == index) {
-        return Optional.of(entry.getKey());
-      }
-    }
-    return Optional.empty();
+    return Optional.ofNullable(nameFunc.apply(index));
   }
 }

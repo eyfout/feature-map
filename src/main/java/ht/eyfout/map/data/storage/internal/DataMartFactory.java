@@ -1,6 +1,6 @@
 package ht.eyfout.map.data.storage.internal;
 
-import ht.eyfout.map.data.storage.DataMart.DataStoreBuilder;
+import ht.eyfout.map.data.storage.DataMart.DataMartBuilder;
 import ht.eyfout.map.data.storage.GroupDataMart;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,11 +9,11 @@ import javax.inject.Inject;
 
 public class DataMartFactory implements ht.eyfout.map.data.storage.DataMartFactory {
 
-  Map<Class, DataStoreBuilder> builders = new HashMap<>();
+  Map<Class, DataMartBuilder> builders = new HashMap<>();
 
   @Inject
-  protected DataMartFactory(Set<DataStoreBuilder> builders) {
-    final String methodName = DataStoreBuilder.class.getDeclaredMethods()[0].getName();
+  protected DataMartFactory(Set<DataMartBuilder> builders) {
+    final String methodName = DataMartBuilder.class.getDeclaredMethods()[0].getName();
     builders
         .stream()
         .forEach(
@@ -29,7 +29,7 @@ public class DataMartFactory implements ht.eyfout.map.data.storage.DataMartFacto
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T extends GroupDataMart, B extends DataStoreBuilder<T>> B create(Class<T> clazz) {
+  public <T extends GroupDataMart, B extends DataMartBuilder<T>> B create(Class<T> clazz) {
     return (B) builders.get(clazz);
   }
 }

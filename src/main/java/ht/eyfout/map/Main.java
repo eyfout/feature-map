@@ -3,7 +3,7 @@ package ht.eyfout.map;
 import ht.eyfout.map.data.storage.DataMartFactory;
 import ht.eyfout.map.data.storage.ScalarMart;
 import ht.eyfout.map.data.storage.db.sql.QueryGroupDataMart;
-import ht.eyfout.map.data.storage.db.sql.QueryGroupDataMart.QueryGroupDataStoreBuilder;
+import ht.eyfout.map.data.storage.db.sql.QueryGroupDataMart.QueryGroupDataMartBuilder;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.factory.ElementMapFactory;
@@ -16,7 +16,7 @@ public class Main {
   public static void main(String[] args) throws NoSuchMethodException {
     DataMartFactory factory = GuiceInstance.get(DataMartFactory.class);
 
-    QueryGroupDataStoreBuilder queryBuilder = factory.create(QueryGroupDataMart.class);
+    QueryGroupDataMartBuilder queryBuilder = factory.create(QueryGroupDataMart.class);
     QueryGroupDataMart queryStore =
         queryBuilder
             .select()

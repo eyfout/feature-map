@@ -5,10 +5,14 @@ public interface DataMart {
     return false;
   }
 
+  default <T extends DataMart> T copy(){
+    throw new UnsupportedOperationException();
+  }
+
   int size();
 
   @FunctionalInterface
-  interface DataStoreBuilder<R extends GroupDataMart> {
+  interface DataMartBuilder<R extends GroupDataMart> {
     R build();
   }
 }

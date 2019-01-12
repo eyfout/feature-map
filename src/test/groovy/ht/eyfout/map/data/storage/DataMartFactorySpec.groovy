@@ -15,7 +15,7 @@ class DataMartFactorySpec extends Specification {
         builderClass.isAssignableFrom(factory.create(storeClass).getClass())
         where:
         storeClass               || builderClass
-        MapGroupDataMart.class   || MapGroupDataMart.MapGroupDataStoreBuilder.class
-        QueryGroupDataMart.class || QueryGroupDataMart.QueryGroupDataStoreBuilder.class
+        MapGroupDataMart.class   || MapGroupDataMart.MapGroupDataMartBuilder.class
+        QueryGroupDataMart.class || QueryGroupDataMart.QueryGroupDataMartBuilder.class
     }
 }
