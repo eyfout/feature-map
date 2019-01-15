@@ -1,7 +1,7 @@
 package ht.eyfout.map;
 
 import ht.eyfout.map.data.storage.DataStorageBuilderFactory;
-import ht.eyfout.map.data.storage.ScalarStorage;
+import ht.eyfout.map.data.storage.ScalarDataStorage;
 import ht.eyfout.map.data.storage.db.sql.QueryGroupDataStorage;
 import ht.eyfout.map.data.storage.db.sql.QueryGroupDataStorage.QueryGroupDataStorageBuilder;
 import ht.eyfout.map.element.Group;
@@ -24,7 +24,7 @@ public class Main {
             .from("schema.tableName")
             .build();
 
-    System.out.println(queryStore.<ScalarStorage<String>>get("SQL").get());
+    System.out.println(queryStore.<ScalarDataStorage<String>>get("SQL").get());
 
     ElementMapFactory elementMapFactory = GuiceInstance.get(ElementMapFactory.class);
     Group groupElement = elementMapFactory.group();

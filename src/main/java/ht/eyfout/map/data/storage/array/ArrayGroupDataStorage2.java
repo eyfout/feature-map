@@ -19,7 +19,7 @@ public class ArrayGroupDataStorage2 extends ArrayGroupDataStorage {
   @Override
   public <T extends DataStorage> void put(String name, T provider) {
     int indx = getIndex(name);
-    getDataMart()[indx] = provider;
+    getDatastorage()[indx] = provider;
   }
 
   @Override
@@ -29,12 +29,12 @@ public class ArrayGroupDataStorage2 extends ArrayGroupDataStorage {
     if(null == entry){
       return  null;
     }
-    return entry.getMart();
+    return entry.getstorage();
   }
 
   @Override
   <T extends DataStorage> T getByIndex(int index) {
-    return getIndicesInt().get(index).getMart();
+    return getIndicesInt().get(index).getstorage();
   }
 
   @Override
@@ -60,7 +60,7 @@ public class ArrayGroupDataStorage2 extends ArrayGroupDataStorage {
     };
   }
 
-  protected DataStorage[] getDataMart() {
+  protected DataStorage[] getDatastorage() {
     return store;
   }
 

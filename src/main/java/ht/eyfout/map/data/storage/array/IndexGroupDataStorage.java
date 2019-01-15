@@ -31,7 +31,7 @@ public class IndexGroupDataStorage implements GroupDataStorage {
   }
 
   public <T extends DataStorage> void put(int index, T store) {
-    arrayStore.getDataMart()[index] = store;
+    arrayStore.getDatastorage()[index] = store;
   }
 
   public Keys keys() {

@@ -2,7 +2,7 @@ package ht.eyfout.map.element
 
 import ht.eyfout.map.data.storage.DataStorageBuilderFactory
 import ht.eyfout.map.data.storage.GroupDataStorage
-import ht.eyfout.map.data.storage.ScalarStorage
+import ht.eyfout.map.data.storage.ScalarDataStorage
 import ht.eyfout.map.data.storage.array.ArrayGroupDataStorage
 import ht.eyfout.map.factory.ElementMapFactory
 import ht.guice.GuiceInstance
@@ -25,32 +25,32 @@ class ArrayGroupSpec extends MapGroupSpec {
     def 'copy'() {
         Integer expectedValue = 88
         String expectedString = 'Inspiron'
-        GroupDataStorage mart = dsFactory.<ArrayGroupDataStorage,
+        GroupDataStorage storage = dsFactory.<ArrayGroupDataStorage,
                 ArrayGroupDataStorage.ArrayGroupDataStorageBuilder> create(ArrayGroupDataStorage.class).build()
-        Group groupElement = elementFactory.group(mart)
+        Group groupElement = elementFactory.group(storage)
         seed(groupElement)
 
-        ArrayGroupDataStorage martCopy = mart.copy()
-        Group groupElementCopy = elementFactory.group(martCopy)
+        ArrayGroupDataStorage storageCopy = storage.copy()
+        Group groupElementCopy = elementFactory.group(storageCopy)
         groupElementCopy.putScalarValue('key#4', expectedString)
 
-        GroupDataStorage indexMart = dsFactory.<ArrayGroupDataStorage,
-                ArrayGroupDataStorage.ArrayGroupDataStorageBuilder> create(ArrayGroupDataStorage.class).index(martCopy)
+        GroupDataStorage indexstorage = dsFactory.<ArrayGroupDataStorage,
+                ArrayGroupDataStorage.ArrayGroupDataStorageBuilder> create(ArrayGroupDataStorage.class).index(storageCopy)
         expect: ''
-        indexMart.<ScalarStorage<Integer>> get(expectedValue).get() == expectedValue
+        indexstorage.<ScalarDataStorage<Integer>> get(expectedValue).get() == expectedValue
         and: ''
-        indexMart.<ScalarStorage<String>> get(4).get() == expectedString
+        indexstorage.<ScalarDataStorage<String>> get(4).get() == expectedString
     }
 
     def 'set value on scalar'(){
         Integer expectedValue = 88
-        GroupDataStorage mart = dsFactory.<ArrayGroupDataStorage,
+        GroupDataStorage storage = dsFactory.<ArrayGroupDataStorage,
                 ArrayGroupDataStorage.ArrayGroupDataStorageBuilder> create(ArrayGroupDataStorage.class).build()
-        Group groupElement = elementFactory.group(mart)
+        Group groupElement = elementFactory.group(storage)
         seed(groupElement)
 
-        ArrayGroupDataStorage martCopy = mart.copy()
-        Group groupElementCopy = elementFactory.group(martCopy)
+        ArrayGroupDataStorage storageCopy = storage.copy()
+        Group groupElementCopy = elementFactory.group(storageCopy)
 
         Scalar<Integer> scalar = groupElement.getScalar("key#4")
         Scalar<Integer> scalarOfCopy = groupElementCopy.getScalar("key#4")

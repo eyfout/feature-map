@@ -2,7 +2,7 @@ package ht.eyfout.map.data.storage.array;
 
 import ht.eyfout.map.data.storage.DataStorage;
 import ht.eyfout.map.data.storage.GroupDataStorage;
-import ht.eyfout.map.data.storage.ScalarStorage;
+import ht.eyfout.map.data.storage.ScalarDataStorage;
 import java.util.HashMap;
 
 public class ArrayGroupDataStorage2Copy extends ArrayGroupDataStorage2 {
@@ -23,10 +23,10 @@ public class ArrayGroupDataStorage2Copy extends ArrayGroupDataStorage2 {
   @Override
   public <T extends DataStorage> T get(String name) {
     ArrayEntry entry = indices.get(name);
-    T result = entry.getMart();
+    T result = entry.getstorage();
     if (isRemoteEntry(entry) && null != result) {
-      if (ScalarStorage.class.isAssignableFrom((result.getClass()))) {
-        return (T) new ScalarEntryStorage<>(name, entry);
+      if (ScalarDataStorage.class.isAssignableFrom((result.getClass()))) {
+        return (T) new ScalarEntryDataStorage<>(name, entry);
       }
       throw new UnsupportedOperationException();
     }
@@ -68,12 +68,12 @@ public class ArrayGroupDataStorage2Copy extends ArrayGroupDataStorage2 {
 
     @Override
     public <T extends DataStorage> void put(String name, T provider) {
-      entry.getMart();
+      entry.getstorage();
     }
 
     @Override
     public <T extends DataStorage> T get(String name) {
-      return entry.<GroupDataStorage>getMart().get(name);
+      return entry.<GroupDataStorage>getstorage().get(name);
     }
 
     @Override
@@ -82,27 +82,27 @@ public class ArrayGroupDataStorage2Copy extends ArrayGroupDataStorage2 {
     }
   }
 
-  class ScalarEntryStorage<T> extends ScalarStorage<T> {
+  class ScalarEntryDataStorage<T> extends ScalarDataStorage<T> {
     ArrayEntry entry;
     String name;
     boolean created;
 
-    public ScalarEntryStorage(String name, ArrayEntry entry) {
+    public ScalarEntryDataStorage(String name, ArrayEntry entry) {
       this.entry = entry;
       this.name = name;
     }
 
     @Override
     public T get() {
-      return entry.<ScalarStorage<T>>getMart().get();
+      return entry.<ScalarDataStorage<T>>getstorage().get();
     }
 
     @Override
     public void set(T value) {
       if (!isRemoteEntry(entry)) {
-        entry.<ScalarStorage<T>>getMart().set(value);
+        entry.<ScalarDataStorage<T>>getstorage().set(value);
       } else {
-        put(name, new ScalarStorage<>(value));
+        put(name, new ScalarDataStorage<>(value));
         entry = indices.get(name);
       }
       created = true;

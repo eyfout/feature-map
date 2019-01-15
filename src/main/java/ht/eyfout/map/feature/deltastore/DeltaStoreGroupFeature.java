@@ -1,7 +1,7 @@
 package ht.eyfout.map.feature.deltastore;
 
 import ht.eyfout.map.data.storage.DataStorageBuilderFactory;
-import ht.eyfout.map.data.storage.ScalarStorage;
+import ht.eyfout.map.data.storage.ScalarDataStorage;
 import ht.eyfout.map.data.storage.map.MapGroupDataStorage;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.factory.FeatureElementMapFactory;
@@ -34,7 +34,7 @@ public class DeltaStoreGroupFeature extends GroupFeature {
   @Override
   public <T> T getScalarValue(String name, T value, Group element, RuntimeContext context) {
     MapGroupDataStorage store = context.<MapGroupDataStorage>data(this);
-    final ScalarStorage<T> scalarProvider = store.<ScalarStorage<T>>get(name);
+    final ScalarDataStorage<T> scalarProvider = store.<ScalarDataStorage<T>>get(name);
     if (null == scalarProvider) {
       return super.getScalarValue(name, value, element, context);
     }
@@ -43,10 +43,10 @@ public class DeltaStoreGroupFeature extends GroupFeature {
   }
 
   @Override
-  public <T> ScalarStorage<T> getScalar(
-      String name, ScalarStorage<T> scalar, Group element, RuntimeContext context) {
+  public <T> ScalarDataStorage<T> getScalar(
+      String name, ScalarDataStorage<T> scalar, Group element, RuntimeContext context) {
     MapGroupDataStorage store = context.data(this);
-    ScalarStorage<T> result = store.get(name);
+    ScalarDataStorage<T> result = store.get(name);
     if (null == result) {
       return scalar;
     }

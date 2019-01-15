@@ -3,7 +3,7 @@ package ht.eyfout.map.factory;
 import ht.eyfout.map.data.storage.DataStorage.DataStorageBuilder;
 import ht.eyfout.map.data.storage.DataStorageBuilderFactory;
 import ht.eyfout.map.data.storage.GroupDataStorage;
-import ht.eyfout.map.data.storage.ScalarStorage;
+import ht.eyfout.map.data.storage.ScalarDataStorage;
 import ht.eyfout.map.data.storage.map.MapGroupDataStorage;
 import ht.eyfout.map.data.storage.map.MapGroupDataStorage.MapGroupDataStorageBuilder;
 import ht.eyfout.map.element.Group;
@@ -39,11 +39,11 @@ public class ElementMapFactory {
         feature);
   }
 
-  public <T> Scalar<T> scalar(Group element, ScalarStorage<T> scalarStore) {
+  public <T> Scalar<T> scalar(Group element, ScalarDataStorage<T> scalarStore) {
     return ElementFactory.create(element, scalarStore, null);
   }
 
   public <T> Scalar<T> scalar(Group element) {
-    return scalar(element, new ScalarStorage<T>());
+    return scalar(element, new ScalarDataStorage<T>());
   }
 }

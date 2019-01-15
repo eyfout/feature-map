@@ -20,17 +20,17 @@ public class ArrayGroupDataStorage implements GroupDataStorage {
     indices = new HashMap<>();
   }
 
-  private ArrayGroupDataStorage(ArrayGroupDataStorage mart){
-    indices = new HashMap<>(mart.indices);
-    store = Arrays.copyOf(mart.store, mart.store.length);
-    nextIndex = mart.size;
+  private ArrayGroupDataStorage(ArrayGroupDataStorage storage){
+    indices = new HashMap<>(storage.indices);
+    store = Arrays.copyOf(storage.store, storage.store.length);
+    nextIndex = storage.size;
   }
 
   @Override
   public <T extends DataStorage> void put(String name, T provider) {
     size++;
     int indx = getIndex(name);
-    getDataMart()[indx] = provider;
+    getDatastorage()[indx] = provider;
   }
 
   @Override
@@ -40,7 +40,7 @@ public class ArrayGroupDataStorage implements GroupDataStorage {
     if(null == index){
       return null;
     }
-    return (T)getDataMart()[index];
+    return (T)getDatastorage()[index];
   }
 
   @Override
@@ -48,7 +48,7 @@ public class ArrayGroupDataStorage implements GroupDataStorage {
     return size;
   }
 
-  DataStorage[] getDataMart() {
+  DataStorage[] getDatastorage() {
     return store;
   }
 
@@ -65,7 +65,7 @@ public class ArrayGroupDataStorage implements GroupDataStorage {
   }
 
   <T extends DataStorage> T getByIndex(int index) {
-    return (T) getDataMart()[index];
+    return (T) getDatastorage()[index];
   }
 
   private DataStorage[] expandStorage(DataStorage[] arr) {

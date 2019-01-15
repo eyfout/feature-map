@@ -34,7 +34,7 @@ public class ArrayGroupPerf {
   protected ArrayGroupVersion version;
   private Group groupElement;
   private Group groupBackedByCopy;
-  private GroupDataStorage mart;
+  private GroupDataStorage storage;
 
   public ArrayGroupPerf() {
     version = ArrayGroupVersion.FUNCTION;
@@ -42,18 +42,18 @@ public class ArrayGroupPerf {
 
   @Setup
   public void doSetup() {
-    DataStorageBuilderFactory martFactory = GuiceInstance.get(DataStorageBuilderFactory.class);
+    DataStorageBuilderFactory storageFactory = GuiceInstance.get(DataStorageBuilderFactory.class);
     ElementMapFactory factory = GuiceInstance.get(ElementMapFactory.class);
 
     GroupDataStorage original =
-        martFactory
+        storageFactory
             .<ArrayGroupDataStorage, ArrayGroupDataStorageBuilder>create(ArrayGroupDataStorage.class)
             .version(version)
             .build();
     groupElement = factory.group(original);
     Seed.seedGroupElement(groupElement, 100, "key-");
     groupBackedByCopy = factory.group(original.<GroupDataStorage>copy());
-    mart = original;
+    storage = original;
   }
 
   @Benchmark
@@ -62,7 +62,7 @@ public class ArrayGroupPerf {
   }
 
   @Benchmark
-  public Integer getValueInCopyMart() {
+  public Integer getValueInCopystorage() {
     return groupBackedByCopy.<Integer>getScalarValue("key-3");
   }
 
@@ -73,14 +73,14 @@ public class ArrayGroupPerf {
   }
 
   @Benchmark
-  public void putValueInCopyMart(Blackhole bh) {
+  public void putValueInCopystorage(Blackhole bh) {
     groupBackedByCopy.putScalarValue("key-3", 1);
     bh.consume(groupBackedByCopy);
   }
 
   @Benchmark
   public GroupDataStorage copy() {
-    return mart.<GroupDataStorage>copy();
+    return storage.<GroupDataStorage>copy();
   }
 
   @Benchmark

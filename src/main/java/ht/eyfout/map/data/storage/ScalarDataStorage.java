@@ -1,11 +1,11 @@
 package ht.eyfout.map.data.storage;
 
-public class ScalarStorage<T> implements DataStorage {
+public class ScalarDataStorage<T> implements DataStorage {
   T scalarValue;
 
-  public ScalarStorage() {}
+  public ScalarDataStorage() {}
 
-  public ScalarStorage(T initialValue) {
+  public ScalarDataStorage(T initialValue) {
     scalarValue = initialValue;
   }
 
@@ -25,6 +25,6 @@ public class ScalarStorage<T> implements DataStorage {
   @Override
   @SuppressWarnings("unchecked")
   public <D extends DataStorage> D copy() {
-    return (D) new ScalarStorage<>(scalarValue);
+    return (D) new ScalarDataStorage<>(scalarValue);
   }
 }

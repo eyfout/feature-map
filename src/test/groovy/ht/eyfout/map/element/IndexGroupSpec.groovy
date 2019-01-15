@@ -1,7 +1,7 @@
 package ht.eyfout.map.element
 
 import ht.eyfout.map.data.storage.DataStorageBuilderFactory
-import ht.eyfout.map.data.storage.ScalarStorage
+import ht.eyfout.map.data.storage.ScalarDataStorage
 import ht.eyfout.map.data.storage.array.ArrayGroupDataStorage
 import ht.eyfout.map.data.storage.array.IndexGroupDataStorage
 import ht.eyfout.map.factory.ElementMapFactory
@@ -32,7 +32,7 @@ class IndexGroupSpec extends Specification {
                 ArrayGroupDataStorage.ArrayGroupDataStorageBuilder> create(ArrayGroupDataStorage.class).index(arrStore)
         then:
         "value at position 0 = $expectedValue"
-        expectedValue == indxStore.<ScalarStorage> get(0).get()
+        expectedValue == indxStore.<ScalarDataStorage> get(0).get()
     }
 
     def 'Access data store using index key map'() {
@@ -50,9 +50,9 @@ class IndexGroupSpec extends Specification {
 
         then:
         "value at position $expectedValue"
-        expectedValue == indxStore.<ScalarStorage> get(indxStore.keys().index('key')).get()
+        expectedValue == indxStore.<ScalarDataStorage> get(indxStore.keys().index('key')).get()
         and: ''
-        expectedValue == indxStore.<ScalarStorage> get('key').get()
+        expectedValue == indxStore.<ScalarDataStorage> get('key').get()
     }
 
 }

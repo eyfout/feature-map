@@ -1,7 +1,7 @@
 package ht.eyfout.map.element.internal;
 
 import ht.eyfout.map.data.storage.GroupDataStorage;
-import ht.eyfout.map.data.storage.ScalarStorage;
+import ht.eyfout.map.data.storage.ScalarDataStorage;
 import ht.eyfout.map.data.storage.deltastore.DeltaStoreGroupDataStorage;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
@@ -41,7 +41,7 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
 
   @Override
   public <T> T getScalarValue(String name) {
-    ScalarStorage<T> scalarProvider = dataStore.<ScalarStorage<T>>get(name);
+    ScalarDataStorage<T> scalarProvider = dataStore.<ScalarDataStorage<T>>get(name);
     final T value = (null == scalarProvider) ? null : scalarProvider.get();
     return this.<GroupFeature>chain()
         .map((pgFeature) -> pgFeature.getScalarValue(name, value, this, context))
@@ -50,7 +50,7 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
 
   @Override
   public <T> Scalar<T> getScalar(String name) {
-    final ScalarStorage<T> scalar = dataStore.<ScalarStorage<T>>get(name);
+    final ScalarDataStorage<T> scalar = dataStore.<ScalarDataStorage<T>>get(name);
     return ElementFactory.create(this, this.<GroupFeature>chain()
         .map((pgFeature) ->  pgFeature.getScalar(name, scalar, this, context))
         .orElse(scalar), name);

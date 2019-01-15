@@ -5,11 +5,11 @@ public interface GroupDataStorage extends DataStorage {
 
   <T extends DataStorage> T get(String name);
 
-  default <T> ScalarStorage<T> createScalarProvider() {
+  default <T> ScalarDataStorage<T> createScalarProvider() {
     return createScalarProvider(null);
   }
 
-  default <T> ScalarStorage<T> createScalarProvider(T initialValue) {
-    return new ScalarStorage<T>(initialValue);
+  default <T> ScalarDataStorage<T> createScalarProvider(T initialValue) {
+    return new ScalarDataStorage<T>(initialValue);
   }
 }

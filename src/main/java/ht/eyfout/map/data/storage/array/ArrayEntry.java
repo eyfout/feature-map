@@ -3,11 +3,11 @@ package ht.eyfout.map.data.storage.array;
 import ht.eyfout.map.data.storage.DataStorage;
 
 public final class ArrayEntry {
-  private final ArrayGroupDataStorage mart;
+  private final ArrayGroupDataStorage storage;
   private final int index;
-  ArrayEntry(int index, ArrayGroupDataStorage mart){
+  ArrayEntry(int index, ArrayGroupDataStorage storage){
     this.index = index;
-    this.mart = mart;
+    this.storage = storage;
   }
 
   int index(){
@@ -15,11 +15,11 @@ public final class ArrayEntry {
   }
 
   @SuppressWarnings("unchecked")
-  public <T extends DataStorage> T getMart() {
-    return (T)mart.getDataMart()[index];
+  public <T extends DataStorage> T getstorage() {
+    return (T)storage.getDatastorage()[index];
   }
 
   public ArrayGroupDataStorage source(){
-    return mart;
+    return storage;
   }
 }
