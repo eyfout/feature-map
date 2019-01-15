@@ -2,35 +2,23 @@ package ht.eyfout.map.data.storage.internal;
 
 import ht.eyfout.map.data.storage.DataStorage.DataStorageBuilder;
 import ht.eyfout.map.data.storage.GroupDataStorage;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 public class DataStorageBuilderFactory implements
     ht.eyfout.map.data.storage.DataStorageBuilderFactory {
 
-  Map<Class, DataStorageBuilder> builders = new HashMap<>();
+  private final Map<Class, Provider<DataStorageBuilder>> builders;
 
   @Inject
-  protected DataStorageBuilderFactory(Set<DataStorageBuilder> builders) {
-    final String methodName = DataStorageBuilder.class.getDeclaredMethods()[0].getName();
-    builders
-        .stream()
-        .forEach(
-            (builder) -> {
-              try {
-                this.builders.put(
-                    builder.getClass().getDeclaredMethod(methodName).getReturnType(), builder);
-              } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-              }
-            });
+  protected DataStorageBuilderFactory(Map<Class, Provider<DataStorageBuilder>> builders) {
+    this.builders = builders;
   }
 
   @Override
   @SuppressWarnings("unchecked")
   public <T extends GroupDataStorage, B extends DataStorageBuilder<T>> B create(Class<T> clazz) {
-    return (B) builders.get(clazz);
+    return (B) builders.get(clazz).get();
   }
 }
