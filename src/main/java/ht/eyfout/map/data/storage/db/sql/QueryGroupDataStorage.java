@@ -1,15 +1,16 @@
 package ht.eyfout.map.data.storage.db.sql;
 
-import ht.eyfout.map.data.storage.map.MapGroupDataMart;
+import ht.eyfout.map.data.storage.map.MapGroupDataStorage;
 
-public class QueryGroupDataMart extends MapGroupDataMart {
+public class QueryGroupDataStorage extends MapGroupDataStorage {
 
   @Override
   public boolean isImmutable() {
     return true;
   }
 
-  public static interface QueryGroupDataMartBuilder extends DataMartBuilder<QueryGroupDataMart> {
+  public static interface QueryGroupDataStorageBuilder extends
+      DataStorageBuilder<QueryGroupDataStorage> {
 
     Field select();
 
@@ -22,7 +23,7 @@ public class QueryGroupDataMart extends MapGroupDataMart {
     }
 
     interface DataSource {
-      QueryGroupDataMartBuilder from(String table);
+      QueryGroupDataStorageBuilder from(String table);
     }
   }
 }

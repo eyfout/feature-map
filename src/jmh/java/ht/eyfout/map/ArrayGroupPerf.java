@@ -1,12 +1,14 @@
 package ht.eyfout.map;
 
-import ht.eyfout.map.data.storage.DataMartFactory;
-import ht.eyfout.map.data.storage.GroupDataMart;
-import ht.eyfout.map.data.storage.array.ArrayGroupDataMart;
-import ht.eyfout.map.data.storage.array.ArrayGroupDataMart.ArrayGroupDataMartBuilder;
-import ht.eyfout.map.data.storage.array.ArrayGroupDataMart.ArrayGroupDataMartBuilder.ArrayGroupVersion;
+import ht.eyfout.map.data.storage.DataStorageBuilderFactory;
+import ht.eyfout.map.data.storage.GroupDataStorage;
+import ht.eyfout.map.data.storage.array.ArrayGroupDataStorage;
+import ht.eyfout.map.data.storage.array.ArrayGroupDataStorage.ArrayGroupDataStorageBuilder;
+import ht.eyfout.map.data.storage.array.ArrayGroupDataStorage.ArrayGroupDataStorageBuilder.ArrayGroupVersion;
 import ht.eyfout.map.element.Group;
+import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.factory.ElementMapFactory;
+import ht.eyfout.test.artifacts.Seed;
 import ht.guice.GuiceInstance;
 import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -32,27 +34,25 @@ public class ArrayGroupPerf {
   protected ArrayGroupVersion version;
   private Group groupElement;
   private Group groupBackedByCopy;
-  private GroupDataMart mart;
+  private GroupDataStorage mart;
+
   public ArrayGroupPerf() {
     version = ArrayGroupVersion.FUNCTION;
   }
 
   @Setup
   public void doSetup() {
-    DataMartFactory martFactory = GuiceInstance.get(DataMartFactory.class);
+    DataStorageBuilderFactory martFactory = GuiceInstance.get(DataStorageBuilderFactory.class);
     ElementMapFactory factory = GuiceInstance.get(ElementMapFactory.class);
 
-    GroupDataMart original =
+    GroupDataStorage original =
         martFactory
-            .<ArrayGroupDataMart, ArrayGroupDataMartBuilder>create(ArrayGroupDataMart.class)
+            .<ArrayGroupDataStorage, ArrayGroupDataStorageBuilder>create(ArrayGroupDataStorage.class)
             .version(version)
             .build();
     groupElement = factory.group(original);
-    for (int i = 0; i < 100; i++) {
-      groupElement.putScalarValue("key-" + i, i);
-    }
-
-    groupBackedByCopy = factory.group(original.<GroupDataMart>copy());
+    Seed.seedGroupElement(groupElement, 100, "key-");
+    groupBackedByCopy = factory.group(original.<GroupDataStorage>copy());
     mart = original;
   }
 
@@ -79,8 +79,38 @@ public class ArrayGroupPerf {
   }
 
   @Benchmark
-  public GroupDataMart copy() {
-    return mart.<GroupDataMart>copy();
+  public GroupDataStorage copy() {
+    return mart.<GroupDataStorage>copy();
+  }
+
+  @Benchmark
+  public void setScalarValue(Blackhole bh) {
+    Scalar<Integer> scalar = groupElement.getScalar("key-3");
+    scalar.set(101);
+    bh.consume(scalar);
+  }
+
+  @Benchmark
+  public void setAndOverrideScalarValue(Blackhole bh) {
+    Scalar<Integer> scalar = groupElement.getScalar("key-3");
+    scalar.set(101);
+    scalar.set(300);
+    bh.consume(scalar);
+  }
+
+  @Benchmark
+  public void setScalarValueOnCopy(Blackhole bh) {
+    Scalar<Integer> scalar = groupBackedByCopy.getScalar("key-3");
+    scalar.set(101);
+    bh.consume(scalar);
+  }
+
+  @Benchmark
+  public void setAndOverrideScalarValueOnCopy(Blackhole bh) {
+    Scalar<Integer> scalar = groupBackedByCopy.getScalar("key-3");
+    scalar.set(101);
+    scalar.set(300);
+    bh.consume(scalar);
   }
 
   public static class ArrayGroupInt extends ArrayGroupPerf {
@@ -88,4 +118,5 @@ public class ArrayGroupPerf {
       version = ArrayGroupVersion.INT;
     }
   }
+
 }

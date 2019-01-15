@@ -1,19 +1,20 @@
 package ht.eyfout.map.data.storage.db.sql.internal;
 
-import ht.eyfout.map.data.storage.db.sql.QueryGroupDataMart;
+import ht.eyfout.map.data.storage.db.sql.QueryGroupDataStorage;
 import ht.sample.data.source.Database;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
 
-public class QueryGroupDataMartBuilder implements QueryGroupDataMart.QueryGroupDataMartBuilder {
+public class QueryGroupDataStorageBuilder implements
+    QueryGroupDataStorage.QueryGroupDataStorageBuilder {
 
   StringBuffer buffer;
   Database db;
 
   @Inject
-  public QueryGroupDataMartBuilder(Database db) {
+  public QueryGroupDataStorageBuilder(Database db) {
     buffer = new StringBuffer();
     this.db = db;
   }
@@ -25,8 +26,8 @@ public class QueryGroupDataMartBuilder implements QueryGroupDataMart.QueryGroupD
   }
 
   @Override
-  public QueryGroupDataMart build() {
-    QueryGroupDataMart store = new QueryGroupDataMart();
+  public QueryGroupDataStorage build() {
+    QueryGroupDataStorage store = new QueryGroupDataStorage();
     store.put("SQL", store.createScalarProvider(buffer.toString()));
     return store;
   }
@@ -38,10 +39,10 @@ public class QueryGroupDataMartBuilder implements QueryGroupDataMart.QueryGroupD
     }
 
     @Override
-    public QueryGroupDataMart.QueryGroupDataMartBuilder from(String table) {
+    public QueryGroupDataStorage.QueryGroupDataStorageBuilder from(String table) {
       buffer.append("FROM ");
       buffer.append(table);
-      return ht.eyfout.map.data.storage.db.sql.internal.QueryGroupDataMartBuilder.this;
+      return ht.eyfout.map.data.storage.db.sql.internal.QueryGroupDataStorageBuilder.this;
     }
   }
 

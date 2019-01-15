@@ -1,5 +1,4 @@
 rootProject.name = 'feature-map'
-include 'appServer'
 include 'dsl'
 findProject(':dsl')?.name = 'feature-map-dsl'
 

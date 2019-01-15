@@ -1,8 +1,8 @@
 package ht.eyfout.map.element.internal;
 
-import ht.eyfout.map.data.storage.GroupDataMart;
-import ht.eyfout.map.data.storage.ScalarMart;
-import ht.eyfout.map.data.storage.deltastore.DeltaStoreGroupDataMart;
+import ht.eyfout.map.data.storage.GroupDataStorage;
+import ht.eyfout.map.data.storage.ScalarStorage;
+import ht.eyfout.map.data.storage.deltastore.DeltaStoreGroupDataStorage;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.feature.FeatureDescriptor;
@@ -14,12 +14,12 @@ import ht.eyfout.map.registrar.internal.FeatureRegistrar.FeatureBundle;
 
 public class GroupElement extends AbstractFeatureBundleFeatureSupporter implements Group {
   protected RuntimeContext context;
-  private GroupDataMart dataStore;
+  private GroupDataStorage dataStore;
 
-  protected GroupElement(GroupDataMart dataStore, FeatureBundle bundle, RuntimeContext context) {
+  protected GroupElement(GroupDataStorage dataStore, FeatureBundle bundle, RuntimeContext context) {
     super(bundle);
     this.dataStore =
-        dataStore.isImmutable() ? DeltaStoreGroupDataMart.create(dataStore) : dataStore;
+        dataStore.isImmutable() ? DeltaStoreGroupDataStorage.create(dataStore) : dataStore;
     this.context = context;
   }
 
@@ -41,7 +41,7 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
 
   @Override
   public <T> T getScalarValue(String name) {
-    ScalarMart<T> scalarProvider = dataStore.<ScalarMart<T>>get(name);
+    ScalarStorage<T> scalarProvider = dataStore.<ScalarStorage<T>>get(name);
     final T value = (null == scalarProvider) ? null : scalarProvider.get();
     return this.<GroupFeature>chain()
         .map((pgFeature) -> pgFeature.getScalarValue(name, value, this, context))
@@ -50,11 +50,10 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
 
   @Override
   public <T> Scalar<T> getScalar(String name) {
-    final ScalarElement<T> scalar =
-        ElementFactory.create(dataStore.<ScalarMart<T>>get(name), bundle(), context);
-    return this.<GroupFeature>chain()
+    final ScalarStorage<T> scalar = dataStore.<ScalarStorage<T>>get(name);
+    return ElementFactory.create(this, this.<GroupFeature>chain()
         .map((pgFeature) ->  pgFeature.getScalar(name, scalar, this, context))
-        .orElse(scalar);
+        .orElse(scalar), name);
   }
 
   @Override
@@ -65,7 +64,7 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
   @Override
   public void putGroup(String name, Group group) {
     GroupElement groupElement = getAs(group);
-    GroupDataMart  copy = groupElement.dataStore.copy();
+    GroupDataStorage copy = groupElement.dataStore.copy();
     dataStore.put(name, this.<GroupFeature>chain()
         .map((pgFeature) -> pgFeature.putGroup(name, copy, this, context))
         .orElse(copy));

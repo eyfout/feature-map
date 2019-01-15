@@ -1,8 +1,8 @@
 package ht.eyfout.map.feature;
 
-import ht.eyfout.map.data.storage.GroupDataMart;
+import ht.eyfout.map.data.storage.GroupDataStorage;
+import ht.eyfout.map.data.storage.ScalarStorage;
 import ht.eyfout.map.element.Group;
-import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.feature.runtime.RuntimeContext;
 
 public abstract class GroupFeature extends FeatureForward<GroupFeature> {
@@ -10,26 +10,37 @@ public abstract class GroupFeature extends FeatureForward<GroupFeature> {
     super(groupFeature);
   }
 
-  public <T> T putScalarValue(String name, T value, Group element, RuntimeContext context) {
+  public <T> T putScalarValue(
+      final String name, final T value, final Group element, final RuntimeContext context) {
     return next()
         .map((feature) -> feature.putScalarValue(name, value, element, context))
         .orElse(value);
   }
 
-  public <T> T getScalarValue(String name, T value, Group element, RuntimeContext context) {
+  public <T> T getScalarValue(
+      final String name, final T value, final Group element, final RuntimeContext context) {
     return next()
         .map((feature) -> feature.getScalarValue(name, value, element, context))
         .orElse(value);
   }
 
-  public <T> Scalar<T> getScalar(
-      String name, Scalar<T> scalar, Group element, RuntimeContext context) {
+  public <T> ScalarStorage<T> getScalar(
+      final String name,
+      final ScalarStorage<T> scalar,
+      final Group element,
+      final RuntimeContext context) {
     return next()
         .map((feature) -> feature.getScalar(name, scalar, element, context))
         .orElse(scalar);
   }
 
-  public GroupDataMart putGroup(String name, GroupDataMart groupValue, Group element, RuntimeContext context){
-    return next().map( (feature) -> feature.putGroup(name, groupValue, element, context)).orElse(groupValue);
+  public GroupDataStorage putGroup(
+      final String name,
+      final GroupDataStorage groupValue,
+      final Group element,
+      final RuntimeContext context) {
+    return next()
+        .map((feature) -> feature.putGroup(name, groupValue, element, context))
+        .orElse(groupValue);
   }
 }

@@ -1,8 +1,7 @@
 package ht.eyfout.map.element
 
-import ht.eyfout.map.data.storage.DataMartFactory
-import ht.eyfout.map.data.storage.array.ArrayGroupDataMart
-import ht.eyfout.map.data.storage.map.MapGroupDataMart
+import ht.eyfout.map.data.storage.DataStorageBuilderFactory
+import ht.eyfout.map.data.storage.map.MapGroupDataStorage
 import ht.eyfout.map.factory.ElementMapFactory
 import ht.eyfout.map.feature.Feature
 import ht.guice.GuiceInstance
@@ -17,8 +16,8 @@ class MapGroupSpec extends Specification {
 
     def setup() {
         groupElement = getFactory().group(
-                GuiceInstance.get(DataMartFactory.class)
-                        .create(MapGroupDataMart.class).build())
+                GuiceInstance.get(DataStorageBuilderFactory.class)
+                        .create(MapGroupDataStorage.class).build())
     }
 
     def 'Can retrieve previously stored value from Group element'() {

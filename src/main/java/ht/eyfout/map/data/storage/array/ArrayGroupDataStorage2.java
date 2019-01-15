@@ -1,35 +1,39 @@
 package ht.eyfout.map.data.storage.array;
 
-import ht.eyfout.map.data.storage.DataMart;
+import ht.eyfout.map.data.storage.DataStorage;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class ArrayGroupDataMart2 extends ArrayGroupDataMart {
+public class ArrayGroupDataStorage2 extends ArrayGroupDataStorage {
 
   Map<String, ArrayEntry> indices;
   Map<Integer, ArrayEntry> indicesInt;
 
-  ArrayGroupDataMart2() {
+  ArrayGroupDataStorage2() {
     indices = new HashMap<>();
     indicesInt = new HashMap<>();
   }
 
   @Override
-  public <T extends DataMart> void put(String name, T provider) {
+  public <T extends DataStorage> void put(String name, T provider) {
     int indx = getIndex(name);
     getDataMart()[indx] = provider;
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T extends DataMart> T get(String name) {
-    return (T) getDataMart()[getIndex(name)];
+  public <T extends DataStorage> T get(String name) {
+    ArrayEntry entry = indices.get(name);
+    if(null == entry){
+      return  null;
+    }
+    return entry.getMart();
   }
 
   @Override
-  <T extends DataMart> T getByIndex(int index) {
+  <T extends DataStorage> T getByIndex(int index) {
     return getIndicesInt().get(index).getMart();
   }
 
@@ -56,7 +60,7 @@ public class ArrayGroupDataMart2 extends ArrayGroupDataMart {
     };
   }
 
-  protected DataMart[] getDataMart() {
+  protected DataStorage[] getDataMart() {
     return store;
   }
 
@@ -91,12 +95,12 @@ public class ArrayGroupDataMart2 extends ArrayGroupDataMart {
     return entry.index();
   }
 
-  protected DataMart[] expandStorage(DataMart[] arr, int newSize) {
+  protected DataStorage[] expandStorage(DataStorage[] arr, int newSize) {
     return Arrays.copyOf(arr, newSize);
   }
 
   @Override
-  public ArrayGroupDataMart2 copy() {
-    return new ArrayGroupDataMart2Copy(this);
+  public ArrayGroupDataStorage2 copy() {
+    return new ArrayGroupDataStorage2Copy(this);
   }
 }

@@ -1,10 +1,9 @@
 package ht.eyfout.map.feature.deltastore;
 
-import ht.eyfout.map.data.storage.DataMartFactory;
-import ht.eyfout.map.data.storage.ScalarMart;
-import ht.eyfout.map.data.storage.map.MapGroupDataMart;
+import ht.eyfout.map.data.storage.DataStorageBuilderFactory;
+import ht.eyfout.map.data.storage.ScalarStorage;
+import ht.eyfout.map.data.storage.map.MapGroupDataStorage;
 import ht.eyfout.map.element.Group;
-import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.factory.FeatureElementMapFactory;
 import ht.eyfout.map.feature.Feature;
 import ht.eyfout.map.feature.FeatureProfile;
@@ -14,11 +13,11 @@ import ht.eyfout.map.feature.runtime.RuntimeContext;
 
 public class DeltaStoreGroupFeature extends GroupFeature {
   private final FeatureElementMapFactory elementMapFactory;
-  private final DataMartFactory dsFactory;
+  private final DataStorageBuilderFactory dsFactory;
 
   public DeltaStoreGroupFeature(
       FeatureElementMapFactory elementMapFactory,
-      DataMartFactory dsFactory,
+      DataStorageBuilderFactory dsFactory,
       GroupFeature groupFeature) {
     super(groupFeature);
     this.elementMapFactory = elementMapFactory;
@@ -27,15 +26,15 @@ public class DeltaStoreGroupFeature extends GroupFeature {
 
   @Override
   public <T> T putScalarValue(String name, T value, Group element, RuntimeContext context) {
-    MapGroupDataMart provider = context.<MapGroupDataMart>data(this);
+    MapGroupDataStorage provider = context.<MapGroupDataStorage>data(this);
     provider.put(name, provider.createScalarProvider(value));
     throw new StoppedFeatureChainException(this, name, value);
   }
 
   @Override
   public <T> T getScalarValue(String name, T value, Group element, RuntimeContext context) {
-    MapGroupDataMart store = context.<MapGroupDataMart>data(this);
-    final ScalarMart<T> scalarProvider = store.<ScalarMart<T>>get(name);
+    MapGroupDataStorage store = context.<MapGroupDataStorage>data(this);
+    final ScalarStorage<T> scalarProvider = store.<ScalarStorage<T>>get(name);
     if (null == scalarProvider) {
       return super.getScalarValue(name, value, element, context);
     }
@@ -44,15 +43,19 @@ public class DeltaStoreGroupFeature extends GroupFeature {
   }
 
   @Override
-  public <T> Scalar<T> getScalar(
-      String name, Scalar<T> scalar, Group element, RuntimeContext context) {
-    MapGroupDataMart store = context.data(this);
-    return elementMapFactory.scalar(element, store.<ScalarMart<T>>get(name), name);
+  public <T> ScalarStorage<T> getScalar(
+      String name, ScalarStorage<T> scalar, Group element, RuntimeContext context) {
+    MapGroupDataStorage store = context.data(this);
+    ScalarStorage<T> result = store.get(name);
+    if (null == result) {
+      return scalar;
+    }
+    return result;
   }
 
   @Override
   public Object init(RuntimeContext context) {
-    return dsFactory.create(MapGroupDataMart.class).build();
+    return dsFactory.create(MapGroupDataStorage.class).build();
   }
 
   @Override
@@ -62,6 +65,6 @@ public class DeltaStoreGroupFeature extends GroupFeature {
 
   @Override
   public DeltaStoreOperations operations(RuntimeContext context) {
-    return new DeltaStoreOperations(context.<MapGroupDataMart>data(this));
+    return new DeltaStoreOperations(context.<MapGroupDataStorage>data(this));
   }
 }

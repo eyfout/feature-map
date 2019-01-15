@@ -1,18 +1,18 @@
 package ht.eyfout.map.data.storage;
 
-public interface DataMart {
+public interface DataStorage {
   default boolean isImmutable() {
     return false;
   }
 
-  default <T extends DataMart> T copy(){
+  default <T extends DataStorage> T copy(){
     throw new UnsupportedOperationException();
   }
 
   int size();
 
   @FunctionalInterface
-  interface DataMartBuilder<R extends GroupDataMart> {
+  interface DataStorageBuilder<R extends GroupDataStorage> {
     R build();
   }
 }

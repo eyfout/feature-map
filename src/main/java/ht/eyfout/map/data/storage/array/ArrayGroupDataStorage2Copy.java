@@ -1,32 +1,32 @@
 package ht.eyfout.map.data.storage.array;
 
-import ht.eyfout.map.data.storage.DataMart;
-import ht.eyfout.map.data.storage.GroupDataMart;
-import ht.eyfout.map.data.storage.ScalarMart;
+import ht.eyfout.map.data.storage.DataStorage;
+import ht.eyfout.map.data.storage.GroupDataStorage;
+import ht.eyfout.map.data.storage.ScalarStorage;
 import java.util.HashMap;
 
-public class ArrayGroupDataMart2Copy extends ArrayGroupDataMart2 {
+public class ArrayGroupDataStorage2Copy extends ArrayGroupDataStorage2 {
 
   private boolean hasLocalChanges;
 
-  ArrayGroupDataMart2Copy(ArrayGroupDataMart2 arr) {
+  ArrayGroupDataStorage2Copy(ArrayGroupDataStorage2 arr) {
     indices = arr.indices;
     indicesInt = arr.indicesInt;
   }
 
   @Override
-  public <T extends DataMart> void put(String name, T provider) {
+  public <T extends DataStorage> void put(String name, T provider) {
     modifying(name);
     super.put(name, provider);
   }
 
   @Override
-  public <T extends DataMart> T get(String name) {
+  public <T extends DataStorage> T get(String name) {
     ArrayEntry entry = indices.get(name);
-    T result = super.get(name);
-    if (isRemoteEntry(entry)) {
-      if (ScalarMart.class.isAssignableFrom((result.getClass()))) {
-        result = (T) new ScalarEntryMart<>(name, entry);
+    T result = entry.getMart();
+    if (isRemoteEntry(entry) && null != result) {
+      if (ScalarStorage.class.isAssignableFrom((result.getClass()))) {
+        return (T) new ScalarEntryStorage<>(name, entry);
       }
       throw new UnsupportedOperationException();
     }
@@ -49,31 +49,31 @@ public class ArrayGroupDataMart2Copy extends ArrayGroupDataMart2 {
     }
   }
 
-  boolean isRemoteEntry(ArrayEntry entry) {
+  protected boolean isRemoteEntry(ArrayEntry entry) {
     if (null != entry && !entry.source().equals(this)) {
       return true;
     }
     return false;
   }
 
-  class GroupEntryMart implements GroupDataMart {
+  class GroupEntryStorage implements GroupDataStorage {
 
     ArrayEntry entry;
     String name;
 
-    public GroupEntryMart(String name, ArrayEntry entry) {
+    public GroupEntryStorage(String name, ArrayEntry entry) {
       this.name = name;
       this.entry = entry;
     }
 
     @Override
-    public <T extends DataMart> void put(String name, T provider) {
+    public <T extends DataStorage> void put(String name, T provider) {
       entry.getMart();
     }
 
     @Override
-    public <T extends DataMart> T get(String name) {
-      return entry.<GroupDataMart>getMart().get(name);
+    public <T extends DataStorage> T get(String name) {
+      return entry.<GroupDataStorage>getMart().get(name);
     }
 
     @Override
@@ -82,27 +82,27 @@ public class ArrayGroupDataMart2Copy extends ArrayGroupDataMart2 {
     }
   }
 
-  class ScalarEntryMart<T> extends ScalarMart<T> {
+  class ScalarEntryStorage<T> extends ScalarStorage<T> {
     ArrayEntry entry;
     String name;
     boolean created;
 
-    public ScalarEntryMart(String name, ArrayEntry entry) {
+    public ScalarEntryStorage(String name, ArrayEntry entry) {
       this.entry = entry;
       this.name = name;
     }
 
     @Override
     public T get() {
-      return entry.<ScalarMart<T>>getMart().get();
+      return entry.<ScalarStorage<T>>getMart().get();
     }
 
     @Override
     public void set(T value) {
-      if (created) {
-        entry.<ScalarMart<T>>getMart().set(value);
+      if (!isRemoteEntry(entry)) {
+        entry.<ScalarStorage<T>>getMart().set(value);
       } else {
-        put(name, new ScalarMart<>(value));
+        put(name, new ScalarStorage<>(value));
         entry = indices.get(name);
       }
       created = true;

@@ -6,7 +6,6 @@ import ht.eyfout.map.feature.FeatureDefinition;
 import ht.eyfout.map.feature.FeatureProfile;
 import ht.eyfout.map.feature.GroupFeature;
 import ht.eyfout.map.feature.ScalarFeature;
-import ht.eyfout.map.feature.forward.ForwardScalarFeature;
 import java.util.function.Function;
 
 public class FeatureFactory<P extends GroupFeature, S extends ScalarFeature> {
@@ -33,12 +32,11 @@ public class FeatureFactory<P extends GroupFeature, S extends ScalarFeature> {
     throw new IllegalArgumentException();
   }
 
-  public static <P extends GroupFeature> FeatureFactory<P, ForwardScalarFeature> create(
+  public static <P extends GroupFeature> FeatureFactory<P, ScalarFeature> create(
       Function<GroupFeature, P> groupFeatureFunc) {
     return create(
         groupFeatureFunc,
-        (scalarFeature) ->
-            new ForwardScalarFeature(scalarFeature, groupFeatureFunc.apply(null).profile()));
+        (scalarFeature) -> scalarFeature);
   }
 
   public static <P extends GroupFeature, S extends ScalarFeature> FeatureFactory<P, S> create(

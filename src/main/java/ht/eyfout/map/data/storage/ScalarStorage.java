@@ -1,11 +1,11 @@
 package ht.eyfout.map.data.storage;
 
-public class ScalarMart<T> implements DataMart {
+public class ScalarStorage<T> implements DataStorage {
   T scalarValue;
 
-  public ScalarMart() {}
+  public ScalarStorage() {}
 
-  public ScalarMart(T initialValue) {
+  public ScalarStorage(T initialValue) {
     scalarValue = initialValue;
   }
 
@@ -24,7 +24,7 @@ public class ScalarMart<T> implements DataMart {
 
   @Override
   @SuppressWarnings("unchecked")
-  public <D extends DataMart> D copy() {
-    return (D) new ScalarMart<>(scalarValue);
+  public <D extends DataStorage> D copy() {
+    return (D) new ScalarStorage<>(scalarValue);
   }
 }

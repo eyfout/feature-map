@@ -5,17 +5,17 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
-import ht.eyfout.map.data.storage.DataMart.DataMartBuilder;
-import ht.eyfout.map.data.storage.DataMartFactory;
-import ht.eyfout.map.data.storage.array.ArrayGroupDataMart.ArrayGroupDataMartBuilder;
-import ht.eyfout.map.data.storage.db.sql.internal.QueryGroupDataMartBuilder;
-import ht.eyfout.map.data.storage.deltastore.DeltaStoreGroupDataMart.DeltaStoreGroupDataMartBuilder;
-import ht.eyfout.map.data.storage.map.MapGroupDataMart.MapGroupDataMartBuilder;
+import ht.eyfout.map.data.storage.DataStorage.DataStorageBuilder;
+import ht.eyfout.map.data.storage.DataStorageBuilderFactory;
+import ht.eyfout.map.data.storage.array.ArrayGroupDataStorage.ArrayGroupDataStorageBuilder;
+import ht.eyfout.map.data.storage.db.sql.internal.QueryGroupDataStorageBuilder;
+import ht.eyfout.map.data.storage.deltastore.DeltaStoreGroupDataStorage.DeltaStoreGroupDataStorageBuilder;
+import ht.eyfout.map.data.storage.map.MapGroupDataStorage.MapGroupDataStorageBuilder;
 import ht.eyfout.map.factory.ElementMapFactory;
 import ht.eyfout.map.factory.FeatureElementMapFactory;
 import ht.eyfout.map.factory.FeatureFactory;
+import ht.eyfout.map.feature.ScalarFeature;
 import ht.eyfout.map.feature.deltastore.DeltaStoreGroupFeature;
-import ht.eyfout.map.feature.forward.ForwardScalarFeature;
 import ht.eyfout.map.feature.internal.dictionary.DictionaryGroupFeature;
 import ht.eyfout.map.feature.internal.dictionary.service.DictionaryService;
 import ht.eyfout.map.feature.messaging.MessagingGroupFeature;
@@ -32,45 +32,45 @@ class ElementGuiceModule extends AbstractModule {
     bind(ElementMapFactory.class).asEagerSingleton();
     bind(FeatureElementMapFactory.class).asEagerSingleton();
     bind(FeatureRegistrar.class).asEagerSingleton();
-    bind(DataMartFactory.class)
-        .to(ht.eyfout.map.data.storage.internal.DataMartFactory.class)
+    bind(DataStorageBuilderFactory.class)
+        .to(ht.eyfout.map.data.storage.internal.DataStorageBuilderFactory.class)
         .asEagerSingleton();
 
     Multibinder<FeatureFactory> featureFactories =
         Multibinder.newSetBinder(binder(), FeatureFactory.class);
     featureFactories
         .addBinding()
-        .to(new TypeLiteral<FeatureFactory<DeltaStoreGroupFeature, ForwardScalarFeature>>() {});
+        .to(new TypeLiteral<FeatureFactory<DeltaStoreGroupFeature, ScalarFeature>>() {});
     featureFactories
         .addBinding()
-        .to(new TypeLiteral<FeatureFactory<MessagingGroupFeature, ForwardScalarFeature>>() {});
+        .to(new TypeLiteral<FeatureFactory<MessagingGroupFeature, ScalarFeature>>() {});
     featureFactories
         .addBinding()
-        .to(new TypeLiteral<FeatureFactory<DictionaryGroupFeature, ForwardScalarFeature>>() {});
+        .to(new TypeLiteral<FeatureFactory<DictionaryGroupFeature, ScalarFeature>>() {});
 
-    Multibinder<DataMartBuilder> dsBuilders =
-        Multibinder.newSetBinder(binder(), DataMartBuilder.class);
+    Multibinder<DataStorageBuilder> dsBuilders =
+        Multibinder.newSetBinder(binder(), DataStorageBuilder.class);
 
-    dsBuilders.addBinding().to(MapGroupDataMartBuilder.class);
-    dsBuilders.addBinding().to(QueryGroupDataMartBuilder.class);
-    dsBuilders.addBinding().to(ArrayGroupDataMartBuilder.class);
-    dsBuilders.addBinding().to(DeltaStoreGroupDataMartBuilder.class);
+    dsBuilders.addBinding().to(MapGroupDataStorageBuilder.class);
+    dsBuilders.addBinding().to(QueryGroupDataStorageBuilder.class);
+    dsBuilders.addBinding().to(ArrayGroupDataStorageBuilder.class);
+    dsBuilders.addBinding().to(DeltaStoreGroupDataStorageBuilder.class);
   }
 
   @Provides
-  FeatureFactory<DeltaStoreGroupFeature, ForwardScalarFeature> deltaStore(
-      FeatureElementMapFactory factory, DataMartFactory dsFactory) {
+  FeatureFactory<DeltaStoreGroupFeature, ScalarFeature> deltaStore(
+      FeatureElementMapFactory factory, DataStorageBuilderFactory dsFactory) {
     return FeatureFactory.create(
         (pgFeature) -> new DeltaStoreGroupFeature(factory, dsFactory, pgFeature));
   }
 
   @Provides
-  FeatureFactory<MessagingGroupFeature, ForwardScalarFeature> messaging() {
+  FeatureFactory<MessagingGroupFeature, ScalarFeature> messaging() {
     return FeatureFactory.create(MessagingGroupFeature::new);
   }
 
   @Provides
-  FeatureFactory<DictionaryGroupFeature, ForwardScalarFeature> dictionary(
+  FeatureFactory<DictionaryGroupFeature, ScalarFeature> dictionary(
       Supplier<DictionaryService> service) {
     return FeatureFactory.create((pgFeature) -> new DictionaryGroupFeature(pgFeature, service));
   }

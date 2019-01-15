@@ -16,6 +16,14 @@ buildscript {
     }
 }
 
+subprojects {
+    apply plugin: 'groovy'
+    dependencies {
+        localGroovy()
+        testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
+    }
+}
+
 apply plugin: 'java'
 apply plugin: "me.champeau.gradle.jmh"
 apply plugin: 'groovy'
@@ -39,9 +47,4 @@ dependencies {
     testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
 }
 
-
-task appServer(type: WebAppServer) {
-    webApp 'TOMCAT'
-    webAppVersion '8.0'
-}
 

@@ -1,33 +1,33 @@
 package ht.eyfout.map.data.storage.array;
 
-import ht.eyfout.map.data.storage.DataMart;
-import ht.eyfout.map.data.storage.GroupDataMart;
+import ht.eyfout.map.data.storage.DataStorage;
+import ht.eyfout.map.data.storage.GroupDataStorage;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import javax.inject.Inject;
 
-public class ArrayGroupDataMart implements GroupDataMart {
+public class ArrayGroupDataStorage implements GroupDataStorage {
   static final int INITIAL_SIZE = 6;
-  private static final DataMart[] EMPTY_STORE = new DataMart[0];
-  protected DataMart[] store = EMPTY_STORE;
+  private static final DataStorage[] EMPTY_STORE = new DataStorage[0];
+  protected DataStorage[] store = EMPTY_STORE;
   int nextIndex = 0;
   int size = 0;
   private Map<String, Integer> indices;
 
-  ArrayGroupDataMart(){
+  ArrayGroupDataStorage(){
     indices = new HashMap<>();
   }
 
-  private ArrayGroupDataMart(ArrayGroupDataMart mart){
+  private ArrayGroupDataStorage(ArrayGroupDataStorage mart){
     indices = new HashMap<>(mart.indices);
     store = Arrays.copyOf(mart.store, mart.store.length);
     nextIndex = mart.size;
   }
 
   @Override
-  public <T extends DataMart> void put(String name, T provider) {
+  public <T extends DataStorage> void put(String name, T provider) {
     size++;
     int indx = getIndex(name);
     getDataMart()[indx] = provider;
@@ -35,8 +35,12 @@ public class ArrayGroupDataMart implements GroupDataMart {
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T extends DataMart> T get(String name) {
-    return (T) getDataMart()[getIndex(name)];
+  public <T extends DataStorage> T get(String name) {
+    Integer index = indices.get(name);
+    if(null == index){
+      return null;
+    }
+    return (T)getDataMart()[index];
   }
 
   @Override
@@ -44,7 +48,7 @@ public class ArrayGroupDataMart implements GroupDataMart {
     return size;
   }
 
-  DataMart[] getDataMart() {
+  DataStorage[] getDataMart() {
     return store;
   }
 
@@ -53,18 +57,18 @@ public class ArrayGroupDataMart implements GroupDataMart {
     if (null == i) {
       i = nextIndex;
       indices.put(name, nextIndex++);
-      if (store.length < nextIndex) {
+      if (store.length <= nextIndex) {
         store = expandStorage(store);
       }
     }
     return i;
   }
 
-  <T extends DataMart> T getByIndex(int index) {
+  <T extends DataStorage> T getByIndex(int index) {
     return (T) getDataMart()[index];
   }
 
-  private DataMart[] expandStorage(DataMart[] arr) {
+  private DataStorage[] expandStorage(DataStorage[] arr) {
     return Arrays.copyOf(arr, arr.length + INITIAL_SIZE);
   }
 
@@ -80,38 +84,39 @@ public class ArrayGroupDataMart implements GroupDataMart {
   }
 
   @Override
-  public <T extends DataMart> T copy() {
-    return (T)new ArrayGroupDataMart(this);
+  public <T extends DataStorage> T copy() {
+    return (T)new ArrayGroupDataStorage(this);
   }
 
   Function<String, Integer> getIndexFunc() {
     return (s) -> indices.get(s);
   }
 
-  public static class ArrayGroupDataMartBuilder implements DataMartBuilder<ArrayGroupDataMart> {
+  public static class ArrayGroupDataStorageBuilder implements
+      DataStorageBuilder<ArrayGroupDataStorage> {
 
     ArrayGroupVersion version = ArrayGroupVersion.FUNCTION;
 
     @Inject
-    public ArrayGroupDataMartBuilder() {}
+    public ArrayGroupDataStorageBuilder() {}
 
-    public ArrayGroupDataMartBuilder version(ArrayGroupVersion version) {
+    public ArrayGroupDataStorageBuilder version(ArrayGroupVersion version) {
       this.version = version;
       return this;
     }
 
-    public IndexGroupDataMart index(ArrayGroupDataMart arr){
-      return new IndexGroupDataMart(arr);
+    public IndexGroupDataStorage index(ArrayGroupDataStorage arr){
+      return new IndexGroupDataStorage(arr);
     }
 
     @Override
-    public ArrayGroupDataMart build() {
+    public ArrayGroupDataStorage build() {
       switch (version) {
         case INT:
-          return new ArrayGroupDataMart();
+          return new ArrayGroupDataStorage();
         default:
         case FUNCTION:
-          return new ArrayGroupDataMart2();
+          return new ArrayGroupDataStorage2();
       }
     }
 
