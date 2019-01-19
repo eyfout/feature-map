@@ -3,6 +3,7 @@ package ht.eyfout.map.feature.deltastore;
 import ht.eyfout.map.data.storage.DataStorageBuilderFactory;
 import ht.eyfout.map.data.storage.ScalarDataStorage;
 import ht.eyfout.map.data.storage.map.MapGroupDataStorage;
+import ht.eyfout.map.data.storage.map.MapGroupDataStorage.MapGroupDataStorageBuilder;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.factory.FeatureElementMapFactory;
 import ht.eyfout.map.feature.Feature;
@@ -55,7 +56,7 @@ public class DeltaStoreGroupFeature extends GroupFeature {
 
   @Override
   public Object init(RuntimeContext context) {
-    return dsFactory.create(MapGroupDataStorage.class).build();
+    return dsFactory.create(MapGroupDataStorageBuilder.class).build();
   }
 
   @Override

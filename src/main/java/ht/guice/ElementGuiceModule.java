@@ -6,8 +6,10 @@ import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
+import com.google.inject.multibindings.MultibinderBinding;
 import ht.eyfout.map.data.storage.DataStorage.DataStorageBuilder;
 import ht.eyfout.map.data.storage.DataStorageBuilderFactory;
+import ht.eyfout.map.data.storage.GroupDataStorage;
 import ht.eyfout.map.data.storage.array.ArrayGroupDataStorage;
 import ht.eyfout.map.data.storage.array.ArrayGroupDataStorage.ArrayGroupDataStorageBuilder;
 import ht.eyfout.map.data.storage.db.sql.QueryGroupDataStorage;
@@ -55,10 +57,10 @@ class ElementGuiceModule extends AbstractModule {
 
     MapBinder dsBuilders = MapBinder.newMapBinder(binder(), Class.class, DataStorageBuilder.class);
 
-    dsBuilders.addBinding(MapGroupDataStorage.class).to(MapGroupDataStorageBuilder.class);
-    dsBuilders.addBinding(QueryGroupDataStorage.class).to(QueryGroupDataStorageBuilder.class);
-    dsBuilders.addBinding(ArrayGroupDataStorage.class).to(ArrayGroupDataStorageBuilder.class);
-    dsBuilders.addBinding(DeltaStoreGroupDataStorage.class).to(DeltaStoreGroupDataStorageBuilder.class);
+    dsBuilders.addBinding(MapGroupDataStorageBuilder.class).to(MapGroupDataStorageBuilder.class);
+    dsBuilders.addBinding(QueryGroupDataStorageBuilder.class).to(QueryGroupDataStorageBuilder.class);
+    dsBuilders.addBinding(ArrayGroupDataStorageBuilder.class).to(ArrayGroupDataStorageBuilder.class);
+    dsBuilders.addBinding(DeltaStoreGroupDataStorageBuilder.class).to(DeltaStoreGroupDataStorageBuilder.class);
   }
 
 

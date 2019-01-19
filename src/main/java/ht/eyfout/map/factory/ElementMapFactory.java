@@ -35,7 +35,7 @@ public class ElementMapFactory {
 
   public Group group(Feature... feature) {
     return group(
-        dsFactory.<MapGroupDataStorage, MapGroupDataStorageBuilder>create(MapGroupDataStorage.class),
+        dsFactory.create(MapGroupDataStorageBuilder.class),
         feature);
   }
 

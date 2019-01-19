@@ -17,7 +17,7 @@ class MapGroupSpec extends Specification {
     def setup() {
         groupElement = getFactory().group(
                 GuiceInstance.get(DataStorageBuilderFactory.class)
-                        .create(MapGroupDataStorage.class).build())
+                        .create(MapGroupDataStorage.MapGroupDataStorageBuilder.class).build())
     }
 
     def 'Can retrieve previously stored value from Group element'() {
@@ -33,7 +33,7 @@ class MapGroupSpec extends Specification {
         groupElement.getScalarValue(key) == expectedValue
     }
 
-    def 'Featureless Group elements have no feature(s)'() {
+    def '#feature.name() is not present on a featureless Group element'() {
         expect:
         !groupElement.hasFeature(feature)
         where:

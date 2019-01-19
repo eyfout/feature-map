@@ -17,7 +17,7 @@ class ArrayGroupSpec extends MapGroupSpec {
     def setup() {
         dsFactory = GuiceInstance.get(DataStorageBuilderFactory.class)
         elementFactory = GuiceInstance.get(ElementMapFactory.class)
-        arrStore = dsFactory.create(ArrayGroupDataStorage.class).build()
+        arrStore = dsFactory.create(ArrayGroupDataStorage.ArrayGroupDataStorageBuilder.class).build()
         groupElement = elementFactory.group()
 
     }
@@ -25,8 +25,7 @@ class ArrayGroupSpec extends MapGroupSpec {
     def 'copy'() {
         Integer expectedValue = 88
         String expectedString = 'Inspiron'
-        GroupDataStorage storage = dsFactory.<ArrayGroupDataStorage,
-                ArrayGroupDataStorage.ArrayGroupDataStorageBuilder> create(ArrayGroupDataStorage.class).build()
+        GroupDataStorage storage = dsFactory.create(ArrayGroupDataStorage.ArrayGroupDataStorageBuilder.class).build()
         Group groupElement = elementFactory.group(storage)
         seed(groupElement)
 
@@ -34,8 +33,7 @@ class ArrayGroupSpec extends MapGroupSpec {
         Group groupElementCopy = elementFactory.group(storageCopy)
         groupElementCopy.putScalarValue('key#4', expectedString)
 
-        GroupDataStorage indexstorage = dsFactory.<ArrayGroupDataStorage,
-                ArrayGroupDataStorage.ArrayGroupDataStorageBuilder> create(ArrayGroupDataStorage.class).index(storageCopy)
+        GroupDataStorage indexstorage = dsFactory.create(ArrayGroupDataStorage.ArrayGroupDataStorageBuilder.class).index(storageCopy)
         expect: ''
         indexstorage.<ScalarDataStorage<Integer>> get(expectedValue).get() == expectedValue
         and: ''
@@ -44,8 +42,7 @@ class ArrayGroupSpec extends MapGroupSpec {
 
     def 'set value on scalar'(){
         Integer expectedValue = 88
-        GroupDataStorage storage = dsFactory.<ArrayGroupDataStorage,
-                ArrayGroupDataStorage.ArrayGroupDataStorageBuilder> create(ArrayGroupDataStorage.class).build()
+        GroupDataStorage storage = dsFactory.create(ArrayGroupDataStorage.ArrayGroupDataStorageBuilder.class).build()
         Group groupElement = elementFactory.group(storage)
         seed(groupElement)
 

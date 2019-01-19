@@ -1,13 +1,12 @@
 package ht.eyfout.map.data.storage.internal;
 
 import ht.eyfout.map.data.storage.DataStorage.DataStorageBuilder;
-import ht.eyfout.map.data.storage.GroupDataStorage;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-public class DataStorageBuilderFactory implements
-    ht.eyfout.map.data.storage.DataStorageBuilderFactory {
+public class DataStorageBuilderFactory
+    implements ht.eyfout.map.data.storage.DataStorageBuilderFactory {
 
   private final Map<Class, Provider<DataStorageBuilder>> builders;
 
@@ -18,7 +17,7 @@ public class DataStorageBuilderFactory implements
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T extends GroupDataStorage, B extends DataStorageBuilder<T>> B create(Class<T> clazz) {
+  public <B extends DataStorageBuilder> B create(Class<B> clazz) {
     return (B) builders.get(clazz).get();
   }
 }

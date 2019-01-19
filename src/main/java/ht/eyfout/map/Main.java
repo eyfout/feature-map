@@ -16,7 +16,7 @@ public class Main {
   public static void main(String[] args) throws NoSuchMethodException {
     DataStorageBuilderFactory factory = GuiceInstance.get(DataStorageBuilderFactory.class);
 
-    QueryGroupDataStorageBuilder queryBuilder = factory.create(QueryGroupDataStorage.class);
+    QueryGroupDataStorageBuilder queryBuilder = factory.create(QueryGroupDataStorageBuilder.class);
     QueryGroupDataStorage queryStore =
         queryBuilder
             .select()

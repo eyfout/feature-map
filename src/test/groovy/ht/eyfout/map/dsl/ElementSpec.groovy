@@ -7,10 +7,9 @@ import spock.lang.Specification
 
 class ElementSpec extends Specification{
 
-    def elem(Closure cl){
+    def elem(Closure closure){
         def groupSpec = new GroupElementSpec()
-        cl.rehydrate(groupSpec, this, this).call()
-
+        closure.rehydrate(groupSpec, this, this).call()
     }
 
     class GroupElementSpec {

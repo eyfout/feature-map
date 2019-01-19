@@ -1,10 +1,10 @@
 package ht.eyfout.map;
 
 import com.google.common.collect.ImmutableMap;
+import ht.eyfout.map.data.storage.DataStorage.DataStorageBuilder;
 import ht.eyfout.map.data.storage.DataStorageBuilderFactory;
-import ht.eyfout.map.data.storage.GroupDataStorage;
-import ht.eyfout.map.data.storage.array.ArrayGroupDataStorage;
-import ht.eyfout.map.data.storage.map.MapGroupDataStorage;
+import ht.eyfout.map.data.storage.array.ArrayGroupDataStorage.ArrayGroupDataStorageBuilder;
+import ht.eyfout.map.data.storage.map.MapGroupDataStorage.MapGroupDataStorageBuilder;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.factory.ElementMapFactory;
@@ -33,8 +33,9 @@ import org.openjdk.jmh.infra.Blackhole;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class GroupElementPerf {
 
-  static final Map<String, Class<? extends GroupDataStorage>> providers =
-      ImmutableMap.of("map", MapGroupDataStorage.class, "array", ArrayGroupDataStorage.class);
+  static final Map<String, Class<? extends DataStorageBuilder>> providers =
+      ImmutableMap.of(
+          "map", MapGroupDataStorageBuilder.class, "array", ArrayGroupDataStorageBuilder.class);
 
   @Param({"array", "map"})
   String DataProvider;

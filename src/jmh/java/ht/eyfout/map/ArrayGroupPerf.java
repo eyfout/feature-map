@@ -47,7 +47,7 @@ public class ArrayGroupPerf {
 
     GroupDataStorage original =
         storageFactory
-            .<ArrayGroupDataStorage, ArrayGroupDataStorageBuilder>create(ArrayGroupDataStorage.class)
+            .create(ArrayGroupDataStorageBuilder.class)
             .version(version)
             .build();
     groupElement = factory.group(original);

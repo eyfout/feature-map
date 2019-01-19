@@ -17,7 +17,7 @@ class IndexGroupSpec extends Specification {
     def setup() {
         dsFactory = GuiceInstance.get(DataStorageBuilderFactory.class)
         elementFactory = GuiceInstance.get(ElementMapFactory.class)
-        arrStore = dsFactory.create(ArrayGroupDataStorage.class).build()
+        arrStore = dsFactory.create(ArrayGroupDataStorage.ArrayGroupDataStorageBuilder.class).build()
     }
 
     def 'Access data store by index'() {
@@ -28,8 +28,7 @@ class IndexGroupSpec extends Specification {
         "put a $expectedValue on the Group element"
         groupElement.putScalarValue('key', expectedValue)
         and: 'decorate array store with index data store'
-        IndexGroupDataStorage indxStore = dsFactory.<ArrayGroupDataStorage,
-                ArrayGroupDataStorage.ArrayGroupDataStorageBuilder> create(ArrayGroupDataStorage.class).index(arrStore)
+        IndexGroupDataStorage indxStore = dsFactory.create(ArrayGroupDataStorage.ArrayGroupDataStorageBuilder.class).index(arrStore)
         then:
         "value at position 0 = $expectedValue"
         expectedValue == indxStore.<ScalarDataStorage> get(0).get()
@@ -44,9 +43,7 @@ class IndexGroupSpec extends Specification {
         groupElement.putScalarValue('NaN', 'NaN')
         groupElement.putScalarValue('key', expectedValue)
         and: 'decorate array store with index data store'
-        IndexGroupDataStorage indxStore = dsFactory.
-        <ArrayGroupDataStorage,
-                ArrayGroupDataStorage.ArrayGroupDataStorageBuilder> create(ArrayGroupDataStorage.class).index(arrStore)
+        IndexGroupDataStorage indxStore = dsFactory.create(ArrayGroupDataStorage.ArrayGroupDataStorageBuilder.class).index(arrStore)
 
         then:
         "value at position $expectedValue"
