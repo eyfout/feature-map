@@ -3,6 +3,8 @@ package ht.eyfout.map.element.internal;
 import ht.eyfout.map.data.storage.GroupDataStorage;
 import ht.eyfout.map.data.storage.ScalarDataStorage;
 import ht.eyfout.map.data.storage.deltastore.DeltaStoreGroupDataStorage;
+import ht.eyfout.map.data.storage.visitor.internal.ElementDataStorageVisitor;
+import ht.eyfout.map.element.ElementVisitor;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.feature.FeatureDescriptor;
@@ -30,9 +32,7 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
           name,
           dataStore.createScalarProvider(
               this.<GroupFeature>chain()
-                  .map(
-                      (pgFeature) ->
-                          pgFeature.putScalarValue(name, value, this, context))
+                  .map((pgFeature) -> pgFeature.putScalarValue(name, value, this, context))
                   .orElse(value)));
     } catch (StoppedFeatureChainException e) {
       // TODO
@@ -51,9 +51,12 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
   @Override
   public <T> Scalar<T> getScalar(String name) {
     final ScalarDataStorage<T> scalar = dataStore.<ScalarDataStorage<T>>get(name);
-    return ElementFactory.create(this, this.<GroupFeature>chain()
-        .map((pgFeature) ->  pgFeature.getScalar(name, scalar, this, context))
-        .orElse(scalar), name);
+    return ElementFactory.create(
+        this,
+        this.<GroupFeature>chain()
+            .map((pgFeature) -> pgFeature.getScalar(name, scalar, this, context))
+            .orElse(scalar),
+        name);
   }
 
   @Override
@@ -65,15 +68,23 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
   public void putGroup(String name, Group group) {
     GroupElement groupElement = getAs(group);
     GroupDataStorage copy = groupElement.dataStore.copy();
-    dataStore.put(name, this.<GroupFeature>chain()
-        .map((pgFeature) -> pgFeature.putGroup(name, copy, this, context))
-        .orElse(copy));
+    dataStore.put(
+        name,
+        this.<GroupFeature>chain()
+            .map((pgFeature) -> pgFeature.putGroup(name, copy, this, context))
+            .orElse(copy));
   }
 
-  private GroupElement getAs(Group group){
-    if( group instanceof GroupElement){
-      return (GroupElement)group;
+  private GroupElement getAs(Group group) {
+    if (group instanceof GroupElement) {
+      return (GroupElement) group;
     }
     throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public <T> T accept(ElementVisitor visitor) {
+    dataStore.accept(new ElementDataStorageVisitor(this, visitor));
+    return visitor.result();
   }
 }

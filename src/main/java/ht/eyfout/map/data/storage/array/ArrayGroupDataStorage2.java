@@ -1,6 +1,8 @@
 package ht.eyfout.map.data.storage.array;
 
 import ht.eyfout.map.data.storage.DataStorage;
+import ht.eyfout.map.data.storage.visitor.DataStorageVisitor;
+import ht.eyfout.map.data.storage.visitor.VisitorResult;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,8 +28,8 @@ public class ArrayGroupDataStorage2 extends ArrayGroupDataStorage {
   @SuppressWarnings("unchecked")
   public <T extends DataStorage> T get(String name) {
     ArrayEntry entry = indices.get(name);
-    if(null == entry){
-      return  null;
+    if (null == entry) {
+      return null;
     }
     return entry.getstorage();
   }
@@ -102,5 +104,19 @@ public class ArrayGroupDataStorage2 extends ArrayGroupDataStorage {
   @Override
   public ArrayGroupDataStorage2 copy() {
     return new ArrayGroupDataStorage2Copy(this);
+  }
+
+  @Override
+  public <T> T accept(DataStorageVisitor visitor) {
+    VisitorResult progress;
+    visitor.pre(this);
+    for (Map.Entry<String, ArrayEntry> entry : indices.entrySet()) {
+      progress = visitor.visit(entry.getKey(), entry.getValue().getstorage());
+      if (progress == VisitorResult.HALT) {
+        break;
+      }
+    }
+    visitor.post(this);
+    return visitor.result();
   }
 }
