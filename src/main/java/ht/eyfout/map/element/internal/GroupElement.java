@@ -4,7 +4,7 @@ import ht.eyfout.map.data.storage.GroupDataStorage;
 import ht.eyfout.map.data.storage.ScalarDataStorage;
 import ht.eyfout.map.data.storage.deltastore.DeltaStoreGroupDataStorage;
 import ht.eyfout.map.data.storage.visitor.internal.ElementDataStorageVisitor;
-import ht.eyfout.map.element.ElementVisitor;
+import ht.eyfout.map.element.visitor.ElementVisitor;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.feature.FeatureDescriptor;

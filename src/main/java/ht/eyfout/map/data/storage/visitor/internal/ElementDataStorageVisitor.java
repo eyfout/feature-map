@@ -5,7 +5,7 @@ import ht.eyfout.map.data.storage.ScalarDataStorage;
 import ht.eyfout.map.data.storage.visitor.DataStorageVisitor;
 import ht.eyfout.map.data.storage.visitor.VisitorResult;
 import ht.eyfout.map.element.Element;
-import ht.eyfout.map.element.ElementVisitor;
+import ht.eyfout.map.element.visitor.ElementVisitor;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.element.internal.GroupElement;

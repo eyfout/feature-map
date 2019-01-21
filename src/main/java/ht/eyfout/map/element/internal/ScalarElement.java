@@ -1,7 +1,6 @@
 package ht.eyfout.map.element.internal;
 
 import ht.eyfout.map.data.storage.ScalarDataStorage;
-import ht.eyfout.map.element.ElementVisitor;
 import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.feature.runtime.RuntimeContext;
 import ht.eyfout.map.registrar.internal.FeatureRegistrar.FeatureBundle;
