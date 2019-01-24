@@ -10,5 +10,6 @@ public interface ElementVisitor {
   void post(Group element);
 
   VisitorResult visit(String name, Scalar element);
+
   <T> T result();
 }

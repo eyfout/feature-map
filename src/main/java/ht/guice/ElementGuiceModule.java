@@ -6,17 +6,11 @@ import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
-import com.google.inject.multibindings.MultibinderBinding;
 import ht.eyfout.map.data.storage.DataStorage.DataStorageBuilder;
 import ht.eyfout.map.data.storage.DataStorageBuilderFactory;
-import ht.eyfout.map.data.storage.GroupDataStorage;
-import ht.eyfout.map.data.storage.array.ArrayGroupDataStorage;
 import ht.eyfout.map.data.storage.array.ArrayGroupDataStorage.ArrayGroupDataStorageBuilder;
-import ht.eyfout.map.data.storage.db.sql.QueryGroupDataStorage;
 import ht.eyfout.map.data.storage.db.sql.internal.QueryGroupDataStorageBuilder;
-import ht.eyfout.map.data.storage.deltastore.DeltaStoreGroupDataStorage;
 import ht.eyfout.map.data.storage.deltastore.DeltaStoreGroupDataStorage.DeltaStoreGroupDataStorageBuilder;
-import ht.eyfout.map.data.storage.map.MapGroupDataStorage;
 import ht.eyfout.map.data.storage.map.MapGroupDataStorage.MapGroupDataStorageBuilder;
 import ht.eyfout.map.factory.ElementMapFactory;
 import ht.eyfout.map.factory.FeatureElementMapFactory;
@@ -58,20 +52,21 @@ class ElementGuiceModule extends AbstractModule {
     MapBinder dsBuilders = MapBinder.newMapBinder(binder(), Class.class, DataStorageBuilder.class);
 
     dsBuilders.addBinding(MapGroupDataStorageBuilder.class).to(MapGroupDataStorageBuilder.class);
-    dsBuilders.addBinding(QueryGroupDataStorageBuilder.class).to(QueryGroupDataStorageBuilder.class);
-    dsBuilders.addBinding(ArrayGroupDataStorageBuilder.class).to(ArrayGroupDataStorageBuilder.class);
-    dsBuilders.addBinding(DeltaStoreGroupDataStorageBuilder.class).to(DeltaStoreGroupDataStorageBuilder.class);
+    dsBuilders
+        .addBinding(QueryGroupDataStorageBuilder.class)
+        .to(QueryGroupDataStorageBuilder.class);
+    dsBuilders
+        .addBinding(ArrayGroupDataStorageBuilder.class)
+        .to(ArrayGroupDataStorageBuilder.class);
+    dsBuilders
+        .addBinding(DeltaStoreGroupDataStorageBuilder.class)
+        .to(DeltaStoreGroupDataStorageBuilder.class);
   }
-
-
-
-
 
   @Provides
   FeatureFactory<DeltaStoreGroupFeature, ScalarFeature> deltaStore(
-      FeatureElementMapFactory factory, DataStorageBuilderFactory dsFactory) {
-    return FeatureFactory.create(
-        (pgFeature) -> new DeltaStoreGroupFeature(factory, dsFactory, pgFeature));
+      DataStorageBuilderFactory dsFactory) {
+    return FeatureFactory.create((pgFeature) -> new DeltaStoreGroupFeature(dsFactory, pgFeature));
   }
 
   @Provides

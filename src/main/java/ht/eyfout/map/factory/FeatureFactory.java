@@ -34,9 +34,7 @@ public class FeatureFactory<P extends GroupFeature, S extends ScalarFeature> {
 
   public static <P extends GroupFeature> FeatureFactory<P, ScalarFeature> create(
       Function<GroupFeature, P> groupFeatureFunc) {
-    return create(
-        groupFeatureFunc,
-        (scalarFeature) -> scalarFeature);
+    return create(groupFeatureFunc, (scalarFeature) -> scalarFeature);
   }
 
   public static <P extends GroupFeature, S extends ScalarFeature> FeatureFactory<P, S> create(

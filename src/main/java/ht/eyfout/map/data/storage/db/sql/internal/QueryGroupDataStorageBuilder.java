@@ -7,8 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
 
-public class QueryGroupDataStorageBuilder implements
-    QueryGroupDataStorage.QueryGroupDataStorageBuilder {
+public class QueryGroupDataStorageBuilder
+    implements QueryGroupDataStorage.QueryGroupDataStorageBuilder {
 
   StringBuffer buffer;
   Database db;
@@ -28,7 +28,7 @@ public class QueryGroupDataStorageBuilder implements
   @Override
   public QueryGroupDataStorage build() {
     QueryGroupDataStorage store = new QueryGroupDataStorage();
-    store.put("SQL", store.createScalarProvider(buffer.toString()));
+    store.put("SQL", buffer.toString());
     return store;
   }
 

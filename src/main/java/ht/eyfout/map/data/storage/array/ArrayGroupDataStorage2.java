@@ -19,24 +19,34 @@ public class ArrayGroupDataStorage2 extends ArrayGroupDataStorage {
   }
 
   @Override
-  public <T extends DataStorage> void put(String name, T provider) {
+  public <T extends DataStorage> void putAsDataStore(String name, T dataStore) {
+    put(name, dataStore);
+  }
+
+  @Override
+  public <T> void put(String name, T value) {
     int indx = getIndex(name);
-    getDatastorage()[indx] = provider;
+    getDataStorage()[indx] = value;
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T extends DataStorage> T get(String name) {
+  public <T extends DataStorage> T getAsDataStore(String name) {
+    return get(name);
+  }
+
+  @Override
+  public <T> T get(String name) {
     ArrayEntry entry = indices.get(name);
     if (null == entry) {
       return null;
     }
-    return entry.getstorage();
+    return entry.value();
   }
 
   @Override
-  <T extends DataStorage> T getByIndex(int index) {
-    return getIndicesInt().get(index).getstorage();
+  <T> T getByIndex(int index) {
+    return getIndicesInt().get(index).value();
   }
 
   @Override
@@ -62,7 +72,7 @@ public class ArrayGroupDataStorage2 extends ArrayGroupDataStorage {
     };
   }
 
-  protected DataStorage[] getDatastorage() {
+  protected Object[] getDataStorage() {
     return store;
   }
 
@@ -83,7 +93,6 @@ public class ArrayGroupDataStorage2 extends ArrayGroupDataStorage {
   private int getIndex(String name) {
     ArrayEntry entry = getIndices().get(name);
     if (null == entry) {
-      size++;
       entry = new ArrayEntry(nextIndex++, this);
       getIndices().put(name, entry);
       getIndicesInt().put(entry.index(), entry);
@@ -97,7 +106,7 @@ public class ArrayGroupDataStorage2 extends ArrayGroupDataStorage {
     return entry.index();
   }
 
-  protected DataStorage[] expandStorage(DataStorage[] arr, int newSize) {
+  protected Object[] expandStorage(Object[] arr, int newSize) {
     return Arrays.copyOf(arr, newSize);
   }
 
@@ -111,7 +120,7 @@ public class ArrayGroupDataStorage2 extends ArrayGroupDataStorage {
     VisitorResult progress;
     visitor.pre(this);
     for (Map.Entry<String, ArrayEntry> entry : indices.entrySet()) {
-      progress = visitor.visit(entry.getKey(), entry.getValue().getstorage());
+      progress = visitor.visit(entry.getKey(), entry.getValue().value());
       if (progress == VisitorResult.HALT) {
         break;
       }
