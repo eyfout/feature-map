@@ -8,30 +8,20 @@ import javax.inject.Inject;
 
 public class MapGroupDataStorage implements GroupDataStorage {
 
-  private Map<String, Object> store = new ConcurrentHashMap<>();
+  private Map<String, DataStorage> store = new ConcurrentHashMap<>();
 
   protected MapGroupDataStorage() {
     //
   }
 
   @Override
-  public <T extends DataStorage> void putAsDataStore(String name, T dataStore) {
-    store.put(name, dataStore);
-  }
-
-  @Override
-  public <T> void put(String name, T value) {
-    store.put(name, value);
+  public <T extends DataStorage> void put(String name, T provider) {
+    store.put(name, provider);
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T extends DataStorage> T getAsDataStore(String name) {
-    return (T) store.get(name);
-  }
-
-  @Override
-  public <T> T get(String name) {
+  public <T extends DataStorage> T get(String name) {
     return (T) store.get(name);
   }
 
@@ -40,8 +30,8 @@ public class MapGroupDataStorage implements GroupDataStorage {
     return store.size();
   }
 
-  public static class MapGroupDataStorageBuilder
-      implements DataStorageBuilder<MapGroupDataStorage> {
+  public static class MapGroupDataStorageBuilder implements
+      DataStorageBuilder<MapGroupDataStorage> {
 
     @Inject
     protected MapGroupDataStorageBuilder() {

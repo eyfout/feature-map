@@ -3,6 +3,8 @@ package ht.eyfout.map.factory;
 import ht.eyfout.map.data.storage.DataStorage.DataStorageBuilder;
 import ht.eyfout.map.data.storage.DataStorageBuilderFactory;
 import ht.eyfout.map.data.storage.GroupDataStorage;
+import ht.eyfout.map.data.storage.ScalarDataStorage;
+import ht.eyfout.map.data.storage.map.MapGroupDataStorage;
 import ht.eyfout.map.data.storage.map.MapGroupDataStorage.MapGroupDataStorageBuilder;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
@@ -32,10 +34,16 @@ public class ElementMapFactory {
   }
 
   public Group group(Feature... feature) {
-    return group(dsFactory.create(MapGroupDataStorageBuilder.class), feature);
+    return group(
+        dsFactory.create(MapGroupDataStorageBuilder.class),
+        feature);
   }
 
-  public <T> Scalar<T> scalar(Group element, String name) {
-    return ElementFactory.create(element, name);
+  public <T> Scalar<T> scalar(Group element, ScalarDataStorage<T> scalarStore) {
+    return ElementFactory.create(element, scalarStore, null);
+  }
+
+  public <T> Scalar<T> scalar(Group element) {
+    return scalar(element, new ScalarDataStorage<T>());
   }
 }

@@ -2,9 +2,9 @@ package ht.eyfout.map.element
 
 import ht.eyfout.map.data.storage.DataStorageBuilderFactory
 import ht.eyfout.map.data.storage.GroupDataStorage
+import ht.eyfout.map.data.storage.ScalarDataStorage
 import ht.eyfout.map.data.storage.array.ArrayGroupDataStorage
 import ht.eyfout.map.factory.ElementMapFactory
-import ht.eyfout.map.scalar.ScalarReference
 import ht.guice.GuiceInstance
 
 class ArrayGroupSpec extends MapGroupSpec {
@@ -35,12 +35,12 @@ class ArrayGroupSpec extends MapGroupSpec {
 
         GroupDataStorage indexstorage = dsFactory.create(ArrayGroupDataStorage.ArrayGroupDataStorageBuilder.class).index(storageCopy)
         expect: ''
-        indexstorage.<Integer> get(expectedValue) == expectedValue
+        indexstorage.<ScalarDataStorage<Integer>> get(expectedValue).get() == expectedValue
         and: ''
-        indexstorage.<String> get(4) == expectedString
+        indexstorage.<ScalarDataStorage<String>> get(4).get() == expectedString
     }
 
-    def 'set value on scalar'() {
+    def 'set value on scalar'(){
         Integer expectedValue = 88
         GroupDataStorage storage = dsFactory.create(ArrayGroupDataStorage.ArrayGroupDataStorageBuilder.class).build()
         Group groupElement = elementFactory.group(storage)
@@ -49,8 +49,8 @@ class ArrayGroupSpec extends MapGroupSpec {
         ArrayGroupDataStorage storageCopy = storage.copy()
         Group groupElementCopy = elementFactory.group(storageCopy)
 
-        Scalar<Integer> scalar = ScalarReference.getScalar('key#4', groupElement)
-        Scalar<Integer> scalarOfCopy = ScalarReference.getScalar('key#4', groupElementCopy)
+        Scalar<Integer> scalar = groupElement.getScalar("key#4")
+        Scalar<Integer> scalarOfCopy = groupElementCopy.getScalar("key#4")
         scalarOfCopy.set(expectedValue)
 
         expect:

@@ -34,7 +34,7 @@ public abstract class AbstractFeatureBundleFeatureSupporter implements FeatureSu
 
   @Override
   public <T extends FeatureDefinition> Optional<T> chain() {
-    return (Optional<T>) Optional.ofNullable(bundle.<FeatureDefinition>chain(func));
+    return (Optional<T>)Optional.ofNullable(bundle.<FeatureDefinition>chain(func));
   }
 
   @Override

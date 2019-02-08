@@ -12,22 +12,12 @@ public class IndexGroupDataStorage implements GroupDataStorage {
   }
 
   @Override
-  public <T extends DataStorage> void putAsDataStore(String name, T dataStore) {
-    arrayStore.putAsDataStore(name, dataStore);
+  public <T extends DataStorage> void put(String name, T provider) {
+    arrayStore.put(name, provider);
   }
 
   @Override
-  public <T> void put(String name, T value) {
-    arrayStore.put(name, value);
-  }
-
-  @Override
-  public <T extends DataStorage> T getAsDataStore(String name) {
-    return arrayStore.getAsDataStore(name);
-  }
-
-  @Override
-  public <T> T get(String name) {
+  public <T extends DataStorage> T get(String name) {
     return arrayStore.get(name);
   }
 
@@ -36,16 +26,12 @@ public class IndexGroupDataStorage implements GroupDataStorage {
     return arrayStore.size();
   }
 
-  public <T extends DataStorage> T getAsDataStorage(int index) {
-    return get(index);
-  }
-
-  public <T> T get(int index) {
-    return arrayStore.getByIndex(index);
+  public <T extends DataStorage> T get(int index) {
+    return (T) arrayStore.getByIndex(index);
   }
 
   public <T extends DataStorage> void put(int index, T store) {
-    arrayStore.getDataStorage()[index] = store;
+    arrayStore.getDatastorage()[index] = store;
   }
 
   public Keys keys() {

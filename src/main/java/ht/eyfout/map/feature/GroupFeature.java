@@ -1,6 +1,7 @@
 package ht.eyfout.map.feature;
 
 import ht.eyfout.map.data.storage.GroupDataStorage;
+import ht.eyfout.map.data.storage.ScalarDataStorage;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.feature.runtime.RuntimeContext;
 
@@ -21,6 +22,16 @@ public abstract class GroupFeature extends FeatureForward<GroupFeature> {
     return next()
         .map((feature) -> feature.getScalarValue(name, value, element, context))
         .orElse(value);
+  }
+
+  public <T> ScalarDataStorage<T> getScalar(
+      final String name,
+      final ScalarDataStorage<T> scalar,
+      final Group element,
+      final RuntimeContext context) {
+    return next()
+        .map((feature) -> feature.getScalar(name, scalar, element, context))
+        .orElse(scalar);
   }
 
   public GroupDataStorage putGroup(

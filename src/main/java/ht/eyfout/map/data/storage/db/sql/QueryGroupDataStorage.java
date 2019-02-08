@@ -9,8 +9,8 @@ public class QueryGroupDataStorage extends MapGroupDataStorage {
     return true;
   }
 
-  public static interface QueryGroupDataStorageBuilder
-      extends DataStorageBuilder<QueryGroupDataStorage> {
+  public static interface QueryGroupDataStorageBuilder extends
+      DataStorageBuilder<QueryGroupDataStorage> {
 
     Field select();
 

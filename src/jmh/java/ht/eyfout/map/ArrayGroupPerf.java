@@ -2,12 +2,12 @@ package ht.eyfout.map;
 
 import ht.eyfout.map.data.storage.DataStorageBuilderFactory;
 import ht.eyfout.map.data.storage.GroupDataStorage;
+import ht.eyfout.map.data.storage.array.ArrayGroupDataStorage;
 import ht.eyfout.map.data.storage.array.ArrayGroupDataStorage.ArrayGroupDataStorageBuilder;
 import ht.eyfout.map.data.storage.array.ArrayGroupDataStorage.ArrayGroupDataStorageBuilder.ArrayGroupVersion;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.factory.ElementMapFactory;
-import ht.eyfout.map.scalar.ScalarReference;
 import ht.eyfout.test.artifacts.Seed;
 import ht.guice.GuiceInstance;
 import java.util.concurrent.TimeUnit;
@@ -46,7 +46,10 @@ public class ArrayGroupPerf {
     ElementMapFactory factory = GuiceInstance.get(ElementMapFactory.class);
 
     GroupDataStorage original =
-        storageFactory.create(ArrayGroupDataStorageBuilder.class).version(version).build();
+        storageFactory
+            .create(ArrayGroupDataStorageBuilder.class)
+            .version(version)
+            .build();
     groupElement = factory.group(original);
     Seed.seedGroupElement(groupElement, 100, "key-");
     groupBackedByCopy = factory.group(original.<GroupDataStorage>copy());
@@ -82,14 +85,14 @@ public class ArrayGroupPerf {
 
   @Benchmark
   public void setScalarValue(Blackhole bh) {
-    Scalar<Integer> scalar = ScalarReference.getScalar("key-3", groupElement);
+    Scalar<Integer> scalar = groupElement.getScalar("key-3");
     scalar.set(101);
     bh.consume(scalar);
   }
 
   @Benchmark
   public void setAndOverrideScalarValue(Blackhole bh) {
-    Scalar<Integer> scalar = ScalarReference.getScalar("key-3", groupElement);
+    Scalar<Integer> scalar = groupElement.getScalar("key-3");
     scalar.set(101);
     scalar.set(300);
     bh.consume(scalar);
@@ -97,14 +100,14 @@ public class ArrayGroupPerf {
 
   @Benchmark
   public void setScalarValueOnCopy(Blackhole bh) {
-    Scalar<Integer> scalar = ScalarReference.getScalar("key-3", groupBackedByCopy);
+    Scalar<Integer> scalar = groupBackedByCopy.getScalar("key-3");
     scalar.set(101);
     bh.consume(scalar);
   }
 
   @Benchmark
   public void setAndOverrideScalarValueOnCopy(Blackhole bh) {
-    Scalar<Integer> scalar = ScalarReference.getScalar("key-3", groupBackedByCopy);
+    Scalar<Integer> scalar = groupBackedByCopy.getScalar("key-3");
     scalar.set(101);
     scalar.set(300);
     bh.consume(scalar);
@@ -115,4 +118,5 @@ public class ArrayGroupPerf {
       version = ArrayGroupVersion.INT;
     }
   }
+
 }

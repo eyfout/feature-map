@@ -1,6 +1,7 @@
 package ht.eyfout.map.factory;
 
 import ht.eyfout.map.data.storage.GroupDataStorage;
+import ht.eyfout.map.data.storage.ScalarDataStorage;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.element.internal.ElementFactory;
@@ -18,7 +19,7 @@ public class FeatureElementMapFactory {
     return ElementFactory.create(store, bundle, context);
   }
 
-  public <T> Scalar<T> scalar(Group element, String name) {
-    return ElementFactory.create(element, name);
+  public <T> Scalar<T> scalar(Group element, ScalarDataStorage<T> scalarStore, String name) {
+    return ElementFactory.create(element, scalarStore, name);
   }
 }

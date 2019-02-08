@@ -8,7 +8,6 @@ import ht.eyfout.map.data.storage.map.MapGroupDataStorage.MapGroupDataStorageBui
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.factory.ElementMapFactory;
-import ht.eyfout.map.scalar.ScalarReference;
 import ht.eyfout.test.artifacts.Seed;
 import ht.guice.GuiceInstance;
 import java.util.Map;
@@ -62,14 +61,14 @@ public class GroupElementPerf {
 
   @Benchmark
   public void setScalarValue(Blackhole bh) {
-    Scalar<Integer> scalar = ScalarReference.getScalar("key#3", groupElement);
+    Scalar<Integer> scalar = groupElement.getScalar("key#3");
     scalar.set(101);
     bh.consume(scalar);
   }
 
   @Benchmark
   public void setAndOverrideScalarValue(Blackhole bh) {
-    Scalar<Integer> scalar = ScalarReference.getScalar("key#3", groupElement);
+    Scalar<Integer> scalar = groupElement.getScalar("key#3");
     scalar.set(101);
     scalar.set(300);
     bh.consume(scalar);

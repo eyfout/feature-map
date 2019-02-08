@@ -1,6 +1,7 @@
 package ht.eyfout.map;
 
 import ht.eyfout.map.data.storage.DataStorageBuilderFactory;
+import ht.eyfout.map.data.storage.ScalarDataStorage;
 import ht.eyfout.map.data.storage.db.sql.QueryGroupDataStorage;
 import ht.eyfout.map.data.storage.db.sql.QueryGroupDataStorage.QueryGroupDataStorageBuilder;
 import ht.eyfout.map.element.Group;
@@ -9,7 +10,6 @@ import ht.eyfout.map.factory.ElementMapFactory;
 import ht.eyfout.map.feature.Feature;
 import ht.eyfout.map.feature.FeatureDescriptor;
 import ht.eyfout.map.feature.deltastore.DeltaStoreOperations;
-import ht.eyfout.map.scalar.ScalarReference;
 import ht.guice.GuiceInstance;
 
 public class Main {
@@ -24,7 +24,7 @@ public class Main {
             .from("schema.tableName")
             .build();
 
-    System.out.println(queryStore.<String>get("SQL"));
+    System.out.println(queryStore.<ScalarDataStorage<String>>get("SQL").get());
 
     ElementMapFactory elementMapFactory = GuiceInstance.get(ElementMapFactory.class);
     Group groupElement = elementMapFactory.group();
@@ -36,9 +36,9 @@ public class Main {
     groupElement.putScalarValue(key + "001", 57);
     groupElement.putScalarValue(key + "002", 73);
 
-    Scalar<Integer> scalar = ScalarReference.getScalar(key, groupElement);
+    Scalar<Integer> scalar = groupElement.<Integer>getScalar(key);
 
-    System.out.println(ScalarReference.getScalar(key, groupElement).get());
+    System.out.println(groupElement.<Integer>getScalar(key).get());
     System.out.println("Size: " + delta.size());
   }
 

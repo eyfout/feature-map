@@ -17,10 +17,10 @@ public class DeltaStoreGroupDataStorage extends MapGroupDataStorage {
   }
 
   @Override
-  public <T extends DataStorage> T getAsDataStore(String name) {
-    T result = super.getAsDataStore(name);
+  public <T extends DataStorage> T get(String name) {
+    T result = super.get(name);
     if (null == result) {
-      result = baseProvider.getAsDataStore(name);
+      result = baseProvider.get(name);
     }
     return result;
   }

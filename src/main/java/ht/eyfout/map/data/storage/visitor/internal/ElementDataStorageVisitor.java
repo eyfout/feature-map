@@ -1,14 +1,14 @@
 package ht.eyfout.map.data.storage.visitor.internal;
 
 import ht.eyfout.map.data.storage.GroupDataStorage;
+import ht.eyfout.map.data.storage.ScalarDataStorage;
 import ht.eyfout.map.data.storage.visitor.DataStorageVisitor;
 import ht.eyfout.map.data.storage.visitor.VisitorResult;
 import ht.eyfout.map.element.Element;
+import ht.eyfout.map.element.visitor.ElementVisitor;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.element.internal.GroupElement;
-import ht.eyfout.map.element.visitor.ElementVisitor;
-import ht.eyfout.map.scalar.ScalarReference;
 import java.util.Stack;
 
 public class ElementDataStorageVisitor implements DataStorageVisitor {
@@ -34,9 +34,9 @@ public class ElementDataStorageVisitor implements DataStorageVisitor {
   }
 
   @Override
-  public <T> VisitorResult visit(String name, T value) {
+  public VisitorResult visit(String name, ScalarDataStorage storage) {
     GroupElement groupElement = (GroupElement) stack.peek();
-    Scalar scalar = ScalarReference.getScalar(name, groupElement);
+    Scalar scalar = groupElement.getScalar(name);
     return visitor.visit(name, scalar);
   }
 
