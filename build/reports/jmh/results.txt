@@ -1,0 +1,19 @@
+Benchmark                                           (DataProvider)  Mode  Cnt     Score     Error  Units
+ArrayGroupPerf.ArrayGroupInt.copy                              N/A  avgt    4    77.660 ±   7.648  ns/op
+ArrayGroupPerf.ArrayGroupInt.getValue                          N/A  avgt    4     9.868 ±   0.255  ns/op
+ArrayGroupPerf.ArrayGroupInt.getValueInCopystorage             N/A  avgt    4     9.878 ±   0.213  ns/op
+ArrayGroupPerf.ArrayGroupInt.putValue                          N/A  avgt    4    16.071 ±   0.046  ns/op
+ArrayGroupPerf.copy                                            N/A  avgt    4    29.279 ±   0.886  ns/op
+ArrayGroupPerf.getValue                                        N/A  avgt    4    10.220 ±   0.204  ns/op
+ArrayGroupPerf.putValue                                        N/A  avgt    4    19.076 ±   0.691  ns/op
+ArrayGroupPerf.putValueInCopystorage                           N/A  avgt    4    24.025 ±   2.991  ns/op
+GroupElementPerf.getScalarValue_ExistingValue                array  avgt    4    10.330 ±   1.076  ns/op
+GroupElementPerf.getScalarValue_ExistingValue                  map  avgt    4     9.655 ±   1.461  ns/op
+GroupElementPerf.getScalarValue_NullValue                    array  avgt    4    10.801 ±   0.262  ns/op
+GroupElementPerf.getScalarValue_NullValue                      map  avgt    4    10.462 ±   0.638  ns/op
+GroupElementPerf.putScalarValue                              array  avgt    4  1479.065 ± 651.961  ns/op
+GroupElementPerf.putScalarValue                                map  avgt    4  1591.928 ± 312.236  ns/op
+GroupElementPerf.putScalarValue_Featureless                  array  avgt    4    19.045 ±   2.621  ns/op
+GroupElementPerf.putScalarValue_Featureless                    map  avgt    4    41.353 ±   4.314  ns/op
+JavaMap.map_GetExistingValue                                   N/A  avgt    4     8.241 ±   1.876  ns/op
+JavaMap.map_putValue                                           N/A  avgt    4    14.913 ±   0.963  ns/op

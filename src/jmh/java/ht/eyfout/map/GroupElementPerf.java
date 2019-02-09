@@ -8,6 +8,7 @@ import ht.eyfout.map.data.storage.map.MapGroupDataStorage.MapGroupDataStorageBui
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.factory.ElementMapFactory;
+import ht.eyfout.map.feature.Feature;
 import ht.eyfout.test.artifacts.Seed;
 import ht.guice.GuiceInstance;
 import java.util.Map;
@@ -41,6 +42,7 @@ public class GroupElementPerf {
   String DataProvider;
 
   private Group groupElement;
+  private Group groupElementWithFeature;
 
   @Setup
   public void doSetup() {
@@ -50,18 +52,41 @@ public class GroupElementPerf {
             GuiceInstance.get(DataStorageBuilderFactory.class)
                 .create(providers.get(DataProvider.toLowerCase()))
                 .build());
+    groupElementWithFeature =
+    factory.group(
+        GuiceInstance.get(DataStorageBuilderFactory.class)
+            .create(providers.get(DataProvider.toLowerCase()))
+            .build());
+
+    groupElementWithFeature.addFeature(Feature.MESSAGING);
+    groupElementWithFeature.addFeature(Feature.DELTA_STORE);
+
     Seed.seedGroupElement(groupElement, 30, "key#");
+    Seed.seedGroupElement(groupElementWithFeature, 30, "key#");
   }
 
   @Benchmark
-  public Group putScalarValue() {
+  public Group putScalarValue_Featureless() {
     groupElement.putScalarValue("key#1", "value-1");
     return groupElement;
   }
 
   @Benchmark
-  public void setScalarValue(Blackhole bh) {
+  public Group putScalarValue() {
+    groupElementWithFeature.putScalarValue("key#1", "value-1");
+    return groupElement;
+  }
+
+  @Benchmark
+  public void setScalarValue_Featureless(Blackhole bh) {
     Scalar<Integer> scalar = groupElement.getScalar("key#3");
+    scalar.set(101);
+    bh.consume(scalar);
+  }
+
+  @Benchmark
+  public void setScalarValue(Blackhole bh) {
+    Scalar<Integer> scalar = groupElementWithFeature.getScalar("key#3");
     scalar.set(101);
     bh.consume(scalar);
   }
