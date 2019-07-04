@@ -11,8 +11,7 @@ public interface DataStorage {
     throw new UnsupportedOperationException();
   }
 
-
-  default <T> T accept(DataStorageVisitor visitor){
+  default <R> R accept(DataStorageVisitor<R> visitor) {
     throw new UnsupportedOperationException();
   }
 

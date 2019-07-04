@@ -1,14 +1,13 @@
 package ht.eyfout.map.element.visitor;
 
-import ht.eyfout.map.data.storage.visitor.VisitorResult;
+import ht.eyfout.map.visitor.VisitorResult;
 import ht.eyfout.map.element.Group;
 import ht.eyfout.map.element.Scalar;
 
-public interface ElementVisitor {
+public interface ElementVisitor<R> {
   void pre(Group element);
 
-  void post(Group element);
+  R post(Group element);
 
   VisitorResult visit(String name, Scalar element);
-  <T> T result();
 }

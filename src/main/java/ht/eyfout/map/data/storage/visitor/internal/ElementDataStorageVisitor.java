@@ -3,7 +3,7 @@ package ht.eyfout.map.data.storage.visitor.internal;
 import ht.eyfout.map.data.storage.GroupDataStorage;
 import ht.eyfout.map.data.storage.ScalarDataStorage;
 import ht.eyfout.map.data.storage.visitor.DataStorageVisitor;
-import ht.eyfout.map.data.storage.visitor.VisitorResult;
+import ht.eyfout.map.visitor.VisitorResult;
 import ht.eyfout.map.element.Element;
 import ht.eyfout.map.element.visitor.ElementVisitor;
 import ht.eyfout.map.element.Group;
@@ -11,11 +11,11 @@ import ht.eyfout.map.element.Scalar;
 import ht.eyfout.map.element.internal.GroupElement;
 import java.util.Stack;
 
-public class ElementDataStorageVisitor implements DataStorageVisitor {
+public class ElementDataStorageVisitor<R> implements DataStorageVisitor<R> {
   private final Stack<Element> stack;
-  private final ElementVisitor visitor;
+  private final ElementVisitor<R> visitor;
 
-  public ElementDataStorageVisitor(Element groupElement, ElementVisitor visitor) {
+  public ElementDataStorageVisitor(Element groupElement, ElementVisitor<R> visitor) {
     stack = new Stack<>();
     stack.push(groupElement);
     this.visitor = visitor;
@@ -28,10 +28,11 @@ public class ElementDataStorageVisitor implements DataStorageVisitor {
   }
 
   @Override
-  public void post(GroupDataStorage storage) {
+  public R post(GroupDataStorage storage) {
     Group groupElement = (Group) stack.pop();
-    visitor.post(groupElement);
+    return visitor.post(groupElement);
   }
+
 
   @Override
   public VisitorResult visit(String name, ScalarDataStorage storage) {
@@ -40,8 +41,4 @@ public class ElementDataStorageVisitor implements DataStorageVisitor {
     return visitor.visit(name, scalar);
   }
 
-  @Override
-  public <T> T result() {
-    return visitor.result();
-  }
 }

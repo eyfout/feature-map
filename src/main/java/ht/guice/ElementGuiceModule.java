@@ -58,7 +58,7 @@ class ElementGuiceModule extends AbstractModule {
     MapBinder dsBuilders = MapBinder.newMapBinder(binder(), Class.class, DataStorageBuilder.class);
 
     dsBuilders.addBinding(MapGroupDataStorageBuilder.class).to(MapGroupDataStorageBuilder.class);
-    dsBuilders.addBinding(QueryGroupDataStorageBuilder.class).to(QueryGroupDataStorageBuilder.class);
+    dsBuilders.addBinding(QueryGroupDataStorage.QueryGroupDataStorageBuilder.class).to(QueryGroupDataStorageBuilder.class);
     dsBuilders.addBinding(ArrayGroupDataStorageBuilder.class).to(ArrayGroupDataStorageBuilder.class);
     dsBuilders.addBinding(DeltaStoreGroupDataStorageBuilder.class).to(DeltaStoreGroupDataStorageBuilder.class);
   }

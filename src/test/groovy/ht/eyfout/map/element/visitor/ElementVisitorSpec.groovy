@@ -2,8 +2,7 @@ package ht.eyfout.map.element.visitor
 
 import ht.eyfout.map.data.storage.DataStorageBuilderFactory
 import ht.eyfout.map.data.storage.array.ArrayGroupDataStorage
-import ht.eyfout.map.data.storage.visitor.VisitorResult
-import ht.eyfout.map.element.visitor.ElementVisitor
+import ht.eyfout.map.visitor.VisitorResult
 import ht.eyfout.map.element.Group
 import ht.eyfout.map.element.Scalar
 import ht.eyfout.map.factory.ElementMapFactory
@@ -33,7 +32,7 @@ class ElementVisitorSpec extends Specification {
         VisitorResult visit(String name, Scalar element) {
             println "visited : $name"
             if (name =~ "type") {
-                return VisitorResult.HALT
+                return VisitorResult.TERMINATE
             }
             result.put(name, element.get())
             return VisitorResult.CONTINUE

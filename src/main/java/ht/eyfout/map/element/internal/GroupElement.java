@@ -83,8 +83,7 @@ public class GroupElement extends AbstractFeatureBundleFeatureSupporter implemen
   }
 
   @Override
-  public <T> T accept(ElementVisitor visitor) {
-    dataStore.accept(new ElementDataStorageVisitor(this, visitor));
-    return visitor.result();
+  public <R> R accept(ElementVisitor<R> visitor) {
+    return dataStore.accept(new ElementDataStorageVisitor<>(this, visitor));
   }
 }

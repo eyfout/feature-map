@@ -2,7 +2,7 @@ package ht.eyfout.map.data.storage.array;
 
 import ht.eyfout.map.data.storage.DataStorage;
 import ht.eyfout.map.data.storage.visitor.DataStorageVisitor;
-import ht.eyfout.map.data.storage.visitor.VisitorResult;
+import ht.eyfout.map.visitor.VisitorResult;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -107,16 +107,15 @@ public class ArrayGroupDataStorage2 extends ArrayGroupDataStorage {
   }
 
   @Override
-  public <T> T accept(DataStorageVisitor visitor) {
+  public <T> T accept(DataStorageVisitor<T> visitor) {
     VisitorResult progress;
     visitor.pre(this);
     for (Map.Entry<String, ArrayEntry> entry : indices.entrySet()) {
       progress = visitor.visit(entry.getKey(), entry.getValue().getstorage());
-      if (progress == VisitorResult.HALT) {
+      if (progress == VisitorResult.TERMINATE) {
         break;
       }
     }
-    visitor.post(this);
-    return visitor.result();
+    return visitor.post(this);
   }
 }

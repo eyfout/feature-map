@@ -2,6 +2,8 @@ package ht.eyfout.map.data.storage.map;
 
 import ht.eyfout.map.data.storage.DataStorage;
 import ht.eyfout.map.data.storage.GroupDataStorage;
+import ht.eyfout.map.data.storage.ScalarDataStorage;
+import ht.eyfout.map.data.storage.visitor.DataStorageVisitor;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Inject;
@@ -26,12 +28,25 @@ public class MapGroupDataStorage implements GroupDataStorage {
   }
 
   @Override
+  public <R> R accept(DataStorageVisitor<R> visitor) {
+    visitor.pre(this);
+    for(Map.Entry<String, DataStorage> entry : store.entrySet()){
+      DataStorage value = entry.getValue();
+      if(value instanceof ScalarDataStorage){
+        visitor.visit(entry.getKey(), (ScalarDataStorage) entry.getValue());
+      }
+
+    }
+    return visitor.post(this);
+  }
+
+  @Override
   public int size() {
     return store.size();
   }
 
-  public static class MapGroupDataStorageBuilder implements
-      DataStorageBuilder<MapGroupDataStorage> {
+  public static class MapGroupDataStorageBuilder
+      implements DataStorageBuilder<MapGroupDataStorage> {
 
     @Inject
     protected MapGroupDataStorageBuilder() {
