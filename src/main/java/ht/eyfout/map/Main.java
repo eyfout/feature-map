@@ -51,19 +51,21 @@ public class Main {
 
   public static ElementVisitor<String> visitor(){
     return new ElementVisitor<String>(){
+      StringBuffer buffer = new StringBuffer(30);
 
       @Override
       public void pre(Group element) {
-
+        buffer.append("{\n");
       }
 
       @Override
       public String post(Group element) {
-        return "Visited";
+        return buffer.append("}\n").toString();
       }
 
       @Override
       public VisitorResult visit(String name, Scalar element) {
+        buffer.append(name).append(":").append(element.get()).append("\n");
         return VisitorResult.CONTINUE;
       }
     };
