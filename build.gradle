@@ -47,4 +47,10 @@ dependencies {
     testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
 }
 
+jmh {
+    iterations = 5
+    warmupIterations = 5
+    fork = 1
+}
+
 

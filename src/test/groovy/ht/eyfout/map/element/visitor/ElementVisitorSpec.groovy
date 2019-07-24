@@ -12,7 +12,7 @@ import spock.lang.Unroll
 
 @Unroll
 class ElementVisitorSpec extends Specification {
-    class SysStreamVisitor implements ElementVisitor {
+    class SysStreamVisitor implements ElementVisitor<String> {
         Map<String, Integer> result
 
         SysStreamVisitor() {
@@ -24,8 +24,10 @@ class ElementVisitorSpec extends Specification {
         }
 
         @Override
-        void post(Group element) {
+        String post(Group element) {
+
             println("Finish")
+            return '';
         }
 
         @Override
@@ -38,7 +40,6 @@ class ElementVisitorSpec extends Specification {
             return VisitorResult.CONTINUE
         }
 
-        @Override
         def <T> T result() {
             return result;
         }
