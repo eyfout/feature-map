@@ -51,6 +51,7 @@ jmh {
     iterations = 5
     warmupIterations = 5
     fork = 1
+    include = 'ArrayElementPerf'
 }
 
 
