@@ -1,4 +1,5 @@
 rootProject.name = 'feature-map'
 include 'dsl'
-findProject(':dsl')?.name = 'feature-map-dsl'
+findProject(':dsl')?.name = 'element-dsl'
+include 'core'
 
